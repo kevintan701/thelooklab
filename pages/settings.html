@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LookLab - Settings</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/styles.css">
+    <style>
+        /* Page-specific styles for scrolling */
+        html, body {
+            height: auto !important;
+            min-height: 100%;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            overflow-y: auto !important;
+            overflow-x: hidden;
+        }
+        
+        .page-container {
+            min-height: 100%;
+            width: 100%;
+            overflow-y: auto;
+        }
+        
+        /* Custom scrollbar for this page */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background-color: rgba(155, 155, 155, 0.5);
+            border-radius: 20px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background-color: rgba(155, 155, 155, 0.7);
+        }
+    </style>
+</head>
+<body class="bg-white overflow-y-auto">
+    <div class="page-container">
+        <div class="container mx-auto px-6 py-8 pb-20">
+            <!-- Header section -->
+            <div class="mb-8">
+                <h1 class="text-3xl font-bold text-gray-800">Settings</h1>
+                <p class="text-gray-600 mt-1">Manage your account and preferences</p>
+            </div>
+
+            <!-- Main content - Settings tabs and forms -->
+            <div class="flex flex-col md:flex-row gap-8">
+                <!-- Left sidebar - Settings navigation -->
+                <div class="md:w-1/4">
+                    <div class="bg-white rounded-lg shadow overflow-hidden">
+                        <div class="p-4 border-b border-gray-200">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-12 h-12 rounded-full overflow-hidden">
+                                    <img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80" alt="Sarah Reynolds" class="w-full h-full object-cover">
+                                </div>
+                                <div>
+                                    <h3 class="font-bold">Sarah's Boutique</h3>
+                                    <p class="text-xs text-gray-500">Retailer Account</p>
+                                </div>
+                            </div>
+                        </div>
+                        <nav class="p-2">
+                            <a href="#account" class="flex items-center p-3 text-blue-600 bg-blue-50 rounded-lg">
+                                <i class="fas fa-user w-5 mr-3"></i>
+                                <span>Account</span>
+                            </a>
+                            <a href="#store" class="flex items-center p-3 text-gray-700 hover:bg-gray-100 rounded-lg mt-1">
+                                <i class="fas fa-store w-5 mr-3"></i>
+                                <span>Store Profile</span>
+                            </a>
+                            <a href="#integrations" class="flex items-center p-3 text-gray-700 hover:bg-gray-100 rounded-lg mt-1">
+                                <i class="fas fa-plug w-5 mr-3"></i>
+                                <span>Integrations</span>
+                            </a>
+                            <a href="#billing" class="flex items-center p-3 text-gray-700 hover:bg-gray-100 rounded-lg mt-1">
+                                <i class="fas fa-credit-card w-5 mr-3"></i>
+                                <span>Billing</span>
+                            </a>
+                            <a href="#notifications" class="flex items-center p-3 text-gray-700 hover:bg-gray-100 rounded-lg mt-1">
+                                <i class="fas fa-bell w-5 mr-3"></i>
+                                <span>Notifications</span>
+                            </a>
+                            <a href="#preferences" class="flex items-center p-3 text-gray-700 hover:bg-gray-100 rounded-lg mt-1">
+                                <i class="fas fa-sliders-h w-5 mr-3"></i>
+                                <span>Preferences</span>
+                            </a>
+                            <a href="#privacy" class="flex items-center p-3 text-gray-700 hover:bg-gray-100 rounded-lg mt-1">
+                                <i class="fas fa-shield-alt w-5 mr-3"></i>
+                                <span>Privacy & Security</span>
+                            </a>
+                        </nav>
+                        <div class="p-4 border-t border-gray-200">
+                            <a href="#" class="flex items-center text-red-600 hover:text-red-800">
+                                <i class="fas fa-sign-out-alt mr-2"></i>
+                                <span>Sign Out</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Right content - Settings forms -->
+                <div class="md:w-3/4">
+                    <!-- Account Settings -->
+                    <div id="account" class="bg-white rounded-lg shadow mb-8">
+                        <div class="p-6 border-b border-gray-200">
+                            <h2 class="text-xl font-bold text-gray-800">Account Settings</h2>
+                            <p class="text-gray-600 text-sm mt-1">Update your personal information</p>
+                        </div>
+                        
+                        <div class="p-6">
+                            <div class="flex flex-col md:flex-row md:items-center mb-8">
+                                <div class="md:w-1/3 mb-4 md:mb-0">
+                                    <h3 class="font-medium text-gray-900">Profile Picture</h3>
+                                    <p class="text-gray-500 text-sm">This will be displayed on your profile</p>
+                                </div>
+                                <div class="md:w-2/3 flex items-center">
+                                    <div class="w-20 h-20 rounded-full overflow-hidden mr-6">
+                                        <img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80" alt="Sarah Reynolds" class="w-full h-full object-cover">
+                                    </div>
+                                    <div>
+                                        <button class="px-4 py-2 bg-white text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50 mr-2">
+                                            Change
+                                        </button>
+                                        <button class="px-4 py-2 bg-white text-red-600 border border-gray-300 rounded-lg hover:bg-gray-50">
+                                            Remove
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <form>
+                                <div class="mb-6">
+                                    <div class="flex flex-col md:flex-row">
+                                        <div class="md:w-1/2 md:pr-2 mb-4 md:mb-0">
+                                            <label for="first_name" class="block text-sm font-medium text-gray-700 mb-1">First Name</label>
+                                            <input type="text" id="first_name" value="Sarah" class="input-field w-full">
+                                        </div>
+                                        <div class="md:w-1/2 md:pl-2">
+                                            <label for="last_name" class="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
+                                            <input type="text" id="last_name" value="Reynolds" class="input-field w-full">
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="mb-6">
+                                    <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+                                    <input type="email" id="email" value="sarah@sarahsboutique.com" class="input-field w-full">
+                                </div>
+                                
+                                <div class="mb-6">
+                                    <label for="phone" class="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
+                                    <input type="tel" id="phone" value="+1 (555) 123-4567" class="input-field w-full">
+                                </div>
+                                
+                                <div class="mb-6">
+                                    <label for="timezone" class="block text-sm font-medium text-gray-700 mb-1">Timezone</label>
+                                    <select id="timezone" class="input-field w-full">
+                                        <option>Pacific Time (PT) - US & Canada</option>
+                                        <option>Mountain Time (MT) - US & Canada</option>
+                                        <option selected>Eastern Time (ET) - US & Canada</option>
+                                        <option>Central European Time (CET)</option>
+                                        <option>Japan Standard Time (JST)</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="flex justify-end">
+                                    <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                                        Save Changes
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    
+                    <!-- Store Profile -->
+                    <div id="store" class="bg-white rounded-lg shadow mb-8">
+                        <div class="p-6 border-b border-gray-200">
+                            <h2 class="text-xl font-bold text-gray-800">Store Profile</h2>
+                            <p class="text-gray-600 text-sm mt-1">Manage your store information</p>
+                        </div>
+                        
+                        <div class="p-6">
+                            <div class="flex flex-col md:flex-row md:items-center mb-8">
+                                <div class="md:w-1/3 mb-4 md:mb-0">
+                                    <h3 class="font-medium text-gray-900">Store Logo</h3>
+                                    <p class="text-gray-500 text-sm">Used in your store profile and communications</p>
+                                </div>
+                                <div class="md:w-2/3 flex items-center">
+                                    <div class="w-20 h-20 rounded-lg border border-gray-300 bg-white flex items-center justify-center mr-6">
+                                        <span class="text-gray-400"><i class="fas fa-store fa-2x"></i></span>
+                                    </div>
+                                    <div>
+                                        <button class="px-4 py-2 bg-white text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50">
+                                            Upload Logo
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <form>
+                                <div class="mb-6">
+                                    <label for="store_name" class="block text-sm font-medium text-gray-700 mb-1">Store Name</label>
+                                    <input type="text" id="store_name" value="Sarah's Boutique" class="input-field w-full">
+                                </div>
+                                
+                                <div class="mb-6">
+                                    <label for="store_description" class="block text-sm font-medium text-gray-700 mb-1">Store Description</label>
+                                    <textarea id="store_description" rows="4" class="input-field w-full">A curated collection of modern fashion for the conscious consumer. We focus on sustainable and ethical fashion brands with an emphasis on quality over quantity.</textarea>
+                                </div>
+                                
+                                <div class="mb-6">
+                                    <label for="store_website" class="block text-sm font-medium text-gray-700 mb-1">Website URL</label>
+                                    <input type="url" id="store_website" value="https://sarahsboutique.com" class="input-field w-full">
+                                </div>
+                                
+                                <div class="mb-6">
+                                    <label for="store_address" class="block text-sm font-medium text-gray-700 mb-1">Store Address</label>
+                                    <input type="text" id="store_address" value="123 Fashion Lane, New York, NY 10001" class="input-field w-full">
+                                </div>
+                                
+                                <div class="mb-6">
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Store Categories</label>
+                                    <div class="flex flex-wrap gap-2">
+                                        <div class="px-4 py-2 bg-blue-100 text-blue-800 rounded-full text-sm flex items-center">
+                                            Women's Fashion
+                                            <button class="ml-2 text-blue-600" title="Remove Women's Fashion">
+                                                <i class="fas fa-times"></i>
+                                            </button>
+                                        </div>
+                                        <div class="px-4 py-2 bg-blue-100 text-blue-800 rounded-full text-sm flex items-center">
+                                            Sustainable
+                                            <button class="ml-2 text-blue-600" title="Remove Sustainable">
+                                                <i class="fas fa-times"></i>
+                                            </button>
+                                        </div>
+                                        <div class="px-4 py-2 bg-blue-100 text-blue-800 rounded-full text-sm flex items-center">
+                                            Accessories
+                                            <button class="ml-2 text-blue-600" title="Remove Accessories">
+                                                <i class="fas fa-times"></i>
+                                            </button>
+                                        </div>
+                                        <div class="px-4 py-2 border border-gray-300 text-gray-600 rounded-full text-sm flex items-center">
+                                            <i class="fas fa-plus mr-1"></i> Add Category
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex justify-end">
+                                    <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                                        Save Changes
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    
+                    <!-- Integrations -->
+                    <div id="integrations" class="bg-white rounded-lg shadow mb-8">
+                        <div class="p-6 border-b border-gray-200">
+                            <h2 class="text-xl font-bold text-gray-800">Integrations</h2>
+                            <p class="text-gray-600 text-sm mt-1">Connect your store with other platforms</p>
+                        </div>
+                        
+                        <div class="p-6">
+                            <!-- Shopify Integration -->
+                            <div class="border rounded-lg mb-6">
+                                <div class="p-4 flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <img src="https://cdn.shopify.com/assets/images/logos/shopify-bag.png" alt="Shopify" class="w-10 h-10 object-contain mr-4">
+                                        <div>
+                                            <h3 class="font-medium">Shopify</h3>
+                                            <p class="text-gray-500 text-sm">Sync your inventory and products</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <span class="bg-green-100 text-green-700 text-xs px-2 py-1 rounded-full mr-4">Connected</span>
+                                        <button class="text-red-600 hover:text-red-800">Disconnect</button>
+                                    </div>
+                                </div>
+                                <div class="px-4 py-3 bg-gray-50 border-t text-sm text-gray-600">
+                                    Last synced: Today at 9:42 AM • Auto-sync: Enabled
+                                </div>
+                            </div>
+                            
+                            <!-- Square Integration -->
+                            <div class="border rounded-lg mb-6">
+                                <div class="p-4 flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <img src="https://images.unsplash.com/photo-1613488231023-11042733aa1a?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80" alt="Square" class="w-10 h-10 object-contain mr-4">
+                                        <div>
+                                            <h3 class="font-medium">Square</h3>
+                                            <p class="text-gray-500 text-sm">Sync your inventory and sales data</p>
+                                        </div>
+                                    </div>
+                                    <button class="btn-primary">Connect</button>
+                                </div>
+                            </div>
+                            
+                            <!-- Instagram Integration -->
+                            <div class="border rounded-lg mb-6">
+                                <div class="p-4 flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <i class="fab fa-instagram fa-2x text-purple-600 mr-4"></i>
+                                        <div>
+                                            <h3 class="font-medium">Instagram</h3>
+                                            <p class="text-gray-500 text-sm">Show your Instagram feed on your profile</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <span class="bg-green-100 text-green-700 text-xs px-2 py-1 rounded-full mr-4">Connected</span>
+                                        <button class="text-red-600 hover:text-red-800">Disconnect</button>
+                                    </div>
+                                </div>
+                                <div class="px-4 py-3 bg-gray-50 border-t text-sm text-gray-600">
+                                    Connected to: @sarahs_boutique
+                                </div>
+                            </div>
+                            
+                            <!-- More integrations -->
+                            <button class="w-full py-3 border border-dashed border-gray-300 rounded-lg text-gray-500 hover:text-gray-700 hover:border-gray-400 flex items-center justify-center">
+                                <i class="fas fa-plus-circle mr-2"></i> Browse More Integrations
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Notifications -->
+                    <div id="notifications" class="bg-white rounded-lg shadow">
+                        <div class="p-6 border-b border-gray-200">
+                            <h2 class="text-xl font-bold text-gray-800">Notification Preferences</h2>
+                            <p class="text-gray-600 text-sm mt-1">Manage how you receive notifications</p>
+                        </div>
+                        
+                        <div class="p-6">
+                            <form>
+                                <div class="divide-y">
+                                    <!-- Messages notifications -->
+                                    <div class="py-4">
+                                        <div class="flex items-start justify-between">
+                                            <div class="flex-1">
+                                                <h3 class="font-medium">Messages</h3>
+                                                <p class="text-gray-500 text-sm mt-1">Get notified when you receive a message from a designer or partner</p>
+                                            </div>
+                                            <div class="flex items-center">
+                                                <div class="mr-4">
+                                                    <label class="inline-flex items-center">
+                                                        <input type="checkbox" class="form-checkbox h-4 w-4 text-blue-600" checked>
+                                                        <span class="ml-2 text-sm text-gray-700">Email</span>
+                                                    </label>
+                                                </div>
+                                                <div>
+                                                    <label class="inline-flex items-center">
+                                                        <input type="checkbox" class="form-checkbox h-4 w-4 text-blue-600" checked>
+                                                        <span class="ml-2 text-sm text-gray-700">Push</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- New connection notifications -->
+                                    <div class="py-4">
+                                        <div class="flex items-start justify-between">
+                                            <div class="flex-1">
+                                                <h3 class="font-medium">New Connections</h3>
+                                                <p class="text-gray-500 text-sm mt-1">Get notified when a designer requests to connect with you</p>
+                                            </div>
+                                            <div class="flex items-center">
+                                                <div class="mr-4">
+                                                    <label class="inline-flex items-center">
+                                                        <input type="checkbox" class="form-checkbox h-4 w-4 text-blue-600" checked>
+                                                        <span class="ml-2 text-sm text-gray-700">Email</span>
+                                                    </label>
+                                                </div>
+                                                <div>
+                                                    <label class="inline-flex items-center">
+                                                        <input type="checkbox" class="form-checkbox h-4 w-4 text-blue-600" checked>
+                                                        <span class="ml-2 text-sm text-gray-700">Push</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Trending alerts -->
+                                    <div class="py-4">
+                                        <div class="flex items-start justify-between">
+                                            <div class="flex-1">
+                                                <h3 class="font-medium">Trend Alerts</h3>
+                                                <p class="text-gray-500 text-sm mt-1">Receive alerts about emerging trends in your target market</p>
+                                            </div>
+                                            <div class="flex items-center">
+                                                <div class="mr-4">
+                                                    <label class="inline-flex items-center">
+                                                        <input type="checkbox" class="form-checkbox h-4 w-4 text-blue-600" checked>
+                                                        <span class="ml-2 text-sm text-gray-700">Email</span>
+                                                    </label>
+                                                </div>
+                                                <div>
+                                                    <label class="inline-flex items-center">
+                                                        <input type="checkbox" class="form-checkbox h-4 w-4 text-blue-600">
+                                                        <span class="ml-2 text-sm text-gray-700">Push</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Marketing communications -->
+                                    <div class="py-4">
+                                        <div class="flex items-start justify-between">
+                                            <div class="flex-1">
+                                                <h3 class="font-medium">Marketing Communications</h3>
+                                                <p class="text-gray-500 text-sm mt-1">Receive updates about new features, events, and opportunities</p>
+                                            </div>
+                                            <div class="flex items-center">
+                                                <div class="mr-4">
+                                                    <label class="inline-flex items-center">
+                                                        <input type="checkbox" class="form-checkbox h-4 w-4 text-blue-600">
+                                                        <span class="ml-2 text-sm text-gray-700">Email</span>
+                                                    </label>
+                                                </div>
+                                                <div>
+                                                    <label class="inline-flex items-center">
+                                                        <input type="checkbox" class="form-checkbox h-4 w-4 text-blue-600">
+                                                        <span class="ml-2 text-sm text-gray-700">Push</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="mt-6 flex justify-end">
+                                    <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                                        Save Preferences
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 

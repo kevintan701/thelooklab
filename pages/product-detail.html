@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LookLab - Product Detail</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        /* Page-specific styles for scrolling */
+        html, body {
+            height: auto !important;
+            min-height: 100%;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            overflow-y: auto !important;
+            overflow-x: hidden;
+        }
+        
+        .page-container {
+            min-height: 100%;
+            width: 100%;
+            overflow-y: auto;
+        }
+        
+        /* Custom scrollbar for this page */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background-color: rgba(155, 155, 155, 0.5);
+            border-radius: 20px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background-color: rgba(155, 155, 155, 0.7);
+        }
+        
+        /* Product Gallery Thumbnail Styling */
+        .product-gallery-thumbnail {
+            border: 2px solid transparent;
+            transition: all 0.2s ease-in-out;
+            opacity: 0.7;
+            cursor: pointer;
+        }
+        
+        .product-gallery-thumbnail:hover {
+            opacity: 1;
+            transform: translateY(-2px);
+        }
+        
+        .product-gallery-thumbnail.active {
+            border-color: #6366f1;
+            opacity: 1;
+        }
+        
+        /* Color Options */
+        .color-option {
+            width: 2rem;
+            height: 2rem;
+            border-radius: 50%;
+            cursor: pointer;
+            position: relative;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            transition: all 0.2s ease;
+        }
+        
+        .color-option:hover {
+            transform: scale(1.1);
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+        }
+        
+        .color-option.selected {
+            box-shadow: 0 0 0 2px white, 0 0 0 4px #6366f1;
+        }
+        
+        /* Size Options */
+        .size-option {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            border: 1px solid #e5e7eb;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: center;
+        }
+        
+        .size-option:hover {
+            border-color: #6366f1;
+            box-shadow: 0 2px 4px rgba(99, 102, 241, 0.1);
+        }
+        
+        .size-option.out-of-stock {
+            opacity: 0.5;
+            cursor: not-allowed;
+            background-color: #f3f4f6;
+        }
+        
+        /* Premium button styles */
+        .btn-premium {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white;
+            border-radius: 0.5rem; 
+            transition: all 0.3s ease;
+            font-weight: 500;
+            box-shadow: 0 4px 10px rgba(99, 102, 241, 0.2);
+            border: none;
+        }
+        
+        .btn-premium:hover {
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(99, 102, 241, 0.3);
+        }
+        
+        .btn-premium:active {
+            transform: translateY(1px);
+            box-shadow: 0 2px 5px rgba(99, 102, 241, 0.2);
+        }
+        
+        /* Added fixed aspect ratio styles for product gallery */
+        .aspect-ratio-box {
+            display: block;
+            position: relative;
+            height: 0;
+            width: 100%;
+        }
+        
+        /* Main image container specific styles */
+        .main-image-container {
+            min-height: 400px;
+        }
+    </style>
+</head>
+<body class="bg-white h-screen overflow-y-auto">
+    <div class="container mx-auto px-4 py-6">
+        <!-- Breadcrumb -->
+        <div class="mb-4">
+            <nav class="flex" aria-label="Breadcrumb">
+                <ol class="inline-flex items-center space-x-1 md:space-x-2 text-xs">
+                    <li class="inline-flex items-center">
+                        <a href="home.html" class="text-gray-500 hover:text-gray-700">
+                            <i class="fas fa-home mr-1"></i>Home
+                        </a>
+                    </li>
+                    <li>
+                        <div class="flex items-center">
+                            <i class="fas fa-chevron-right text-gray-400 text-xs mx-1"></i>
+                            <a href="discovery.html" class="text-gray-500 hover:text-gray-700">
+                                Discover
+                            </a>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="flex items-center">
+                            <i class="fas fa-chevron-right text-gray-400 text-xs mx-1"></i>
+                            <a href="discovery.html?tab=products" class="text-gray-500 hover:text-gray-700">
+                                Products
+                            </a>
+                        </div>
+                    </li>
+                    <li aria-current="page">
+                        <div class="flex items-center">
+                            <i class="fas fa-chevron-right text-gray-400 text-xs mx-1"></i>
+                            <span class="text-gray-800 font-medium">Minimal Structured Blazer</span>
+                        </div>
+                    </li>
+                </ol>
+            </nav>
+        </div>
+        
+        <!-- Product Detail Section -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+            <!-- Left Column - Product Gallery -->
+            <div class="space-y-3">
+                <!-- Main Image -->
+                <div class="bg-gray-50 rounded-xl overflow-hidden relative group">
+                    <div class="aspect-ratio-box relative main-image-container" style="padding-bottom: 100%;">
+                        <img id="main-image" src="https://images.unsplash.com/photo-1591047139829-d91aecb6caea?ixlib=rb-1.2.1&auto=format&fit=crop&w=900&q=80" 
+                             alt="Minimal Structured Blazer" class="absolute inset-0 w-full h-full object-contain">
+                        <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/10">
+                            <button class="bg-white p-3 rounded-full shadow-md" aria-label="Zoom image">
+                                <i class="fas fa-search-plus text-gray-700"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Thumbnail Gallery -->
+                <div class="grid grid-cols-5 gap-2">
+                    <div class="product-gallery-thumbnail active rounded-lg overflow-hidden aspect-ratio-box relative" style="padding-bottom: 100%;">
+                        <img src="https://images.unsplash.com/photo-1591047139829-d91aecb6caea?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=80" 
+                             alt="Front view" class="absolute inset-0 w-full h-full object-cover cursor-pointer" 
+                             onclick="updateMainImage(this.src)">
+                    </div>
+                    <div class="product-gallery-thumbnail rounded-lg overflow-hidden aspect-ratio-box relative" style="padding-bottom: 100%;">
+                        <img src="https://images.unsplash.com/photo-1608234808654-2a8875faa7fd?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=80" 
+                             alt="Side view" class="absolute inset-0 w-full h-full object-cover cursor-pointer" 
+                             onclick="updateMainImage(this.src)">
+                    </div>
+                    <div class="product-gallery-thumbnail rounded-lg overflow-hidden aspect-ratio-box relative" style="padding-bottom: 100%;">
+                        <img src="https://images.unsplash.com/photo-1598522325074-042db73aa4e6?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=80" 
+                             alt="Back view" class="absolute inset-0 w-full h-full object-cover cursor-pointer" 
+                             onclick="updateMainImage(this.src)">
+                    </div>
+                    <div class="product-gallery-thumbnail rounded-lg overflow-hidden aspect-ratio-box relative" style="padding-bottom: 100%;">
+                        <img src="https://images.unsplash.com/photo-1593030761757-71fae45fa0e7?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=80" 
+                             alt="Detail view" class="absolute inset-0 w-full h-full object-cover cursor-pointer" 
+                             onclick="updateMainImage(this.src)">
+                    </div>
+                    <div class="product-gallery-thumbnail rounded-lg overflow-hidden aspect-ratio-box relative" style="padding-bottom: 100%;">
+                        <img src="https://images.unsplash.com/photo-1611485988300-b7530defb8e2?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=80" 
+                             alt="Worn view" class="absolute inset-0 w-full h-full object-cover cursor-pointer" 
+                             onclick="updateMainImage(this.src)">
+                    </div>
+                </div>
+                
+                <!-- Material Swatches -->
+                <div class="bg-gray-50 p-5 rounded-xl">
+                    <h3 class="text-sm font-semibold text-gray-700 uppercase mb-4">Material Swatches</h3>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="flex items-center">
+                            <div class="w-14 h-14 bg-[#E8DACB] rounded-lg border border-gray-200 mr-3"></div>
+                            <div>
+                                <p class="font-medium text-sm">Primary Fabric</p>
+                                <p class="text-xs text-gray-500">Linen Blend</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-14 h-14 bg-[#43464B] rounded-lg border border-gray-200 mr-3"></div>
+                            <div>
+                                <p class="font-medium text-sm">Lining</p>
+                                <p class="text-xs text-gray-500">Polyester</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Right Column - Product Details -->
+            <div>
+                <div class="flex items-center mb-2">
+                    <a href="designer-profile.html?id=elena" class="text-primary-600 text-sm hover:underline">Elena Rodriguez</a>
+                    <span class="mx-2 text-gray-400">|</span>
+                    <div class="tag tag-accent text-xs">
+                        <i class="fas fa-certificate mr-1"></i> Verified Designer
+                    </div>
+                    <span class="mx-2 text-gray-400">|</span>
+                    <div class="flex text-yellow-400 text-xs">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                        <span class="text-gray-500 ml-1">(24 reviews)</span>
+                    </div>
+                </div>
+                
+                <h1 class="text-3xl font-bold text-gray-900 mb-2">Minimal Structured Blazer</h1>
+                
+                <!-- Wholesale Pricing -->
+                <div class="bg-gray-50 p-4 rounded-xl mb-6">
+                    <div class="flex justify-between items-center mb-2">
+                        <h2 class="font-semibold text-gray-900">Wholesale Pricing</h2>
+                        <span class="tag tag-primary text-xs">
+                            <i class="fas fa-tag mr-1"></i> B2B Only
+                        </span>
+                    </div>
+                    <div class="grid grid-cols-3 gap-3 mb-2">
+                        <div class="bg-white p-3 rounded-lg border border-gray-200 text-center">
+                            <p class="text-xs text-gray-500">1-9 Units</p>
+                            <p class="text-lg font-bold text-gray-900">$65.00</p>
+                        </div>
+                        <div class="bg-white p-3 rounded-lg border border-gray-200 text-center">
+                            <p class="text-xs text-gray-500">10-49 Units</p>
+                            <p class="text-lg font-bold text-gray-900">$59.50</p>
+                        </div>
+                        <div class="bg-white p-3 rounded-lg border border-gray-200 text-center">
+                            <p class="text-xs text-gray-500">50+ Units</p>
+                            <p class="text-lg font-bold text-gray-900">$52.00</p>
+                        </div>
+                    </div>
+                    <p class="text-xs text-gray-500">MSRP: $129.99 | Margin: 50-60%</p>
+                </div>
+                
+                <div class="mb-6">
+                    <p class="text-gray-600">A timeless blazer with a clean, structured silhouette. Made from premium linen blend fabric with a touch of stretch for comfort. Perfect for both casual and formal occasions.</p>
+                </div>
+                
+                <!-- Sales Performance -->
+                <div class="mb-6 bg-blue-50 p-4 rounded-xl">
+                    <h3 class="text-sm font-semibold text-blue-800 uppercase mb-3">Performance Metrics</h3>
+                    <div class="grid grid-cols-3 gap-4">
+                        <div class="text-center">
+                            <p class="text-2xl font-bold text-blue-700">98%</p>
+                            <p class="text-xs text-gray-600">Sell-through Rate</p>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-2xl font-bold text-blue-700">4.8/5</p>
+                            <p class="text-xs text-gray-600">Customer Rating</p>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-2xl font-bold text-blue-700">3.2%</p>
+                            <p class="text-xs text-gray-600">Return Rate</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Color Options -->
+                <div class="mb-6">
+                    <h3 class="text-sm text-gray-600 uppercase mb-3">Color: <span class="text-gray-900 normal-case" id="selected-color">Beige</span></h3>
+                    <div class="flex space-x-3">
+                        <div class="color-option selected" style="background-color: #E8DACB;" data-color="Beige" onclick="selectColor(this)"></div>
+                        <div class="color-option" style="background-color: #25282A;" data-color="Black" onclick="selectColor(this)"></div>
+                        <div class="color-option" style="background-color: #6A7F71;" data-color="Sage Green" onclick="selectColor(this)"></div>
+                        <div class="color-option" style="background-color: #8C7A6B;" data-color="Taupe" onclick="selectColor(this)"></div>
+                    </div>
+                </div>
+                
+                <!-- Size Options -->
+                <div class="mb-6">
+                    <div class="flex justify-between mb-3">
+                        <h3 class="text-sm text-gray-600 uppercase">Size Availability</h3>
+                        <button class="text-sm text-blue-600 hover:underline">Size Guide</button>
+                    </div>
+                    <div class="grid grid-cols-5 gap-2">
+                        <div class="size-option bg-white">
+                            <span>XS</span>
+                            <span class="block text-xs text-gray-500">72 units</span>
+                        </div>
+                        <div class="size-option bg-white">
+                            <span>S</span>
+                            <span class="block text-xs text-gray-500">64 units</span>
+                        </div>
+                        <div class="size-option bg-white">
+                            <span>M</span>
+                            <span class="block text-xs text-gray-500">58 units</span>
+                        </div>
+                        <div class="size-option out-of-stock bg-white">
+                            <span>L</span>
+                            <span class="block text-xs text-gray-500">0 units</span>
+                        </div>
+                        <div class="size-option bg-white">
+                            <span>XL</span>
+                            <span class="block text-xs text-gray-500">43 units</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Delivery Information -->
+                <div class="mb-6 bg-green-50 p-4 rounded-xl">
+                    <h3 class="text-sm font-semibold text-green-800 uppercase mb-3">Production & Delivery</h3>
+                    <div class="flex items-center mb-2">
+                        <i class="fas fa-calendar-check text-green-600 mr-2"></i>
+                        <span class="text-sm">Ready to ship within 2-3 business days</span>
+                    </div>
+                    <div class="flex items-center mb-2">
+                        <i class="fas fa-box text-green-600 mr-2"></i>
+                        <span class="text-sm">Bulk orders (50+ units): 2 weeks lead time</span>
+                    </div>
+                    <div class="flex items-center">
+                        <i class="fas fa-warehouse text-green-600 mr-2"></i>
+                        <span class="text-sm">Manufactured in Portugal</span>
+                    </div>
+                </div>
+                
+                <!-- Real-time Data -->
+                <div class="flex items-center mb-6 text-sm text-gray-500">
+                    <div class="mr-4 flex items-center">
+                        <i class="fas fa-eye mr-1"></i>
+                        <span>28 retailers viewing</span>
+                    </div>
+                    <div class="flex items-center">
+                        <i class="fas fa-shopping-bag mr-1"></i>
+                        <span>152 wholesale orders this month</span>
+                    </div>
+                </div>
+                
+                <!-- Action Buttons -->
+                <div class="flex space-x-3 mb-6">
+                    <button class="btn-premium flex-grow py-2 px-4 text-sm flex items-center justify-center rounded-lg">
+                        <i class="fas fa-file-contract mr-2"></i> Request Wholesale Quote
+                    </button>
+                    <button class="bg-green-600 hover:bg-green-700 text-white px-3 py-2 text-sm rounded-lg flex items-center justify-center">
+                        <i class="fas fa-comments mr-2"></i> Contact Designer
+                    </button>
+                    <button class="w-10 h-10 flex items-center justify-center rounded-full border border-gray-300" aria-label="Save to favorites">
+                        <i class="far fa-heart text-gray-600"></i>
+                    </button>
+                </div>
+                
+                <!-- Product Details Accordion -->
+                <div class="border-t border-gray-200 pt-6">
+                    <div class="mb-4">
+                        <button class="flex w-full justify-between items-center text-left focus:outline-none" onclick="toggleAccordion('details')">
+                            <span class="text-sm font-medium text-gray-900">Product Specifications</span>
+                            <i class="fas fa-chevron-down text-gray-500 transition-transform" id="details-icon"></i>
+                        </button>
+                        <div class="mt-2 hidden" id="details-content">
+                            <ul class="text-sm text-gray-600 space-y-2 pl-4">
+                                <li>55% Linen, 43% Cotton, 2% Elastane</li>
+                                <li>Fully lined interior</li>
+                                <li>Two front pockets</li>
+                                <li>One interior pocket</li>
+                                <li>Dry clean only</li>
+                                <li>Model is 5'9" and wearing size S</li>
+                                <li>SKU: ER-MSB-2023</li>
+                                <li>Barcode: 8574930284751</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="py-4 border-t border-gray-200">
+                        <button class="flex w-full justify-between items-center text-left focus:outline-none" onclick="toggleAccordion('shipping')">
+                            <span class="text-sm font-medium text-gray-900">Shipping & Returns</span>
+                            <i class="fas fa-chevron-down text-gray-500 transition-transform" id="shipping-icon"></i>
+                        </button>
+                        <div class="mt-2 hidden" id="shipping-content">
+                            <p class="text-sm text-gray-600 mb-2">Wholesale orders ship from our warehouse in Milan, Italy.</p>
+                            <ul class="text-sm text-gray-600 space-y-2 pl-4">
+                                <li>Minimum order: 5 units</li>
+                                <li>Free shipping on orders over $1,000</li>
+                                <li>Standard delivery: 7-10 business days</li>
+                                <li>Express delivery available at additional cost</li>
+                                <li>Consignment terms available for qualified retailers</li>
+                                <li>30-day inspection period for quality assurance</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="py-4 border-t border-gray-200">
+                        <button class="flex w-full justify-between items-center text-left focus:outline-none" onclick="toggleAccordion('retailer')">
+                            <span class="text-sm font-medium text-gray-900">Retailer Support</span>
+                            <i class="fas fa-chevron-down text-gray-500 transition-transform" id="retailer-icon"></i>
+                        </button>
+                        <div class="mt-2 hidden" id="retailer-content">
+                            <p class="text-sm text-gray-600 mb-2">We provide the following support for our retail partners:</p>
+                            <ul class="text-sm text-gray-600 space-y-2 pl-4">
+                                <li>High-resolution product photography for your website and social media</li>
+                                <li>Digital lookbook and marketing materials</li>
+                                <li>Product knowledge training for your staff</li>
+                                <li>Co-branding opportunities</li>
+                                <li>Visual merchandising guidelines</li>
+                                <li>Dedicated account manager for orders over $5,000</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Wholesale Bundle Suggestions -->
+        <div class="mb-12">
+            <h2 class="text-xl font-bold text-gray-900 mb-2">Complete the Collection</h2>
+            <p class="text-gray-600 mb-6 text-sm">Recommended wholesale bundles for a coordinated display</p>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <!-- Related Product 1 -->
+                <div class="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1">
+                    <a href="product-detail.html?id=linen-pants" class="block">
+                        <div class="relative h-48 overflow-hidden rounded-t-lg">
+                            <img src="https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" 
+                                 alt="Wide Leg Linen Pants" class="w-full h-full object-cover transition-transform duration-700 hover:scale-105">
+                            <div class="absolute top-2 right-2">
+                                <span class="bg-gradient-to-r from-blue-500 to-blue-600 text-white text-xs px-2 py-1 rounded-full shadow-sm font-medium">
+                                    $45.00 Wholesale
+                                </span>
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-medium text-gray-900 text-sm">Wide Leg Linen Pants</h3>
+                            <p class="text-gray-500 text-xs mt-1">Elena Rodriguez</p>
+                            <div class="flex justify-between items-center mt-2">
+                                <span class="text-xs text-gray-500">MSRP: $89.99</span>
+                                <div class="px-2 py-1 bg-blue-50 text-blue-600 text-xs font-medium rounded">
+                                    56% Margin
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                
+                <!-- Related Product 2 -->
+                <div class="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1">
+                    <a href="product-detail.html?id=silk-blouse" class="block">
+                        <div class="relative h-48 overflow-hidden rounded-t-lg">
+                            <img src="https://images.unsplash.com/photo-1584273143981-41c073dfe8f8?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" 
+                                 alt="Silk Button-Up Blouse" class="w-full h-full object-cover transition-transform duration-700 hover:scale-105">
+                            <div class="absolute top-2 right-2">
+                                <span class="bg-gradient-to-r from-blue-500 to-blue-600 text-white text-xs px-2 py-1 rounded-full shadow-sm font-medium">
+                                    $50.00 Wholesale
+                                </span>
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-medium text-gray-900 text-sm">Silk Button-Up Blouse</h3>
+                            <p class="text-gray-500 text-xs mt-1">Elena Rodriguez</p>
+                            <div class="flex justify-between items-center mt-2">
+                                <span class="text-xs text-gray-500">MSRP: $110.00</span>
+                                <div class="px-2 py-1 bg-blue-50 text-blue-600 text-xs font-medium rounded">
+                                    55% Margin
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                
+                <!-- Related Product 3 -->
+                <div class="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1">
+                    <a href="product-detail.html?id=wool-coat" class="block">
+                        <div class="relative h-48 overflow-hidden rounded-t-lg">
+                            <img src="https://images.unsplash.com/photo-1539533018447-63fcce2678e3?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" 
+                                 alt="Wool Blend Coat" class="w-full h-full object-cover transition-transform duration-700 hover:scale-105">
+                            <div class="absolute top-2 right-2">
+                                <span class="bg-gradient-to-r from-blue-500 to-blue-600 text-white text-xs px-2 py-1 rounded-full shadow-sm font-medium">
+                                    $125.00 Wholesale
+                                </span>
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-medium text-gray-900 text-sm">Wool Blend Coat</h3>
+                            <p class="text-gray-500 text-xs mt-1">Elena Rodriguez</p>
+                            <div class="flex justify-between items-center mt-2">
+                                <span class="text-xs text-gray-500">MSRP: $249.99</span>
+                                <div class="px-2 py-1 bg-blue-50 text-blue-600 text-xs font-medium rounded">
+                                    50% Margin
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                
+                <!-- Related Product 4 -->
+                <div class="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1">
+                    <a href="product-detail.html?id=leather-boots" class="block">
+                        <div class="relative h-48 overflow-hidden rounded-t-lg">
+                            <img src="https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" 
+                                 alt="Leather Ankle Boots" class="w-full h-full object-cover transition-transform duration-700 hover:scale-105">
+                            <div class="absolute top-2 right-2">
+                                <span class="bg-gradient-to-r from-blue-500 to-blue-600 text-white text-xs px-2 py-1 rounded-full shadow-sm font-medium">
+                                    $89.99 Wholesale
+                                </span>
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-medium text-gray-900 text-sm">Leather Ankle Boots</h3>
+                            <p class="text-gray-500 text-xs mt-1">Marcus Chen</p>
+                            <div class="flex justify-between items-center mt-2">
+                                <span class="text-xs text-gray-500">MSRP: $179.99</span>
+                                <div class="px-2 py-1 bg-blue-50 text-blue-600 text-xs font-medium rounded">
+                                    50% Margin
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Retailers Who Stocked This -->
+        <div class="mb-16">
+            <h2 class="text-2xl font-bold text-gray-900 mb-3">Retailers Who Stocked This</h2>
+            <p class="text-gray-600 mb-6">Join these successful retailers who have partnered with Elena Rodriguez</p>
+            <div class="grid grid-cols-2 md:grid-cols-6 gap-6">
+                <div class="bg-gray-50 p-4 rounded-xl flex items-center justify-center h-24">
+                    <img src="https://placehold.co/200x80?text=LUXE+BOUTIQUE" alt="Luxe Boutique" class="max-h-12">
+                </div>
+                <div class="bg-gray-50 p-4 rounded-xl flex items-center justify-center h-24">
+                    <img src="https://placehold.co/200x80?text=URBAN+THREADS" alt="Urban Threads" class="max-h-12">
+                </div>
+                <div class="bg-gray-50 p-4 rounded-xl flex items-center justify-center h-24">
+                    <img src="https://placehold.co/200x80?text=MODERNO" alt="Moderno" class="max-h-12">
+                </div>
+                <div class="bg-gray-50 p-4 rounded-xl flex items-center justify-center h-24">
+                    <img src="https://placehold.co/200x80?text=ELITE+STYLE" alt="Elite Style" class="max-h-12">
+                </div>
+                <div class="bg-gray-50 p-4 rounded-xl flex items-center justify-center h-24">
+                    <img src="https://placehold.co/200x80?text=FASHION+FORWARD" alt="Fashion Forward" class="max-h-12">
+                </div>
+                <div class="bg-gray-50 p-4 rounded-xl flex items-center justify-center h-24">
+                    <img src="https://placehold.co/200x80?text=CHIC+COLLECTIONS" alt="Chic Collections" class="max-h-12">
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Function to update main image
+        function updateMainImage(src) {
+            // Keep the same size parameters but update the source
+            const newSrc = src.replace('w=200', 'w=900').replace('h=20', 'h=auto');
+            document.getElementById('main-image').src = newSrc;
+            
+            // Update active thumbnail
+            document.querySelectorAll('.product-gallery-thumbnail').forEach(thumb => {
+                thumb.classList.remove('active');
+            });
+            
+            // Find the parent element with the product-gallery-thumbnail class
+            let thumbnailElement = event.target;
+            while (!thumbnailElement.classList.contains('product-gallery-thumbnail') && thumbnailElement.parentElement) {
+                thumbnailElement = thumbnailElement.parentElement;
+            }
+            
+            if (thumbnailElement.classList.contains('product-gallery-thumbnail')) {
+                thumbnailElement.classList.add('active');
+            }
+        }
+        
+        // Function to select color
+        function selectColor(element) {
+            // Update selected indicator
+            document.querySelectorAll('.color-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            element.classList.add('selected');
+            
+            // Update text
+            document.getElementById('selected-color').textContent = element.getAttribute('data-color');
+        }
+        
+        // Function to toggle accordion sections
+        function toggleAccordion(id) {
+            const content = document.getElementById(`${id}-content`);
+            const icon = document.getElementById(`${id}-icon`);
+            
+            content.classList.toggle('hidden');
+            if (content.classList.contains('hidden')) {
+                icon.style.transform = 'rotate(0deg)';
+            } else {
+                icon.style.transform = 'rotate(180deg)';
+            }
+        }
+    </script>
+</body>
+</html> 

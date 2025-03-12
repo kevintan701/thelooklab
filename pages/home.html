@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LookLab - Home</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/styles.css">
+    <style>
+        /* Page-specific styles for scrolling */
+        html, body {
+            height: auto !important;
+            min-height: 100%;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            overflow-y: auto !important;
+            overflow-x: hidden;
+        }
+        
+        .page-container {
+            min-height: 100%;
+            width: 100%;
+            overflow-y: auto;
+        }
+        
+        /* Custom scrollbar for this page */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background-color: rgba(155, 155, 155, 0.5);
+            border-radius: 20px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background-color: rgba(155, 155, 155, 0.7);
+        }
+        
+        /* Premium search input for hero section */
+        .hero-search {
+            background: rgba(255, 255, 255, 0.3);
+            -webkit-backdrop-filter: blur(8px);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            color: white;
+            border-radius: 9999px;
+            padding: 0.6rem 1rem;
+            padding-right: 2.5rem;
+            width: 100%;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            font-size: 0.85rem;
+        }
+        
+        .hero-search::placeholder {
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .hero-search:focus {
+            background: rgba(255, 255, 255, 0.35);
+            box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.3);
+            outline: none;
+        }
+        
+        .search-icon {
+            position: absolute;
+            right: 0.8rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 overflow-y-auto">
+    <div class="page-container">
+        <!-- Hero section with welcome and stats -->
+        <div class="relative h-44 mb-4 overflow-hidden rounded-xl mx-4 mt-4 shadow-md">
+            <img src="https://images.unsplash.com/photo-1518838439236-2b73ceb4638a?q=80&w=2574&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
+                alt="Fashion background" class="w-full h-full object-cover filter brightness-75">
+            <div class="absolute inset-0 bg-gradient-to-r from-black/80 to-transparent flex items-center justify-between px-6">
+                <div class="text-white max-w-lg">
+                    <h1 class="headline text-2xl md:text-3xl font-bold mb-1 tracking-tight">Welcome, Sarah</h1>
+                    <p class="subheadline text-sm opacity-90 font-light">Your personalized fashion retail dashboard</p>
+                </div>
+                <div class="relative">
+                    <input type="text" placeholder="Search..." class="hero-search w-40 md:w-48">
+                    <i class="fas fa-search search-icon"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="container mx-auto px-4 pb-6">
+            <!-- Stats overview - visually enhanced -->
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
+                <div class="card p-3 hover-lift shadow-sm">
+                    <div class="flex flex-col items-center">
+                        <div class="w-10 h-10 rounded-full mb-2 gradient-bg-1 flex items-center justify-center text-white">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div class="stats-value text-xl md:text-2xl font-bold">$12,450</div>
+                        <div class="stats-label text-xs">Total Sales</div>
+                        <div class="stats-change positive text-xs py-1 px-2 mt-1">
+                            <i class="fas fa-arrow-up mr-1"></i>
+                            <span>18% increase</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card p-3 hover-lift shadow-sm">
+                    <div class="flex flex-col items-center">
+                        <div class="w-10 h-10 rounded-full mb-2 gradient-bg-2 flex items-center justify-center text-white">
+                            <i class="fas fa-box"></i>
+                        </div>
+                        <div class="stats-value text-xl md:text-2xl font-bold">342</div>
+                        <div class="stats-label text-xs">Active Items</div>
+                        <div class="stats-change positive text-xs py-1 px-2 mt-1">
+                            <i class="fas fa-arrow-up mr-1"></i>
+                            <span>5 new items</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card p-3 hover-lift shadow-sm">
+                    <div class="flex flex-col items-center">
+                        <div class="w-10 h-10 rounded-full mb-2 gradient-bg-3 flex items-center justify-center text-white">
+                            <i class="fas fa-user-tie"></i>
+                        </div>
+                        <div class="stats-value text-xl md:text-2xl font-bold">24</div>
+                        <div class="stats-label text-xs">Designer Connections</div>
+                        <div class="stats-change negative text-xs py-1 px-2 mt-1">
+                            <i class="fas fa-arrow-down mr-1"></i>
+                            <span>2 disconnected</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card p-3 hover-lift shadow-sm">
+                    <div class="flex flex-col items-center">
+                        <div class="w-10 h-10 rounded-full mb-2 bg-yellow-400 flex items-center justify-center text-white">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <div class="stats-value text-xl md:text-2xl font-bold">87</div>
+                        <div class="stats-label text-xs">Trend Score</div>
+                        <div class="stats-change positive text-xs py-1 px-2 mt-1">
+                            <i class="fas fa-trophy mr-1"></i>
+                            <span>Top 15% in industry</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main content sections -->
+            <div class="grid grid-cols-12 gap-4">
+                <!-- Visual trending products section -->
+                <div class="col-span-12 lg:col-span-8">
+                    <div class="card p-0 overflow-hidden mb-4 shadow-sm">
+                        <div class="p-4 flex justify-between items-center border-b border-gray-100">
+                            <h2 class="section-title text-lg font-bold text-gray-800 flex items-center">
+                                <i class="fas fa-fire text-accent-color mr-2"></i> Trending Products
+                            </h2>
+                            <button class="btn-primary text-xs font-medium py-1.5 px-3">
+                                View All
+                            </button>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-3">
+                            <!-- Product 1 -->
+                            <div class="image-hover-zoom relative group border-r border-gray-100">
+                                <img src="https://images.unsplash.com/photo-1434389677669-e08b4cac3105?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" 
+                                    alt="Summer Dress Collection" class="w-full h-56 object-cover">
+                                <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 to-transparent p-3 text-white transform transition-all duration-300 translate-y-0 opacity-100 overlay-text">
+                                    <h3 class="font-semibold text-base">Summer Dress Collection</h3>
+                                    <div class="flex justify-between items-center mt-1">
+                                        <span class="text-xs text-white/90 font-medium">Emma Designs</span>
+                                        <span class="text-sm font-bold">$89.99</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Product 2 -->
+                            <div class="image-hover-zoom relative group border-r border-gray-100">
+                                <img src="https://images.unsplash.com/photo-1560243563-062bfc001d68?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" 
+                                    alt="Minimalist Watch" class="w-full h-56 object-cover">
+                                <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 to-transparent p-3 text-white transform transition-all duration-300 translate-y-0 opacity-100 overlay-text">
+                                    <h3 class="font-semibold text-base">Minimalist Watch</h3>
+                                    <div class="flex justify-between items-center mt-1">
+                                        <span class="text-xs text-white/90 font-medium">Tempo</span>
+                                        <span class="text-sm font-bold">$129.00</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Product 3 -->
+                            <div class="image-hover-zoom relative group">
+                                <img src="https://images.unsplash.com/photo-1549298916-b41d501d3772?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" 
+                                    alt="Premium Sneakers" class="w-full h-56 object-cover">
+                                <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 to-transparent p-3 text-white transform transition-all duration-300 translate-y-0 opacity-100 overlay-text">
+                                    <h3 class="font-semibold text-base">Premium Sneakers</h3>
+                                    <div class="flex justify-between items-center mt-1">
+                                        <span class="text-xs text-white/90 font-medium">UrbanStep</span>
+                                        <span class="text-sm font-bold">$149.99</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- AI Recommendations - visually enhanced -->
+                    <div class="card p-4 overflow-hidden shadow-sm">
+                        <div class="flex justify-between items-center mb-4">
+                            <h2 class="section-title text-lg font-bold text-gray-800 flex items-center">
+                                <i class="fas fa-robot text-accent-color mr-2"></i> AI Insights
+                            </h2>
+                            <div class="tag tag-accent font-medium text-xs py-1 px-2">
+                                <i class="fas fa-robot mr-1"></i> AI Powered
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="insight-card bg-blue-50 hover-lift">
+                                <div class="insight-header bg-blue-500"></div>
+                                <div class="insight-body p-3">
+                                    <div class="flex items-start">
+                                        <div class="w-10 h-10 rounded-full gradient-bg-1 flex items-center justify-center text-white mr-3 flex-shrink-0">
+                                            <i class="fas fa-lightbulb"></i>
+                                        </div>
+                                        <div>
+                                            <h3 class="insight-title text-base">Inventory Alert</h3>
+                                            <p class="insight-text text-readable text-xs text-gray-600">Denim inventory is running low. Consider restocking sizes 4-8 before the weekend sales rush.</p>
+                                            <button class="btn-primary text-xs font-medium mt-2 py-1.5 px-3">
+                                                Take Action
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="insight-card bg-green-50 hover-lift">
+                                <div class="insight-header bg-green-500"></div>
+                                <div class="insight-body p-3">
+                                    <div class="flex items-start">
+                                        <div class="w-10 h-10 rounded-full gradient-bg-2 flex items-center justify-center text-white mr-3 flex-shrink-0">
+                                            <i class="fas fa-chart-pie"></i>
+                                        </div>
+                                        <div>
+                                            <h3 class="insight-title text-base">Trend Alert</h3>
+                                            <p class="insight-text text-readable text-xs text-gray-600">Sustainable fashion is trending in your region. Consider highlighting your eco-friendly products in your storefront.</p>
+                                            <button class="btn-primary text-xs font-medium mt-2 py-1.5 px-3">
+                                                Learn More
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Right sidebar - visual enhancement -->
+                <div class="col-span-12 lg:col-span-4">
+                    <!-- Designer spotlight -->
+                    <div class="card overflow-hidden mb-4 shadow-sm">
+                        <!-- Two-part design: top banner and profile section -->
+                        <div class="relative h-28">
+                            <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" 
+                                alt="Designer Background" class="w-full h-full object-cover">
+                            <!-- Gradient overlay for better text visibility -->
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/60 to-transparent"></div>
+                            <!-- Banner title positioned at the top corner -->
+                            <div class="absolute top-0 left-0 p-4 text-white">
+                                <h2 class="font-bold text-lg">Designer Spotlight</h2>
+                            </div>
+                        </div>
+                        
+                        <!-- Designer profile section -->
+                        <div class="px-4 pt-4 pb-4 flex flex-col items-center bg-white">
+                            <!-- Avatar positioned for better visibility -->
+                            <div class="relative -mt-12 mb-2">
+                                <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=80" 
+                                    alt="Elena Rodriguez" class="w-16 h-16 rounded-full object-cover border-3 border-white shadow-lg"
+                                    onerror="this.src='https://ui-avatars.com/api/?name=Elena+Rodriguez&background=4F46E5&color=fff';">
+                            </div>
+                            
+                            <!-- Designer info with proper spacing -->
+                            <h3 class="font-bold text-base text-gray-800">Elena Rodriguez</h3>
+                            <p class="text-gray-600 text-xs font-medium mb-3">Modern Minimalist | New York, NY</p>
+                            
+                            <!-- Action buttons with improved spacing -->
+                            <div class="flex space-x-2 w-full">
+                                <a href="messages.html?contact=elena" class="flex-1 py-2 text-center font-medium rounded-lg bg-white border border-gray-300 text-gray-700 hover:bg-gray-100 transition-colors text-xs">
+                                    <i class="fas fa-comment mr-1"></i> Message
+                                </a>
+                                <a href="designer-profile.html" class="btn-primary text-xs flex-1 py-2 text-center font-medium rounded-lg">
+                                    <i class="fas fa-user mr-1"></i> Profile
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Upcoming events - visual card -->
+                    <div class="card p-0 overflow-hidden shadow-sm">
+                        <div class="p-4 border-b border-gray-100">
+                            <h2 class="section-title text-lg font-bold text-gray-800 flex items-center">
+                                <i class="fas fa-calendar-alt text-accent-color mr-2"></i> Upcoming Events
+                            </h2>
+                        </div>
+                        
+                        <div class="divide-y divide-gray-100">
+                            <div class="p-3 hover:bg-gray-50 transition-colors cursor-pointer">
+                                <div class="flex items-center">
+                                    <div class="event-date bg-red-50 p-2">
+                                        <span class="event-date-day text-red-600 text-base">12</span>
+                                        <span class="event-date-month text-red-500 text-xs">JUN</span>
+                                    </div>
+                                    <div class="ml-3">
+                                        <h3 class="event-title text-sm">Summer Fashion Showcase</h3>
+                                        <p class="event-location text-xs text-gray-500">
+                                            <i class="fas fa-map-marker-alt mr-1"></i> New York Fashion District
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="p-3 hover:bg-gray-50 transition-colors cursor-pointer">
+                                <div class="flex items-center">
+                                    <div class="event-date bg-blue-50 p-2">
+                                        <span class="event-date-day text-blue-600 text-base">18</span>
+                                        <span class="event-date-month text-blue-500 text-xs">JUN</span>
+                                    </div>
+                                    <div class="ml-3">
+                                        <h3 class="event-title text-sm">Sustainable Fashion Webinar</h3>
+                                        <p class="event-location text-xs text-gray-500">
+                                            <i class="fas fa-video mr-1"></i> Online Event
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="p-3 hover:bg-gray-50 transition-colors cursor-pointer">
+                                <div class="flex items-center">
+                                    <div class="event-date bg-purple-50 p-2">
+                                        <span class="event-date-day text-purple-600 text-base">25</span>
+                                        <span class="event-date-month text-purple-500 text-xs">JUN</span>
+                                    </div>
+                                    <div class="ml-3">
+                                        <h3 class="event-title text-sm">Retailer Networking Meetup</h3>
+                                        <p class="event-location text-xs text-gray-500">
+                                            <i class="fas fa-map-marker-alt mr-1"></i> The Grand Hotel
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="p-3">
+                                <button class="w-full py-2 text-xs font-medium text-blue-600 border border-blue-600 rounded-lg hover:bg-blue-50 transition-colors">
+                                    View All Events
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 

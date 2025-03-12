@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LookLab - Inventory</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/styles.css">
+    <style>
+        /* Full-page layout styles */
+        html, body {
+            height: 100% !important;
+            width: 100% !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            background-color: #f9fafb;
+            overflow-x: hidden !important;
+        }
+        
+        .page-container {
+            height: 100%;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+        
+        .content-wrapper {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1.5rem;
+        }
+        
+        /* Responsive table styles */
+        .inventory-table-container {
+            width: 100%;
+            overflow-x: auto;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            background-color: white;
+            background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.8), white);
+        }
+        
+        /* Improve table appearance */
+        .inventory-table {
+            min-width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+        
+        .inventory-table th {
+            position: sticky;
+            top: 0;
+            background-color: #f9fafb;
+            background-image: linear-gradient(to bottom, #f9fafb, #f3f4f6);
+            z-index: 10;
+            padding: 0.75rem 1rem;
+            font-weight: 600;
+            letter-spacing: 0.025em;
+            color: #4b5563;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            border-bottom: 2px solid #e5e7eb;
+        }
+        
+        .inventory-table td {
+            padding: 1rem;
+            vertical-align: middle;
+            border-bottom: 1px solid rgba(229, 231, 235, 0.5);
+        }
+        
+        .inventory-table tr:hover {
+            background-color: #f3f4f6;
+            box-shadow: inset 0 0 0 1px rgba(209, 213, 219, 0.3);
+            transition: all 0.2s ease;
+        }
+        
+        /* Status badges */
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .status-in-stock {
+            background-color: rgba(16, 185, 129, 0.1);
+            color: rgb(6, 95, 70);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+        
+        .status-low-stock {
+            background-color: rgba(245, 158, 11, 0.1);
+            color: rgb(146, 64, 14);
+            border: 1px solid rgba(245, 158, 11, 0.2);
+        }
+        
+        .status-out-of-stock {
+            background-color: rgba(239, 68, 68, 0.1);
+            color: rgb(153, 27, 27);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+        
+        /* Custom gradient buttons */
+        .btn-primary {
+            background: linear-gradient(135deg, #3b82f6, #6366f1);
+            color: white;
+            padding: 0.5rem 1.25rem;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px -1px rgba(99, 102, 241, 0.2);
+            border: none;
+            display: inline-flex;
+            align-items: center;
+        }
+        
+        .btn-primary:hover {
+            box-shadow: 0 8px 15px -3px rgba(99, 102, 241, 0.4);
+            transform: translateY(-1px);
+            background: linear-gradient(135deg, #2563eb, #4f46e5);
+        }
+        
+        .btn-outline {
+            border: 1px solid #d1d5db;
+            color: #4b5563;
+            padding: 0.5rem 1.25rem;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            background-color: white;
+        }
+        
+        .btn-outline:hover {
+            border-color: #9ca3af;
+            background-color: #f9fafb;
+            color: #1f2937;
+        }
+        
+        /* Enhanced card styles */
+        .card {
+            background-color: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
+        
+        .card:hover {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            transform: translateY(-2px);
+        }
+        
+        /* Stats card styles */
+        .stat-card {
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        
+        .stat-card:hover {
+            background-image: linear-gradient(to bottom right, rgba(249, 250, 251, 0.8), white);
+        }
+        
+        .stat-value {
+            font-size: 1.875rem;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin-bottom: 1rem;
+        }
+        
+        .stat-change {
+            font-size: 0.875rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+        }
+        
+        .stat-change.positive {
+            color: #10b981;
+        }
+        
+        .stat-change.negative {
+            color: #ef4444;
+        }
+        
+        /* Filter buttons */
+        .filter-btn {
+            border: 1px solid #e5e7eb;
+            background-color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            margin-right: 0.5rem;
+        }
+        
+        .filter-btn:hover {
+            border-color: #d1d5db;
+            background-color: #f9fafb;
+        }
+        
+        .filter-btn.active {
+            background-color: #f3f4f6;
+            border-color: #9ca3af;
+            color: #1f2937;
+        }
+        
+        /* Search input */
+        .search-input {
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            padding: 0.5rem 1rem;
+            padding-left: 2.5rem;
+            width: 100%;
+            max-width: 300px;
+            font-size: 0.875rem;
+            background-color: white;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%239CA3AF'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z'%3E%3C/path%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: 0.75rem center;
+            background-size: 1rem;
+        }
+        
+        .search-input:focus {
+            outline: none;
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+        }
+        
+        /* Custom scrollbar */
+        .content-wrapper::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .content-wrapper::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        
+        .content-wrapper::-webkit-scrollbar-thumb {
+            background-color: rgba(203, 213, 225, 0.8);
+            border-radius: 20px;
+        }
+        
+        /* Enhanced stats card styling */
+        .stat-card-icon {
+            width: 3rem;
+            height: 3rem;
+            border-radius: 9999px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        
+        .card:hover .stat-card-icon {
+            transform: scale(1.1);
+        }
+        
+        /* Action buttons */
+        .action-btn {
+            padding: 0.5rem;
+            border-radius: 0.375rem;
+            transition: all 0.2s ease;
+        }
+        
+        .action-btn:hover {
+            background-color: #f3f4f6;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="page-container">
+        <div class="content-wrapper">
+            <!-- Header section -->
+            <div class="flex justify-between items-center mb-8">
+                <div>
+                    <h1 class="text-3xl font-bold text-gray-800">Inventory Management</h1>
+                    <p class="text-gray-600 mt-1">View and manage your store inventory</p>
+                </div>
+                <div class="flex space-x-4 items-center">
+                    <div class="bg-blue-100 px-4 py-2 rounded-lg flex items-center text-blue-700">
+                        <i class="fas fa-link mr-2"></i>
+                        <span class="font-medium">Connected to Shopify</span>
+                    </div>
+                    <button class="btn-primary">
+                        <i class="fas fa-sync-alt mr-2"></i> Sync Inventory
+                    </button>
+                </div>
+            </div>
+
+            <!-- Statistics cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 mb-8">
+                <div class="card p-6">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-gray-500 text-sm font-medium">Total Products</p>
+                            <h3 class="text-2xl font-bold mt-1 text-gray-900">342</h3>
+                            <p class="text-green-500 text-sm mt-1 font-medium">
+                                <i class="fas fa-arrow-up mr-1"></i> 5 new this week
+                            </p>
+                        </div>
+                        <div class="stat-card-icon bg-indigo-100 text-indigo-600">
+                            <i class="fas fa-tshirt"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card p-6">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-gray-500 text-sm font-medium">Low Stock</p>
+                            <h3 class="text-2xl font-bold mt-1 text-gray-900">24</h3>
+                            <p class="text-red-500 text-sm mt-1 font-medium">
+                                <i class="fas fa-arrow-up mr-1"></i> 8 more than last week
+                            </p>
+                        </div>
+                        <div class="stat-card-icon bg-amber-100 text-amber-600">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card p-6">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-gray-500 text-sm font-medium">Out of Stock</p>
+                            <h3 class="text-2xl font-bold mt-1 text-gray-900">12</h3>
+                            <p class="text-gray-500 text-sm mt-1 font-medium">
+                                <i class="fas fa-equals mr-1"></i> No change
+                            </p>
+                        </div>
+                        <div class="stat-card-icon bg-red-100 text-red-600">
+                            <i class="fas fa-times-circle"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card p-6">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-gray-500 text-sm font-medium">Total Value</p>
+                            <h3 class="text-2xl font-bold mt-1 text-gray-900">$84,249</h3>
+                            <p class="text-green-500 text-sm mt-1 font-medium">
+                                <i class="fas fa-arrow-up mr-1"></i> $1,240 this month
+                            </p>
+                        </div>
+                        <div class="stat-card-icon bg-emerald-100 text-emerald-600">
+                            <i class="fas fa-dollar-sign"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Filter and search section -->
+            <div class="flex flex-col md:flex-row md:justify-between md:items-center mb-6 gap-4">
+                <div class="flex flex-wrap gap-2">
+                    <button class="filter-btn px-4 py-2 bg-gray-200 text-gray-700 rounded-lg font-medium text-sm hover:bg-gray-300 transition active">
+                        All Items
+                    </button>
+                    <button class="filter-btn px-4 py-2 bg-white text-gray-700 rounded-lg font-medium text-sm hover:bg-gray-100 transition border border-gray-300">
+                        Low Stock
+                    </button>
+                    <button class="filter-btn px-4 py-2 bg-white text-gray-700 rounded-lg font-medium text-sm hover:bg-gray-100 transition border border-gray-300">
+                        Out of Stock
+                    </button>
+                    <button class="filter-btn px-4 py-2 bg-white text-gray-700 rounded-lg font-medium text-sm hover:bg-gray-100 transition border border-gray-300">
+                        <i class="fas fa-filter mr-1"></i> More Filters
+                    </button>
+                </div>
+                
+                <div class="relative">
+                    <input type="text" placeholder="Search inventory..." class="input-field pr-10 py-2 w-full md:w-64 rounded-lg border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                    <i class="fas fa-search absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                </div>
+            </div>
+
+            <!-- Inventory table -->
+            <div class="card overflow-hidden mb-8 inventory-table-container">
+                <table class="inventory-table divide-y divide-gray-200 w-full">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Product
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Category
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Stock
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Price
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Status
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Actions
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        <!-- Row 1 -->
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <div class="flex-shrink-0 h-12 w-12">
+                                        <img class="h-12 w-12 rounded-md object-cover shadow-sm" src="https://images.unsplash.com/photo-1576566588028-4147f3842f27?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80" alt="Summer dress">
+                                    </div>
+                                    <div class="ml-4">
+                                        <div class="text-sm font-medium text-gray-900">Floral Summer Dress</div>
+                                        <div class="text-sm text-gray-500">SKU: SD-2023-001</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900">Women's Dresses</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900 font-medium">28</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900 font-medium">$89.99</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="status-badge status-in-stock">
+                                    In Stock
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                <button class="action-btn text-blue-600 hover:text-blue-900 mr-3" title="Edit product">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="action-btn text-red-600 hover:text-red-900" title="Delete product">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        
+                        <!-- Row 2 -->
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <div class="flex-shrink-0 h-12 w-12">
+                                        <img class="h-12 w-12 rounded-md object-cover shadow-sm" src="https://images.unsplash.com/photo-1598033129183-c4f50c736f10?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80" alt="Denim jacket">
+                                    </div>
+                                    <div class="ml-4">
+                                        <div class="text-sm font-medium text-gray-900">Vintage Denim Jacket</div>
+                                        <div class="text-sm text-gray-500">SKU: DJ-2023-042</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900">Outerwear</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900 font-medium">5</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900 font-medium">$129.99</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="status-badge status-low-stock">
+                                    Low Stock
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                <button class="action-btn text-blue-600 hover:text-blue-900 mr-3" title="Edit product">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="action-btn text-red-600 hover:text-red-900" title="Delete product">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        
+                        <!-- Row 3 -->
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <div class="flex-shrink-0 h-12 w-12">
+                                        <img class="h-12 w-12 rounded-md object-cover shadow-sm" src="https://images.unsplash.com/photo-1543163521-1bf539c55dd2?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80" alt="Silk scarf">
+                                    </div>
+                                    <div class="ml-4">
+                                        <div class="text-sm font-medium text-gray-900">Premium Silk Scarf</div>
+                                        <div class="text-sm text-gray-500">SKU: SC-2023-018</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900">Accessories</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900 font-medium">0</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900 font-medium">$59.99</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="status-badge status-out-of-stock">
+                                    Out of Stock
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                <button class="action-btn text-blue-600 hover:text-blue-900 mr-3" title="Edit product">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="action-btn text-red-600 hover:text-red-900" title="Delete product">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        
+                        <!-- Row 4 -->
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <div class="flex-shrink-0 h-12 w-12">
+                                        <img class="h-12 w-12 rounded-md object-cover shadow-sm" src="https://images.unsplash.com/photo-1560243563-062bfc001d68?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80" alt="Minimalist watch">
+                                    </div>
+                                    <div class="ml-4">
+                                        <div class="text-sm font-medium text-gray-900">Minimalist Watch</div>
+                                        <div class="text-sm text-gray-500">SKU: WA-2023-105</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900">Accessories</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900 font-medium">12</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900 font-medium">$129.00</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="status-badge status-in-stock">
+                                    In Stock
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                <button class="action-btn text-blue-600 hover:text-blue-900 mr-3" title="Edit product">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="action-btn text-red-600 hover:text-red-900" title="Delete product">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        
+                        <!-- Row 5 -->
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <div class="flex-shrink-0 h-12 w-12">
+                                        <img class="h-12 w-12 rounded-md object-cover shadow-sm" src="https://images.unsplash.com/photo-1549298916-b41d501d3772?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80" alt="Premium sneakers">
+                                    </div>
+                                    <div class="ml-4">
+                                        <div class="text-sm font-medium text-gray-900">Premium Sneakers</div>
+                                        <div class="text-sm text-gray-500">SKU: SN-2023-078</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900">Footwear</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900 font-medium">3</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900 font-medium">$149.99</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="status-badge status-low-stock">
+                                    Low Stock
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                <button class="action-btn text-blue-600 hover:text-blue-900 mr-3" title="Edit product">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="action-btn text-red-600 hover:text-red-900" title="Delete product">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Pagination -->
+            <div class="flex flex-col md:flex-row md:justify-between md:items-center">
+                <div class="text-sm text-gray-700 mb-4 md:mb-0">
+                    Showing <span class="font-medium">1</span> to <span class="font-medium">5</span> of <span class="font-medium">342</span> results
+                </div>
+                
+                <nav class="inline-flex rounded-md shadow-sm">
+                    <button class="px-3 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50" title="Previous page">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <button class="px-3 py-2 border-t border-b border-gray-300 bg-indigo-50 text-sm font-medium text-indigo-600 hover:bg-indigo-100">1</button>
+                    <button class="px-3 py-2 border-t border-b border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">2</button>
+                    <button class="px-3 py-2 border-t border-b border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">3</button>
+                    <button class="px-3 py-2 border-t border-b border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">...</button>
+                    <button class="px-3 py-2 border-t border-b border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">69</button>
+                    <button class="px-3 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50" title="Next page">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </nav>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Ensure page fills the entire viewport
+        function adjustLayout() {
+            // Make sure content fills available space
+            const contentWrapper = document.querySelector('.content-wrapper');
+            if (contentWrapper) {
+                // Leave small space for potential browser UI elements
+                contentWrapper.style.maxHeight = `calc(100vh - 5px)`;
+            }
+        }
+        
+        // Run on load and window resize
+        window.addEventListener('DOMContentLoaded', adjustLayout);
+        window.addEventListener('resize', adjustLayout);
+        
+        // Toggle filter buttons
+        document.addEventListener('DOMContentLoaded', function() {
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            
+            filterButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Remove active class from all buttons
+                    filterButtons.forEach(btn => {
+                        btn.classList.remove('active');
+                        btn.classList.remove('bg-gray-200');
+                        btn.classList.add('bg-white');
+                    });
+                    
+                    // Add active class to clicked button
+                    this.classList.add('active');
+                    this.classList.add('bg-gray-200');
+                    this.classList.remove('bg-white');
+                });
+            });
+        });
+    </script>
+</body>
+</html> 

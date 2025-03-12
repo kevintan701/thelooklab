@@ -1,0 +1,1250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LookLab - Discovery</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/styles.css">
+    <style>
+        /* Page-specific styles for scrolling */
+        html, body {
+            height: auto !important;
+            min-height: 100%;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            overflow-y: auto !important;
+            overflow-x: hidden;
+        }
+        
+        .page-container {
+            min-height: 100%;
+            width: 100%;
+            overflow-y: auto;
+        }
+        
+        /* Custom scrollbar for this page */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background-color: rgba(155, 155, 155, 0.5);
+            border-radius: 20px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background-color: rgba(155, 155, 155, 0.7);
+        }
+        
+        /* Ensure tab content can scroll */
+        .tab-content {
+            overflow-y: auto;
+        }
+        
+        /* Premium discovery search - improved visibility */
+        .hero-search {
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            color: white;
+            border-radius: 9999px;
+            padding: 0.75rem 1.25rem;
+            padding-right: 3rem;
+            width: 100%;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .hero-search::placeholder {
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .hero-search:focus {
+            background: rgba(255, 255, 255, 0.35);
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
+            outline: none;
+        }
+        
+        .search-icon {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1rem;
+        }
+        
+        .btn-discovery-search {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white;
+            border-radius: 9999px; 
+            padding: 0.75rem 1.5rem;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            box-shadow: 0 4px 10px rgba(99, 102, 241, 0.2);
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .btn-discovery-search:hover {
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 15px rgba(99, 102, 241, 0.3);
+        }
+        
+        .btn-discovery-search:active {
+            transform: translateY(1px);
+            box-shadow: 0 2px 5px rgba(99, 102, 241, 0.2);
+        }
+        
+        /* Enhanced filter styles */
+        .filter-section {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            padding: 0.75rem 1rem;
+            background: #f9fafb;
+            border-radius: 0.75rem;
+            align-items: center;
+        }
+        
+        .filter-section-label {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #4b5563;
+            margin-right: 0.75rem;
+        }
+        
+        .filter-section .tag {
+            margin-bottom: 0;
+        }
+        
+        /* Make designer cards more compact */
+        .designer-card {
+            transition: all 0.2s ease;
+        }
+        
+        .designer-compact .designer-card {
+            max-width: 100%;
+        }
+        
+        .designer-compact .relative.h-72 {
+            height: 14rem; /* Smaller image height */
+        }
+        
+        .designer-compact .p-6 {
+            padding: 1rem;
+        }
+    </style>
+</head>
+<body class="bg-white overflow-y-auto">
+    <div class="page-container">
+        <!-- Hero banner with search -->
+        <div class="relative h-44 mb-6 overflow-hidden rounded-xl mx-4 mt-4 shadow-md">
+            <img src="https://images.unsplash.com/photo-1572251328450-19c5082bc582?q=80&w=2669&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
+                alt="Fashion designer workspace" class="w-full h-full object-cover filter brightness-85">
+            <div class="absolute inset-0 bg-gradient-to-r from-black/80 to-transparent flex items-center justify-between px-6">
+                <div class="text-white max-w-lg">
+                    <div class="text-center md:text-left">
+                        <h1 class="text-3xl md:text-4xl font-bold text-white mb-2">Discover Fashion</h1>
+                        <p class="text-base md:text-lg opacity-90 font-light">Find the latest trends, designers, and styles</p>
+                    </div>
+                </div>
+                <div class="relative w-full md:w-64 md:ml-auto mt-6 md:mt-0">
+                    <input type="text" placeholder="Search designers, styles..." class="hero-search">
+                    <i class="fas fa-search search-icon"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="container mx-auto px-6 py-4 pb-20">
+            <!-- Navigation Tabs -->
+            <div class="border-b border-gray-200 mb-8">
+                <ul class="flex -mb-px text-center">
+                    <li class="mr-1 tab-item active" data-target="designers-tab">
+                        <a class="inline-block py-3 px-4 text-gray-700 font-medium">
+                            <i class="fas fa-user-tie mr-2"></i>Designers
+                        </a>
+                    </li>
+                    <li class="mr-1 tab-item" data-target="products-tab">
+                        <a class="inline-block py-3 px-4 text-gray-500 hover:text-gray-700 font-medium">
+                            <i class="fas fa-tshirt mr-2"></i>Products
+                        </a>
+                    </li>
+                    <li class="tab-item" data-target="trends-tab">
+                        <a class="inline-block py-3 px-4 text-gray-500 hover:text-gray-700 font-medium">
+                            <i class="fas fa-chart-line mr-2"></i>Trending
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Enhanced Filter Section -->
+            <div class="filter-section shadow-sm">
+                <div class="filter-section-label">Filters:</div>
+                <div class="flex flex-wrap gap-2 flex-grow">
+                    <span class="tag tag-accent">
+                        Sustainable
+                        <button class="ml-2 text-accent-color" title="Remove Sustainable filter">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </span>
+                    <span class="tag tag-accent">
+                        Minimalist
+                        <button class="ml-2 text-accent-color" title="Remove Minimalist filter">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </span>
+                    <span class="tag tag-accent">
+                        New York
+                        <button class="ml-2 text-accent-color" title="Remove New York filter">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </span>
+                    <span class="tag tag-accent">
+                        Women's Fashion
+                        <button class="ml-2 text-accent-color" title="Remove Women's Fashion filter">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </span>
+                </div>
+                
+                <div class="ml-auto flex items-center">
+                    <button class="tag tag-primary hover:bg-blue-50 cursor-pointer flex items-center">
+                        <i class="fas fa-plus mr-1.5"></i> Add Filter
+                    </button>
+                    <button id="toggle-compact-view" class="ml-3 p-1.5 text-gray-500 hover:text-gray-700 rounded-md hover:bg-gray-100 transition-colors" title="Toggle compact view">
+                        <i class="fas fa-th-large"></i>
+                    </button>
+                    <button id="toggle-sort" class="ml-2 p-1.5 text-gray-500 hover:text-gray-700 rounded-md hover:bg-gray-100 transition-colors" title="Sort options">
+                        <i class="fas fa-sort-amount-down"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Tab Content Areas -->
+            <div id="tab-content">
+                <!-- Designers Tab Content -->
+                <div id="designers-tab" class="tab-content active">
+                    <div class="mb-6">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="font-bold text-lg text-gray-800">Featured Designers</h3>
+                            <div class="flex space-x-2">
+                                <button class="text-xs px-3 py-1.5 bg-black text-white rounded-full">All</button>
+                                <button class="text-xs px-3 py-1.5 bg-gray-100 text-gray-700 rounded-full">Sustainable</button>
+                                <button class="text-xs px-3 py-1.5 bg-gray-100 text-gray-700 rounded-full">Luxury</button>
+                                <button class="text-xs px-3 py-1.5 bg-gray-100 text-gray-700 rounded-full">Emerging</button>
+                            </div>
+                        </div>
+                    </div>
+                
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-8">
+                        <!-- Designer Card 1 -->
+                        <div class="card hover-lift overflow-hidden">
+                            <div class="flex flex-col">
+                                <div class="relative">
+                                    <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" 
+                                        alt="Elena Rodriguez Studio" class="w-full h-48 object-cover">
+                                    <div class="absolute top-3 right-3 bg-green-500 text-white text-xs font-medium px-2 py-1 rounded-full shadow-sm">Sustainable</div>
+                                </div>
+                                <div class="p-4">
+                                    <div class="flex items-center mb-3">
+                                        <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=80" 
+                                            alt="Elena Rodriguez" class="w-12 h-12 rounded-full object-cover border-2 border-white shadow-sm">
+                                        <div class="ml-3">
+                                            <h3 class="font-bold">Elena Rodriguez</h3>
+                                            <p class="text-gray-500 text-xs">New York, NY</p>
+                                        </div>
+                                    </div>
+                                    <p class="text-sm text-gray-600 mb-3">Known for minimalist silhouettes with unexpected structural elements. Focuses on sustainable materials and ethical production.</p>
+                                    <div class="flex flex-wrap gap-2 mb-3">
+                                        <span class="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded-full">Minimalist</span>
+                                        <span class="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded-full">Sustainable</span>
+                                        <span class="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded-full">Structural</span>
+                                    </div>
+                                    <div class="mt-2 flex items-center justify-between">
+                                        <div class="flex items-center space-x-1">
+                                            <div class="flex text-yellow-400 text-xs">
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                            </div>
+                                            <span class="text-xs text-gray-500 ml-1">(128)</span>
+                                        </div>
+                                        <div class="flex space-x-2">
+                                            <a href="messages.html?contact=elena" class="text-xs px-2 py-1.5 bg-white border border-gray-300 text-gray-700 rounded-full hover:bg-gray-100 transition-all duration-300 inline-block">
+                                                <i class="fas fa-comment mr-1"></i> Message
+                                            </a>
+                                            <a href="designer-profile.html" class="text-xs px-2 py-1.5 bg-black text-white rounded-full hover:bg-gray-800 transition-all duration-300 hover:shadow-md hover:translate-y-[-2px] inline-block">
+                                                <i class="fas fa-user mr-1"></i> Profile
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Designer Card 2 -->
+                        <div class="card hover-lift overflow-hidden">
+                            <div class="flex flex-col">
+                                <div class="relative">
+                                    <img src="https://images.unsplash.com/photo-1591085686350-798c0f9faa7f?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" 
+                                        alt="Marcus Chen Atelier" class="w-full h-48 object-cover">
+                                    <div class="absolute top-3 right-3 bg-purple-500 text-white text-xs font-medium px-2 py-1 rounded-full shadow-sm">Luxury</div>
+                                </div>
+                                <div class="p-4">
+                                    <div class="flex items-center mb-3">
+                                        <img src="https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=80" 
+                                            alt="Marcus Chen" class="w-12 h-12 rounded-full object-cover border-2 border-white shadow-sm">
+                                        <div class="ml-3">
+                                            <h3 class="font-bold">Marcus Chen</h3>
+                                            <p class="text-gray-500 text-xs">New York, USA</p>
+                                        </div>
+                                    </div>
+                                    <p class="text-sm text-gray-600 mb-3">Luxury leather goods and accessories with impeccable craftsmanship. Each piece combines traditional techniques with modern aesthetics.</p>
+                                    <div class="flex flex-wrap gap-2 mb-3">
+                                        <span class="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded-full">Luxury</span>
+                                        <span class="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded-full">Leather</span>
+                                        <span class="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded-full">Accessories</span>
+                                    </div>
+                                    <div class="mt-2 flex items-center justify-between">
+                                        <div class="flex items-center space-x-1">
+                                            <div class="flex text-yellow-400 text-xs">
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star-half-alt"></i>
+                                            </div>
+                                            <span class="text-xs text-gray-500 ml-1">(72)</span>
+                                        </div>
+                                        <a href="designer-profile.html?id=marcus&action=connect" class="text-xs px-3 py-1.5 bg-black text-white rounded-full hover:bg-gray-800 inline-block transition-all duration-300 hover:shadow-md hover:translate-y-[-2px]">
+                                            <i class="fas fa-user-plus mr-1"></i> Connect
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Designer Card 3 -->
+                        <div class="card hover-lift overflow-hidden">
+                            <div class="flex flex-col">
+                                <div class="relative">
+                                    <img src="https://images.unsplash.com/photo-1558769132-cb1aea458c5e?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" 
+                                        alt="Sophia Ward Collection" class="w-full h-48 object-cover">
+                                    <div class="absolute top-3 right-3 bg-blue-500 text-white text-xs font-medium px-2 py-1 rounded-full shadow-sm">Emerging</div>
+                                </div>
+                                <div class="p-4">
+                                    <div class="flex items-center mb-3">
+                                        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=80" 
+                                            alt="Sophia Ward" class="w-12 h-12 rounded-full object-cover border-2 border-white shadow-sm">
+                                        <div class="ml-3">
+                                            <h3 class="font-bold">Sophia Ward</h3>
+                                            <p class="text-gray-500 text-xs">London, UK</p>
+                                        </div>
+                                    </div>
+                                    <p class="text-sm text-gray-600 mb-3">Emerging talent known for bold prints and innovative textiles. Her designs blend streetwear influences with high-fashion sensibilities.</p>
+                                    <div class="flex flex-wrap gap-2 mb-3">
+                                        <span class="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded-full">Bold Prints</span>
+                                        <span class="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded-full">Streetwear</span>
+                                        <span class="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded-full">Innovative</span>
+                                    </div>
+                                    <div class="mt-2 flex items-center justify-between">
+                                        <div class="flex items-center space-x-1">
+                                            <div class="flex text-yellow-400 text-xs">
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star-half-alt"></i>
+                                            </div>
+                                            <span class="text-xs text-gray-500 ml-1">(95)</span>
+                                        </div>
+                                        <a href="designer-profile.html?id=sophia&action=connect" class="text-xs px-3 py-1.5 bg-black text-white rounded-full hover:bg-gray-800 inline-block transition-all duration-300 hover:shadow-md hover:translate-y-[-2px]">
+                                            <i class="fas fa-user-plus mr-1"></i> Connect
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Designer Spotlights -->
+                    <div class="mb-8">
+                        <h3 class="font-bold text-lg text-gray-800 mb-4">Designer Spotlights</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- Spotlight 1 -->
+                            <div class="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all">
+                                <div class="flex flex-col md:flex-row">
+                                    <div class="md:w-2/5 relative">
+                                        <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" 
+                                            alt="Ava Lin" class="w-full h-full object-cover object-center md:absolute md:inset-0">
+                                    </div>
+                                    <div class="md:w-3/5 p-5">
+                                        <div class="flex items-center mb-3">
+                                            <h3 class="text-lg font-bold">Ava Lin</h3>
+                                            <span class="ml-2 text-xs bg-red-100 text-red-600 px-2 py-0.5 rounded-full">Rising Star</span>
+                                        </div>
+                                        <p class="text-sm text-gray-600 mb-3">"My new collection explores the intersection of traditional Chinese craftsmanship and modern silhouettes. Each piece tells a story of cultural heritage reimagined."</p>
+                                        <div class="text-xs text-gray-500 mb-3">Featured in: <span class="font-medium">Vogue, Harper's Bazaar</span></div>
+                                        <button class="text-xs px-3 py-1.5 bg-black text-white rounded-full hover:bg-gray-800">View Collection</button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Spotlight 2 -->
+                            <div class="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all">
+                                <div class="flex flex-col md:flex-row">
+                                    <div class="md:w-2/5 relative">
+                                        <img src="https://images.unsplash.com/photo-1463453091185-61582044d556?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" 
+                                            alt="Julian Porter" class="w-full h-full object-cover object-center md:absolute md:inset-0">
+                                    </div>
+                                    <div class="md:w-3/5 p-5">
+                                        <div class="flex items-center mb-3">
+                                            <h3 class="text-lg font-bold">Julian Porter</h3>
+                                            <span class="ml-2 text-xs bg-blue-100 text-blue-600 px-2 py-0.5 rounded-full">Award Winner</span>
+                                        </div>
+                                        <p class="text-sm text-gray-600 mb-3">"Sustainability isn't just a trend—it's the foundation of my design philosophy. I'm committed to creating timeless pieces with minimal environmental impact."</p>
+                                        <div class="text-xs text-gray-500 mb-3">Featured in: <span class="font-medium">Elle, GQ, Fashion Week NYC</span></div>
+                                        <button class="text-xs px-3 py-1.5 bg-black text-white rounded-full hover:bg-gray-800">View Collection</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Collaborations -->
+                    <div class="mb-8">
+                        <h3 class="font-bold text-lg text-gray-800 mb-4">Latest Collaborations</h3>
+                        <div class="overflow-x-auto">
+                            <div class="flex space-x-4 pb-4 w-max">
+                                <!-- Collaboration 1 -->
+                                <div class="w-72 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all">
+                                    <div class="relative h-40">
+                                        <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" 
+                                            alt="Elena Rodriguez x Adidas" class="w-full h-full object-cover">
+                                        <div class="absolute inset-0 bg-black bg-opacity-30 flex flex-col justify-center items-center">
+                                            <h4 class="text-white font-bold text-lg">Elena Rodriguez × Adidas</h4>
+                                            <p class="text-white text-sm opacity-90">Sustainable Streetwear</p>
+                                        </div>
+                                    </div>
+                                    <div class="p-3 bg-white">
+                                        <div class="flex items-center mb-2">
+                                            <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=80" 
+                                                alt="Elena Rodriguez" class="w-8 h-8 rounded-full object-cover border-2 border-white shadow-sm">
+                                            <span class="text-xs text-gray-600 ml-2">Modern Minimalist | New York, NY</span>
+                                        </div>
+                                        <p class="text-sm text-gray-600">Limited edition collection featuring recycled materials and zero-waste production techniques.</p>
+                                        <div class="flex space-x-2 mt-2">
+                                            <button class="flex-1 text-xs px-2 py-1.5 bg-black text-white rounded-full hover:bg-gray-800">View Collection</button>
+                                            <a href="designer-profile.html" class="text-xs px-2 py-1.5 border border-gray-300 text-gray-700 rounded-full hover:bg-gray-100 flex items-center justify-center">
+                                                <i class="fas fa-user mr-1"></i> Profile
+                                            </a>
+                                            <a href="messages.html?contact=elena" class="text-xs px-2 py-1.5 border border-gray-300 text-gray-700 rounded-full hover:bg-gray-100 flex items-center justify-center">
+                                                <i class="fas fa-comment mr-1"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Collaboration 2 -->
+                                <div class="w-72 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all">
+                                    <div class="relative h-40">
+                                        <img src="https://images.unsplash.com/photo-1445205170230-053b83016050?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" 
+                                            alt="Chen x Hermes" class="w-full h-full object-cover">
+                                        <div class="absolute inset-0 bg-black bg-opacity-30 flex flex-col justify-center items-center">
+                                            <h4 class="text-white font-bold text-lg">Chen × Hermès</h4>
+                                            <p class="text-white text-sm opacity-90">Artisanal Leather Goods</p>
+                                        </div>
+                                    </div>
+                                    <div class="p-3 bg-white">
+                                        <div class="flex items-center mb-2">
+                                            <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=80" 
+                                                alt="Marcus Chen" class="w-8 h-8 rounded-full object-cover border-2 border-white shadow-sm">
+                                            <span class="text-xs text-gray-600 ml-2">Luxury Accessories | New York, USA</span>
+                                        </div>
+                                        <p class="text-sm text-gray-600">Exclusive capsule collection bringing contemporary design to classic luxury leather accessories.</p>
+                                        <div class="flex space-x-2 mt-2">
+                                            <button class="flex-1 text-xs px-2 py-1.5 bg-black text-white rounded-full hover:bg-gray-800">View Collection</button>
+                                            <a href="designer-profile.html?id=marcus" class="text-xs px-2 py-1.5 border border-gray-300 text-gray-700 rounded-full hover:bg-gray-100 flex items-center justify-center">
+                                                <i class="fas fa-user mr-1"></i> Profile
+                                            </a>
+                                            <a href="messages.html?contact=marcus" class="text-xs px-2 py-1.5 border border-gray-300 text-gray-700 rounded-full hover:bg-gray-100 flex items-center justify-center">
+                                                <i class="fas fa-comment mr-1"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Collaboration 3 -->
+                                <div class="w-72 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all">
+                                    <div class="relative h-40">
+                                        <img src="https://images.unsplash.com/photo-1556905055-8f358a7a47b2?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" 
+                                            alt="Ward x H&M" class="w-full h-full object-cover">
+                                        <div class="absolute inset-0 bg-black bg-opacity-30 flex flex-col justify-center items-center">
+                                            <h4 class="text-white font-bold text-lg">Ward × H&M</h4>
+                                            <p class="text-white text-sm opacity-90">Accessible Luxury</p>
+                                        </div>
+                                    </div>
+                                    <div class="p-3 bg-white">
+                                        <div class="flex items-center mb-2">
+                                            <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=80" 
+                                                alt="Sophia Ward" class="w-8 h-8 rounded-full object-cover border-2 border-white shadow-sm">
+                                            <span class="text-xs text-gray-600 ml-2">Bold Prints | London, UK</span>
+                                        </div>
+                                        <p class="text-sm text-gray-600">Bold prints and innovative designs brought to accessible price points through this special collaboration.</p>
+                                        <div class="flex space-x-2 mt-2">
+                                            <button class="flex-1 text-xs px-2 py-1.5 bg-black text-white rounded-full hover:bg-gray-800">View Collection</button>
+                                            <a href="designer-profile.html?id=sophia" class="text-xs px-2 py-1.5 border border-gray-300 text-gray-700 rounded-full hover:bg-gray-100 flex items-center justify-center">
+                                                <i class="fas fa-user mr-1"></i> Profile
+                                            </a>
+                                            <a href="messages.html?contact=sophia" class="text-xs px-2 py-1.5 border border-gray-300 text-gray-700 rounded-full hover:bg-gray-100 flex items-center justify-center">
+                                                <i class="fas fa-comment mr-1"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Products Tab Content -->
+                <div id="products-tab" class="tab-content hidden">
+                    <div class="mb-6">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="font-bold text-lg text-gray-800">Featured Collections</h3>
+                            <div class="flex space-x-2">
+                                <button class="text-xs px-3 py-1.5 bg-black text-white rounded-full">All</button>
+                                <button class="text-xs px-3 py-1.5 bg-gray-100 text-gray-700 rounded-full">Women</button>
+                                <button class="text-xs px-3 py-1.5 bg-gray-100 text-gray-700 rounded-full">Men</button>
+                                <button class="text-xs px-3 py-1.5 bg-gray-100 text-gray-700 rounded-full">Accessories</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-8">
+                        <!-- Product Card 1 -->
+                        <div class="card overflow-hidden hover-lift">
+                            <a href="product-detail.html?id=minimal-blazer" class="block">
+                                <div class="relative h-64">
+                                    <img src="https://images.unsplash.com/photo-1591047139829-d91aecb6caea?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" 
+                                        alt="Minimal Blazer" class="w-full h-full object-cover">
+                                    <div class="absolute top-3 right-3 bg-white text-xs font-medium px-2 py-1 rounded-full shadow-sm">
+                                        New Arrival
+                                    </div>
+                                    <button class="absolute bottom-3 right-3 w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-md hover:bg-gray-100 transition" aria-label="Add to favorites">
+                                        <i class="far fa-heart text-gray-600"></i>
+                                    </button>
+                                </div>
+                                <div class="p-4">
+                                    <div class="flex justify-between items-start">
+                                        <div>
+                                            <h3 class="font-medium">Minimal Structured Blazer</h3>
+                                            <p class="text-gray-500 text-sm">Elena Rodriguez</p>
+                                        </div>
+                                        <span class="font-medium">$129.99</span>
+                                    </div>
+                                    <div class="flex items-center mt-2">
+                                        <div class="flex text-yellow-400 text-xs">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star-half-alt"></i>
+                                        </div>
+                                        <span class="text-xs text-gray-500 ml-1">(24)</span>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        
+                        <!-- Product Card 2 -->
+                        <div class="card overflow-hidden hover-lift">
+                            <a href="product-detail.html?id=wide-leg-pants" class="block">
+                                <div class="relative h-64">
+                                    <img src="https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" 
+                                        alt="Wide Leg Pants" class="w-full h-full object-cover">
+                                    <div class="absolute top-3 right-3 bg-black text-white text-xs font-medium px-2 py-1 rounded-full shadow-sm">
+                                        Best Seller
+                                    </div>
+                                    <button class="absolute bottom-3 right-3 w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-md hover:bg-gray-100 transition" aria-label="Add to favorites">
+                                        <i class="far fa-heart text-gray-600"></i>
+                                    </button>
+                                </div>
+                                <div class="p-4">
+                                    <div class="flex justify-between items-start">
+                                        <div>
+                                            <h3 class="font-medium">Wide Leg Linen Pants</h3>
+                                            <p class="text-gray-500 text-sm">Elena Rodriguez</p>
+                                        </div>
+                                        <span class="font-medium">$89.99</span>
+                                    </div>
+                                    <div class="flex items-center mt-2">
+                                        <div class="flex text-yellow-400 text-xs">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                        </div>
+                                        <span class="text-xs text-gray-500 ml-1">(42)</span>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        
+                        <!-- Product Card 3 -->
+                        <div class="card overflow-hidden hover-lift">
+                            <a href="product-detail.html?id=leather-boots" class="block">
+                                <div class="relative h-64">
+                                    <img src="https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" 
+                                        alt="Leather Boots" class="w-full h-full object-cover">
+                                    <div class="absolute top-3 right-3 bg-green-500 text-white text-xs font-medium px-2 py-1 rounded-full shadow-sm">
+                                        Sustainable
+                                    </div>
+                                    <button class="absolute bottom-3 right-3 w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-md hover:bg-gray-100 transition" aria-label="Add to favorites">
+                                        <i class="far fa-heart text-gray-600"></i>
+                                    </button>
+                                </div>
+                                <div class="p-4">
+                                    <div class="flex justify-between items-start">
+                                        <div>
+                                            <h3 class="font-medium">Premium Leather Ankle Boots</h3>
+                                            <p class="text-gray-500 text-sm">Marcus Chen</p>
+                                        </div>
+                                        <span class="font-medium">$179.99</span>
+                                    </div>
+                                    <div class="flex items-center mt-2">
+                                        <div class="flex text-yellow-400 text-xs">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                        </div>
+                                        <span class="text-xs text-gray-500 ml-1">(18)</span>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        
+                        <!-- Product Card 4 -->
+                        <div class="card overflow-hidden hover-lift">
+                            <a href="product-detail.html?id=silk-scarf" class="block">
+                                <div class="relative h-64">
+                                    <img src="https://images.unsplash.com/photo-1584273143981-41c073dfe8f8?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" 
+                                        alt="Silk Scarf" class="w-full h-full object-cover">
+                                    <div class="absolute top-3 right-3 bg-purple-500 text-white text-xs font-medium px-2 py-1 rounded-full shadow-sm">
+                                        Limited
+                                    </div>
+                                    <button class="absolute bottom-3 right-3 w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-md hover:bg-gray-100 transition" aria-label="Add to favorites">
+                                        <i class="far fa-heart text-gray-600"></i>
+                                    </button>
+                                </div>
+                                <div class="p-4">
+                                    <div class="flex justify-between items-start">
+                                        <div>
+                                            <h3 class="font-medium">Silk Pattern Scarf</h3>
+                                            <p class="text-gray-500 text-sm">Sophia Ward</p>
+                                        </div>
+                                        <span class="font-medium">$65.00</span>
+                                    </div>
+                                    <div class="flex items-center mt-2">
+                                        <div class="flex text-yellow-400 text-xs">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                        </div>
+                                        <span class="text-xs text-gray-500 ml-1">(31)</span>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- Trending This Week Section -->
+                    <div class="mb-8">
+                        <h3 class="font-bold text-lg text-gray-800 mb-4">Trending This Week</h3>
+                        <div class="overflow-x-auto">
+                            <div class="flex space-x-4 pb-4 w-max">
+                                <!-- Trending Product 1 -->
+                                <div class="w-48 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all">
+                                    <div class="relative h-56">
+                                        <img src="https://images.unsplash.com/photo-1583846783214-7229a91b20ed?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" 
+                                            alt="Y2K Crop Top" class="w-full h-full object-cover">
+                                        <div class="absolute top-2 left-2 bg-purple-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">1</div>
+                                    </div>
+                                    <div class="p-3 bg-white">
+                                        <h4 class="font-medium text-sm">Y2K Crop Top</h4>
+                                        <p class="text-gray-500 text-xs">$42.99</p>
+                                    </div>
+                                </div>
+                                
+                                <!-- Trending Product 2 -->
+                                <div class="w-48 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all">
+                                    <div class="relative h-56">
+                                        <img src="https://images.unsplash.com/photo-1552374196-1ab2a1c593e8?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" 
+                                            alt="Oversized Shirt" class="w-full h-full object-cover">
+                                        <div class="absolute top-2 left-2 bg-purple-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">2</div>
+                                    </div>
+                                    <div class="p-3 bg-white">
+                                        <h4 class="font-medium text-sm">Oversized Shirt</h4>
+                                        <p class="text-gray-500 text-xs">$58.99</p>
+                                    </div>
+                                </div>
+                                
+                                <!-- Trending Product 3 -->
+                                <div class="w-48 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all">
+                                    <div class="relative h-56">
+                                        <img src="https://images.unsplash.com/photo-1591047139829-d91aecb6caea?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" 
+                                            alt="Minimal Blazer" class="w-full h-full object-cover">
+                                        <div class="absolute top-2 left-2 bg-purple-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">3</div>
+                                    </div>
+                                    <div class="p-3 bg-white">
+                                        <h4 class="font-medium text-sm">Minimal Blazer</h4>
+                                        <p class="text-gray-500 text-xs">$129.99</p>
+                                    </div>
+                                </div>
+                                
+                                <!-- Trending Product 4 -->
+                                <div class="w-48 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all">
+                                    <div class="relative h-56">
+                                        <img src="https://images.unsplash.com/photo-1581044777550-4cfa60707c03?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" 
+                                            alt="Summer Dress" class="w-full h-full object-cover">
+                                        <div class="absolute top-2 left-2 bg-purple-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">4</div>
+                                    </div>
+                                    <div class="p-3 bg-white">
+                                        <h4 class="font-medium text-sm">Summer Dress</h4>
+                                        <p class="text-gray-500 text-xs">$75.50</p>
+                                    </div>
+                                </div>
+                                
+                                <!-- Trending Product 5 -->
+                                <div class="w-48 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all">
+                                    <div class="relative h-56">
+                                        <img src="https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" 
+                                            alt="Leather Boots" class="w-full h-full object-cover">
+                                        <div class="absolute top-2 left-2 bg-purple-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">5</div>
+                                    </div>
+                                    <div class="p-3 bg-white">
+                                        <h4 class="font-medium text-sm">Leather Boots</h4>
+                                        <p class="text-gray-500 text-xs">$179.99</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Curated Collections -->
+                    <div class="mb-8">
+                        <h3 class="font-bold text-lg text-gray-800 mb-4">Curated Collections</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div class="relative h-40 md:h-64 overflow-hidden rounded-lg group">
+                                <img src="https://images.unsplash.com/photo-1523381294911-8d3cead13475?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Summer Essentials" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                                <div class="absolute inset-0 bg-black bg-opacity-40 flex flex-col justify-end p-4">
+                                    <h4 class="text-white font-bold text-lg">Summer Essentials</h4>
+                                    <p class="text-white text-sm opacity-80">Warm weather favorites</p>
+                                </div>
+                            </div>
+                            
+                            <div class="relative h-40 md:h-64 overflow-hidden rounded-lg group">
+                                <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Elegant Evening" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                                <div class="absolute inset-0 bg-black bg-opacity-40 flex flex-col justify-end p-4">
+                                    <h4 class="text-white font-bold text-lg">Elegant Evening</h4>
+                                    <p class="text-white text-sm opacity-80">Sophisticated looks</p>
+                                </div>
+                            </div>
+                            
+                            <div class="relative h-40 md:h-64 overflow-hidden rounded-lg group">
+                                <img src="https://images.unsplash.com/photo-1552374196-1ab2a1c593e8?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Minimalist Staples" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                                <div class="absolute inset-0 bg-black bg-opacity-40 flex flex-col justify-end p-4">
+                                    <h4 class="text-white font-bold text-lg">Minimalist Staples</h4>
+                                    <p class="text-white text-sm opacity-80">Timeless essentials</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Trends Tab Content -->
+                <div id="trends-tab" class="tab-content hidden">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                        <!-- AI Insights Card -->
+                        <div class="col-span-1 md:col-span-3 card bg-gradient-to-r from-purple-50 to-indigo-50 p-6 mb-4">
+                            <div class="flex flex-col md:flex-row items-start md:items-center justify-between">
+                                <div class="flex items-center mb-4 md:mb-0">
+                                    <div class="w-12 h-12 rounded-lg bg-gradient-to-r from-purple-600 to-indigo-600 flex items-center justify-center text-white mr-4 shadow-lg">
+                                        <i class="fas fa-robot text-xl"></i>
+                                    </div>
+                                    <div>
+                                        <h2 class="text-xl font-bold text-gray-800">AI-Powered Trend Insights</h2>
+                                        <p class="text-gray-600">Our Fashion AI has analyzed millions of data points to identify these emerging trends</p>
+                                    </div>
+                                </div>
+                                <button onclick="window.location.href='ai-assistant.html'" class="btn-primary bg-gradient-to-r from-purple-600 to-indigo-600 hover:opacity-90 flex items-center shadow-md transition-all">
+                                    <i class="fas fa-robot mr-2"></i>
+                                    Chat with Fashion AI
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Trend Card 1: Sustainable Fashion -->
+                        <div id="sustainable-trend" class="card overflow-hidden hover-lift h-40">
+                            <a href="trend-detail.html?trend=sustainable" class="block h-full">
+                                <div class="relative h-full w-full">
+                                    <img src="https://th.bing.com/th/id/OIP.loqz34pbH4hkWuqCWlj4RQHaLH?pid=ImgDet&w=474&h=711&rs=1" 
+                                         alt="Sustainable Fashion" class="w-full h-full object-cover">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent flex flex-col justify-end p-4">
+                                        <div class="flex justify-between items-center">
+                                            <h3 class="text-xl font-bold text-white">#Sustainable</h3>
+                                            <span class="bg-green-500 text-white text-xs font-bold px-2 py-1 rounded-full shadow-sm">+32%</span>
+                                        </div>
+                                        <div class="flex flex-wrap gap-1 mt-2">
+                                            <span class="bg-white/20 backdrop-blur-sm text-white text-xs px-2 py-0.5 rounded-full">Organic</span>
+                                            <span class="bg-white/20 backdrop-blur-sm text-white text-xs px-2 py-0.5 rounded-full">Recycled</span>
+                                            <span class="bg-white/20 backdrop-blur-sm text-white text-xs px-2 py-0.5 rounded-full">Ethical</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        
+                        <!-- Trend Card 2: Y2K Revival -->
+                        <div id="y2k-trend" class="card overflow-hidden hover-lift h-40">
+                            <a href="trend-detail.html?trend=y2k" class="block h-full">
+                                <div class="relative h-full w-full">
+                                    <img src="https://i.pinimg.com/736x/21/40/0c/21400ca525cde292f69c713da7de3f36.jpg" 
+                                         alt="Y2K Revival" class="w-full h-full object-cover">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent flex flex-col justify-end p-4">
+                                        <div class="flex justify-between items-center">
+                                            <h3 class="text-xl font-bold text-white">#Y2KRevival</h3>
+                                            <span class="bg-purple-500 text-white text-xs font-bold px-2 py-1 rounded-full shadow-sm">+28%</span>
+                                        </div>
+                                        <div class="flex flex-wrap gap-1 mt-2">
+                                            <span class="bg-white/20 backdrop-blur-sm text-white text-xs px-2 py-0.5 rounded-full">Low-Rise</span>
+                                            <span class="bg-white/20 backdrop-blur-sm text-white text-xs px-2 py-0.5 rounded-full">Rhinestones</span>
+                                            <span class="bg-white/20 backdrop-blur-sm text-white text-xs px-2 py-0.5 rounded-full">Nostalgia</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        
+                        <!-- Trend Card 3: Oversized Silhouettes -->
+                        <div id="oversized-trend" class="card overflow-hidden hover-lift h-40">
+                            <a href="trend-detail.html?trend=oversized" class="block h-full">
+                                <div class="relative h-full w-full">
+                                    <img src="https://images.unsplash.com/photo-1552374196-1ab2a1c593e8?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" 
+                                         alt="Oversized Silhouettes" class="w-full h-full object-cover">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent flex flex-col justify-end p-4">
+                                        <div class="flex justify-between items-center">
+                                            <h3 class="text-xl font-bold text-white">#Oversized</h3>
+                                            <span class="bg-blue-500 text-white text-xs font-bold px-2 py-1 rounded-full shadow-sm">+24%</span>
+                                        </div>
+                                        <div class="flex flex-wrap gap-1 mt-2">
+                                            <span class="bg-white/20 backdrop-blur-sm text-white text-xs px-2 py-0.5 rounded-full">Comfort</span>
+                                            <span class="bg-white/20 backdrop-blur-sm text-white text-xs px-2 py-0.5 rounded-full">Casual</span>
+                                            <span class="bg-white/20 backdrop-blur-sm text-white text-xs px-2 py-0.5 rounded-full">Slouchy</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        
+                        <!-- Trend Card 4: Dopamine Dressing -->
+                        <div id="dopamine-trend" class="card overflow-hidden hover-lift h-40">
+                            <a href="trend-detail.html?trend=dopamine" class="block h-full">
+                                <div class="relative h-full w-full">
+                                    <img src="https://images.unsplash.com/photo-1576566588028-4147f3842f27?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" 
+                                         alt="Dopamine Dressing" class="w-full h-full object-cover">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent flex flex-col justify-end p-4">
+                                        <div class="flex justify-between items-center">
+                                            <h3 class="text-xl font-bold text-white">#DopamineDressing</h3>
+                                            <span class="bg-pink-500 text-white text-xs font-bold px-2 py-1 rounded-full shadow-sm">+45%</span>
+                                        </div>
+                                        <div class="flex flex-wrap gap-1 mt-2">
+                                            <span class="bg-white/20 backdrop-blur-sm text-white text-xs px-2 py-0.5 rounded-full">Vibrant</span>
+                                            <span class="bg-white/20 backdrop-blur-sm text-white text-xs px-2 py-0.5 rounded-full">Joyful</span>
+                                            <span class="bg-white/20 backdrop-blur-sm text-white text-xs px-2 py-0.5 rounded-full">Expressive</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        
+                        <!-- Trend Card 5: Digital Couture -->
+                        <div id="digital-trend" class="card overflow-hidden hover-lift h-40">
+                            <a href="trend-detail.html?trend=digital" class="block h-full">
+                                <div class="relative h-full w-full">
+                                    <img src="https://images.unsplash.com/photo-1531746790731-6c087fecd65a?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" 
+                                         alt="Digital Couture" class="w-full h-full object-cover">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent flex flex-col justify-end p-4">
+                                        <div class="flex justify-between items-center">
+                                            <h3 class="text-xl font-bold text-white">#DigitalCouture</h3>
+                                            <span class="bg-indigo-500 text-white text-xs font-bold px-2 py-1 rounded-full shadow-sm">+38%</span>
+                                        </div>
+                                        <div class="flex flex-wrap gap-1 mt-2">
+                                            <span class="bg-white/20 backdrop-blur-sm text-white text-xs px-2 py-0.5 rounded-full">NFT</span>
+                                            <span class="bg-white/20 backdrop-blur-sm text-white text-xs px-2 py-0.5 rounded-full">Metaverse</span>
+                                            <span class="bg-white/20 backdrop-blur-sm text-white text-xs px-2 py-0.5 rounded-full">Virtual</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        
+                        <!-- Trend Card 6: Genderless Fashion -->
+                        <div id="genderless-trend" class="card overflow-hidden hover-lift h-40">
+                            <a href="trend-detail.html?trend=genderless" class="block h-full">
+                                <div class="relative h-full w-full">
+                                    <img src="https://images.unsplash.com/photo-1496217590455-aa63a8350eea?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" 
+                                         alt="Genderless Fashion" class="w-full h-full object-cover">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent flex flex-col justify-end p-4">
+                                        <div class="flex justify-between items-center">
+                                            <h3 class="text-xl font-bold text-white">#GenderlessFashion</h3>
+                                            <span class="bg-yellow-500 text-white text-xs font-bold px-2 py-1 rounded-full shadow-sm">+33%</span>
+                                        </div>
+                                        <div class="flex flex-wrap gap-1 mt-2">
+                                            <span class="bg-white/20 backdrop-blur-sm text-white text-xs px-2 py-0.5 rounded-full">Fluid</span>
+                                            <span class="bg-white/20 backdrop-blur-sm text-white text-xs px-2 py-0.5 rounded-full">Inclusive</span>
+                                            <span class="bg-white/20 backdrop-blur-sm text-white text-xs px-2 py-0.5 rounded-full">Unisex</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- Trending Colors Section -->
+                    <div class="mb-8">
+                        <h3 class="font-bold text-lg text-gray-800 mb-4">Trending Color Palette</h3>
+                        <div class="grid grid-cols-6 md:grid-cols-8 lg:grid-cols-12 gap-4">
+                            <div class="flex flex-col items-center">
+                                <div class="w-14 h-14 rounded-full shadow-sm hover:shadow-md transition-shadow" style="background-color: #c1b9dd;"></div>
+                                <span class="text-xs mt-2 font-medium">Digital Lavender</span>
+                                <span class="text-xs text-green-600">+42%</span>
+                            </div>
+                            <div class="flex flex-col items-center">
+                                <div class="w-14 h-14 rounded-full shadow-sm hover:shadow-md transition-shadow" style="background-color: #e3a975;"></div>
+                                <span class="text-xs mt-2 font-medium">Sundial</span>
+                                <span class="text-xs text-green-600">+38%</span>
+                            </div>
+                            <div class="flex flex-col items-center">
+                                <div class="w-14 h-14 rounded-full shadow-sm hover:shadow-md transition-shadow" style="background-color: #a7c5eb;"></div>
+                                <span class="text-xs mt-2 font-medium">Tranquil Blue</span>
+                                <span class="text-xs text-green-600">+35%</span>
+                            </div>
+                            <div class="flex flex-col items-center">
+                                <div class="w-14 h-14 rounded-full shadow-sm hover:shadow-md transition-shadow" style="background-color: #bb2649;"></div>
+                                <span class="text-xs mt-2 font-medium">Viva Magenta</span>
+                                <span class="text-xs text-green-600">+30%</span>
+                            </div>
+                            <div class="flex flex-col items-center">
+                                <div class="w-14 h-14 rounded-full shadow-sm hover:shadow-md transition-shadow" style="background-color: #d0c4c5;"></div>
+                                <span class="text-xs mt-2 font-medium">Gray Lilac</span>
+                                <span class="text-xs text-green-600">+28%</span>
+                            </div>
+                            <div class="flex flex-col items-center">
+                                <div class="w-14 h-14 rounded-full shadow-sm hover:shadow-md transition-shadow" style="background-color: #b4e9d6;"></div>
+                                <span class="text-xs mt-2 font-medium">Neo Mint</span>
+                                <span class="text-xs text-green-600">+25%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Trending Products Based on AI Insights -->
+                    <div class="mb-8">
+                        <h3 class="text-xl font-bold text-gray-800 mb-4">Products Matching Current Trends</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+                            <!-- Product Card 1 -->
+                            <div class="card overflow-hidden hover-lift">
+                                <a href="product-detail.html?id=sustainable-denim" class="block">
+                                    <div class="relative h-64">
+                                        <img src="https://images.unsplash.com/photo-1591047139829-d91aecb6caea?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" 
+                                            alt="Sustainable Denim Jacket" class="w-full h-full object-cover">
+                                        <div class="absolute top-3 right-3 bg-green-500 text-white text-xs font-medium px-2 py-1 rounded-full shadow-sm">
+                                            Eco-Friendly
+                                        </div>
+                                    </div>
+                                    <div class="p-4">
+                                        <div class="flex justify-between items-start">
+                                            <div>
+                                                <h3 class="font-medium">Sustainable Denim Jacket</h3>
+                                                <p class="text-gray-500 text-sm">Matches: #Sustainable</p>
+                                            </div>
+                                            <span class="font-medium">$89.99</span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            
+                            <!-- Product Card 2 -->
+                            <div class="card overflow-hidden hover-lift">
+                                <a href="product-detail.html?id=y2k-top" class="block">
+                                    <div class="relative h-64">
+                                        <img src="https://images.unsplash.com/photo-1583846783214-7229a91b20ed?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" 
+                                            alt="Y2K Inspired Top" class="w-full h-full object-cover">
+                                        <div class="absolute top-3 right-3 bg-purple-500 text-white text-xs font-medium px-2 py-1 rounded-full shadow-sm">
+                                            Y2K Style
+                                        </div>
+                                    </div>
+                                    <div class="p-4">
+                                        <div class="flex justify-between items-start">
+                                            <div>
+                                                <h3 class="font-medium">Y2K Inspired Crop Top</h3>
+                                                <p class="text-gray-500 text-sm">Matches: #Y2KRevival</p>
+                                            </div>
+                                            <span class="font-medium">$42.99</span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            
+                            <!-- Product Card 3 -->
+                            <div class="card overflow-hidden hover-lift">
+                                <a href="product-detail.html?id=oversized-shirt" class="block">
+                                    <div class="relative h-64">
+                                        <img src="https://images.unsplash.com/photo-1596755094514-f87e34085b2c?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" 
+                                            alt="Oversized Linen Shirt" class="w-full h-full object-cover">
+                                        <div class="absolute top-3 right-3 bg-blue-500 text-white text-xs font-medium px-2 py-1 rounded-full shadow-sm">
+                                            Oversized
+                                        </div>
+                                    </div>
+                                    <div class="p-4">
+                                        <div class="flex justify-between items-start">
+                                            <div>
+                                                <h3 class="font-medium">Oversized Linen Shirt</h3>
+                                                <p class="text-gray-500 text-sm">Matches: #Oversized</p>
+                                            </div>
+                                            <span class="font-medium">$58.99</span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            
+                            <!-- Product Card 4 -->
+                            <div class="card overflow-hidden hover-lift">
+                                <a href="product-detail.html?id=terracotta-dress" class="block">
+                                    <div class="relative h-64">
+                                        <img src="https://images.unsplash.com/photo-1581044777550-4cfa60707c03?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" 
+                                            alt="Terracotta Summer Dress" class="w-full h-full object-cover">
+                                        <div class="absolute top-3 right-3 bg-yellow-500 text-white text-xs font-medium px-2 py-1 rounded-full shadow-sm">
+                                            Trending Color
+                                        </div>
+                                    </div>
+                                    <div class="p-4">
+                                        <div class="flex justify-between items-start">
+                                            <div>
+                                                <h3 class="font-medium">Terracotta Summer Dress</h3>
+                                                <p class="text-gray-500 text-sm">Matches: Trending Colors</p>
+                                            </div>
+                                            <span class="font-medium">$75.50</span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Pagination - Simplified and elegant -->
+            <div class="flex justify-center">
+                <nav class="inline-flex rounded-full shadow-sm overflow-hidden">
+                    <button class="px-5 py-3 bg-white text-gray-500 hover:bg-gray-50 border-r border-gray-200" title="Previous page">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <button class="px-5 py-3 bg-white text-blue-600 font-medium border-r border-gray-200">1</button>
+                    <button class="px-5 py-3 bg-white text-gray-500 hover:bg-gray-50 border-r border-gray-200">2</button>
+                    <button class="px-5 py-3 bg-white text-gray-500 hover:bg-gray-50 border-r border-gray-200">3</button>
+                    <button class="px-5 py-3 bg-white text-gray-500 hover:bg-gray-50 border-r border-gray-200">...</button>
+                    <button class="px-5 py-3 bg-white text-gray-500 hover:bg-gray-50 border-r border-gray-200">8</button>
+                    <button class="px-5 py-3 bg-white text-gray-500 hover:bg-gray-50" title="Next page">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript for tab functionality -->
+    <script>
+        // Tab functionality
+        const tabItems = document.querySelectorAll('.tab-item');
+        const tabContents = document.querySelectorAll('.tab-content');
+        
+        tabItems.forEach(item => {
+            item.addEventListener('click', function() {
+                // Remove active class from all tabs
+                tabItems.forEach(tab => tab.classList.remove('active'));
+                
+                // Add active class to clicked tab
+                this.classList.add('active');
+                
+                // Hide all tab contents
+                tabContents.forEach(content => content.classList.add('hidden'));
+                tabContents.forEach(content => content.classList.remove('active'));
+                
+                // Show the corresponding tab content
+                const target = this.getAttribute('data-target');
+                document.getElementById(target).classList.remove('hidden');
+                document.getElementById(target).classList.add('active');
+                
+                // Update filters based on active tab
+                updateFiltersForTab(target);
+            });
+        });
+        
+        // Function to update filters based on active tab
+        function updateFiltersForTab(tabId) {
+            const filterSection = document.querySelector('.filter-section');
+            const filterLabel = document.querySelector('.filter-section-label');
+            
+            // Update filter section label based on tab
+            if (tabId === 'designers-tab') {
+                filterLabel.textContent = 'Designer Filters:';
+            } else if (tabId === 'products-tab') {
+                filterLabel.textContent = 'Product Filters:';
+            } else if (tabId === 'trends-tab') {
+                filterLabel.textContent = 'Trend Filters:';
+            }
+            
+            // You could also dynamically update available filters based on tab
+            // For this example, we'll keep it simple
+        }
+        
+        // Toggle compact view
+        const toggleCompactBtn = document.getElementById('toggle-compact-view');
+        toggleCompactBtn.addEventListener('click', function() {
+            const designerGrid = document.querySelector('.designer-compact');
+            designerGrid.classList.toggle('designer-expanded');
+            
+            // Toggle icon
+            const icon = this.querySelector('i');
+            if (designerGrid.classList.contains('designer-expanded')) {
+                icon.classList.remove('fa-th-large');
+                icon.classList.add('fa-th');
+                // Update larger layout
+                designerGrid.classList.remove('xl:grid-cols-4');
+                designerGrid.classList.add('xl:grid-cols-3');
+            } else {
+                icon.classList.remove('fa-th');
+                icon.classList.add('fa-th-large');
+                // Update compact layout
+                designerGrid.classList.remove('xl:grid-cols-3');
+                designerGrid.classList.add('xl:grid-cols-4');
+            }
+        });
+        
+        // Function to load trend data from trends page
+        function loadTrendData() {
+            // Check if we have trend data in localStorage
+            const trendDataString = localStorage.getItem('lookLabTrendData');
+            if (trendDataString) {
+                try {
+                    const trendData = JSON.parse(trendDataString);
+                    
+                    // Update sustainable trend card
+                    if (trendData.sustainableFashion) {
+                        const sustainableCard = document.getElementById('sustainable-trend');
+                        if (sustainableCard) {
+                            const growthElement = sustainableCard.querySelector('.text-green-600');
+                            if (growthElement) {
+                                growthElement.textContent = `+${trendData.sustainableFashion.growth}% growth`;
+                            }
+                        }
+                    }
+                    
+                    // Update Y2K trend card
+                    if (trendData.y2kRevival) {
+                        const y2kCard = document.getElementById('y2k-trend');
+                        if (y2kCard) {
+                            const growthElement = y2kCard.querySelector('.text-purple-600');
+                            if (growthElement) {
+                                growthElement.textContent = `+${trendData.y2kRevival.growth}% growth`;
+                            }
+                        }
+                    }
+                    
+                    // Update Oversized trend card
+                    if (trendData.oversizedSilhouettes) {
+                        const oversizedCard = document.getElementById('oversized-trend');
+                        if (oversizedCard) {
+                            const growthElement = oversizedCard.querySelector('.text-blue-600');
+                            if (growthElement) {
+                                growthElement.textContent = `+${trendData.oversizedSilhouettes.growth}% growth`;
+                            }
+                        }
+                    }
+                } catch (e) {
+                    console.error('Error parsing trend data:', e);
+                }
+            }
+        }
+        
+        // Load trend data when the trends tab is clicked
+        document.querySelectorAll('.tab-item').forEach(item => {
+            if (item.getAttribute('data-target') === 'trends-tab') {
+                item.addEventListener('click', loadTrendData);
+            }
+        });
+        
+        // Also load trend data on page load if we're starting on the trends tab
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if the trends tab is active on page load (e.g., from a direct link)
+            const trendsTab = document.getElementById('trends-tab');
+            if (trendsTab && !trendsTab.classList.contains('hidden')) {
+                loadTrendData();
+            }
+            
+            // Handle direct links to specific trends
+            const urlParams = new URLSearchParams(window.location.search);
+            const topic = urlParams.get('topic');
+            if (topic) {
+                // Activate trends tab
+                document.querySelectorAll('.tab-item').forEach(tab => tab.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(content => {
+                    content.classList.add('hidden');
+                    content.classList.remove('active');
+                });
+                
+                const trendsTabItem = document.querySelector('[data-target="trends-tab"]');
+                if (trendsTabItem) {
+                    trendsTabItem.classList.add('active');
+                    trendsTab.classList.remove('hidden');
+                    trendsTab.classList.add('active');
+                    
+                    // Load trend data
+                    loadTrendData();
+                    
+                    // Scroll to the specific trend card if it exists
+                    setTimeout(() => {
+                        const trendCard = document.getElementById(`${topic}-trend`);
+                        if (trendCard) {
+                            trendCard.scrollIntoView({ behavior: 'smooth' });
+                            trendCard.classList.add('ring-4', 'ring-blue-500', 'ring-opacity-50');
+                        }
+                    }, 300);
+                }
+            }
+        });
+    </script>
+</body>
+</html> 

@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LookLab - Designer Profile</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        /* Custom styles for designer profile */
+        .profile-cover-gradient {
+            background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 40%, rgba(0,0,0,0.2) 70%, rgba(0,0,0,0.1) 100%);
+        }
+        
+        .verified-badge {
+            background: linear-gradient(135deg, #4ade80, #22c55e);
+            color: white;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            box-shadow: 0 2px 10px rgba(34, 197, 94, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        /* Designer tag styling */
+        .designer-tag {
+            background-color: rgba(255, 255, 255, 0.1);
+            -webkit-backdrop-filter: blur(8px);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 0.35rem 0.8rem;
+            border-radius: 9999px;
+            font-weight: 500;
+            font-size: 0.75rem;
+            color: white;
+            display: inline-flex;
+            align-items: center;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+            transition: all 0.2s ease;
+        }
+        
+        .designer-tag:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        /* Fashion-forward design elements */
+        .fashion-card {
+            border-radius: 0.75rem;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        .fashion-card:hover {
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            transform: translateY(-5px);
+        }
+        
+        .collection-image-hover {
+            overflow: hidden;
+        }
+        
+        .collection-image-hover img {
+            transition: transform 0.7s ease;
+        }
+        
+        .collection-image-hover:hover img {
+            transform: scale(1.05);
+        }
+        
+        /* Creative metric display */
+        .metric-gradient-bg {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+        }
+        
+        .metric-value-shadow {
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        
+        .stat-card {
+            transition: all 0.3s ease;
+            border-radius: 1rem;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .stat-icon {
+            width: 3rem;
+            height: 3rem;
+            border-radius: 9999px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .stat-card:hover .stat-icon {
+            transform: scale(1.1);
+        }
+        
+        .rating-star {
+            color: #FBBF24;
+        }
+        
+        .profile-action-btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.75rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        
+        .profile-social-link {
+            transition: all 0.2s ease;
+        }
+        
+        .profile-social-link:hover {
+            transform: translateY(-2px);
+        }
+        
+        /* Custom progress bars */
+        .progress-bar-container {
+            height: 0.5rem;
+            border-radius: 9999px;
+            overflow: hidden;
+            background-color: #E5E7EB;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            border-radius: 9999px;
+        }
+        
+        /* Carousel styles */
+        #collab-carousel {
+            position: relative;
+            overflow: hidden;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+        
+        .carousel-item {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            transition: opacity 0.5s ease;
+        }
+        
+        .carousel-item.active {
+            opacity: 1;
+            z-index: 1;
+            position: relative;
+        }
+        
+        .carousel-item.hidden {
+            opacity: 0;
+            z-index: 0;
+        }
+        
+        .carousel-item img {
+            transition: transform 0.7s ease;
+        }
+        
+        #collab-carousel:hover .carousel-item.active img {
+            transform: scale(1.05);
+        }
+        
+        /* Custom height class */
+        .h-112 {
+            height: 28rem; /* 448px - equivalent to 112 in the Tailwind naming convention */
+        }
+    </style>
+</head>
+<body class="bg-gray-50 h-screen overflow-y-auto">
+    <div class="container mx-auto px-4 py-6">
+        <!-- Breadcrumb -->
+        <div class="mb-4">
+            <nav class="flex" aria-label="Breadcrumb">
+                <ol class="inline-flex items-center space-x-1 md:space-x-2 text-xs">
+                    <li class="inline-flex items-center">
+                        <a href="home.html" class="text-gray-500 hover:text-gray-700">
+                            <i class="fas fa-home mr-1"></i>Home
+                        </a>
+                    </li>
+                    <li>
+                        <div class="flex items-center">
+                            <i class="fas fa-chevron-right text-gray-400 text-xs mx-1"></i>
+                            <a href="discovery.html" class="text-gray-500 hover:text-gray-700">
+                                Discover
+                            </a>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="flex items-center">
+                            <i class="fas fa-chevron-right text-gray-400 text-xs mx-1"></i>
+                            <a href="discovery.html?tab=designers" class="text-gray-500 hover:text-gray-700">
+                                Designer
+                            </a>
+                        </div>
+                    </li>
+                    <li aria-current="page">
+                        <div class="flex items-center">
+                            <i class="fas fa-chevron-right text-gray-400 text-xs mx-1"></i>
+                            <span class="text-gray-800 font-medium">Elena Rodriguez</span>
+                        </div>
+                    </li>
+                </ol>
+            </nav>
+        </div>
+        
+        <!-- Designer Header Section - Improved -->
+        <div class="relative mb-8 shadow-lg rounded-xl overflow-hidden">
+            <!-- Cover Image with enhanced gradient overlay - Reduced height to match Home/Discover pages -->
+            <div class="h-44 md:h-56 overflow-hidden">
+                <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1600&q=80" 
+                     alt="Designer Cover" class="w-full h-full object-cover">
+                <div class="absolute inset-0 profile-cover-gradient"></div>
+            </div>
+            
+            <!-- Profile Information - More fashion-forward layout -->
+            <div class="absolute bottom-0 left-0 right-0 px-6 py-4 md:px-8 md:py-6 text-white">
+                <div class="flex flex-col md:flex-row items-center md:items-end">
+                    <!-- Profile picture with improved styling -->
+                    <div class="relative">
+                        <div class="w-24 h-24 md:w-28 md:h-28 rounded-xl overflow-hidden border-3 border-white shadow-xl bg-white transform -translate-y-6">
+                            <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80" 
+                                alt="Elena Rodriguez" class="w-full h-full object-cover">
+                        </div>
+                    </div>
+                    
+                    <!-- Designer information with fashion-forward styling -->
+                    <div class="md:ml-5 text-center md:text-left mt-1 md:mt-0">
+                        <div class="flex items-center justify-center md:justify-start flex-wrap">
+                            <h1 class="text-xl md:text-2xl font-bold">Elena Rodriguez</h1>
+                            <span class="ml-2 verified-badge text-xs">
+                                <i class="fas fa-check-circle mr-1"></i> Verified
+                            </span>
+                        </div>
+                        <p class="text-gray-100 text-xs md:text-sm mt-1 font-light">Modern Minimalist | New York, NY</p>
+                        <div class="flex items-center mt-1 justify-center md:justify-start">
+                            <div class="flex text-yellow-400 text-xs">
+                                <i class="fas fa-star rating-star"></i>
+                                <i class="fas fa-star rating-star"></i>
+                                <i class="fas fa-star rating-star"></i>
+                                <i class="fas fa-star rating-star"></i>
+                                <i class="fas fa-star-half-alt rating-star"></i>
+                                <span class="text-white ml-2 text-xs font-medium">4.5 (148 reviews)</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Action buttons with fashion-forward styling -->
+                    <div class="flex space-x-3 mt-3 md:mt-0 md:ml-auto" id="action-buttons">
+                        <!-- Default buttons for Elena (already connected) -->
+                        <a href="messages.html?contact=elena" class="profile-action-btn bg-white text-gray-800 border border-gray-300 hover:bg-gray-100 py-1.5 px-3 text-xs">
+                            <i class="fas fa-comment mr-1"></i> Message
+                        </a>
+                        <button class="profile-action-btn bg-white/20 backdrop-blur-sm text-white border border-white/30 hover:bg-white/30 py-1.5 px-3 text-xs">
+                            <i class="fas fa-share mr-1"></i> Share
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Designer tags - New section -->
+                <div class="hidden md:flex flex-wrap mt-3 md:mt-4">
+                    <span class="designer-tag"><i class="fas fa-leaf mr-1.5"></i> Sustainable</span>
+                    <span class="designer-tag"><i class="fas fa-tshirt mr-1.5"></i> Minimalist</span>
+                    <span class="designer-tag"><i class="fas fa-ruler-combined mr-1.5"></i> Structured</span>
+                    <span class="designer-tag"><i class="fas fa-globe-americas mr-1.5"></i> Ethical Production</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Designer Quick Stats - Enhanced visual styling -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+            <div class="stat-card p-5 hover-lift shadow-sm flex flex-col items-center bg-white">
+                <div class="stat-icon bg-blue-50 text-blue-500">
+                    <i class="fas fa-tshirt"></i>
+                </div>
+                <span class="text-2xl font-bold">78</span>
+                <span class="text-gray-500 text-xs font-medium mt-1">Products</span>
+            </div>
+            <div class="stat-card p-5 hover-lift shadow-sm flex flex-col items-center bg-white">
+                <div class="stat-icon bg-purple-50 text-purple-500">
+                    <i class="fas fa-layer-group"></i>
+                </div>
+                <span class="text-2xl font-bold">12</span>
+                <span class="text-gray-500 text-xs font-medium mt-1">Collections</span>
+            </div>
+            <div class="stat-card p-5 hover-lift shadow-sm flex flex-col items-center bg-white">
+                <div class="stat-icon bg-green-50 text-green-500">
+                    <i class="fas fa-store"></i>
+                </div>
+                <span class="text-2xl font-bold">42</span>
+                <span class="text-gray-500 text-xs font-medium mt-1">Retailers</span>
+            </div>
+            <div class="stat-card p-5 hover-lift shadow-sm flex flex-col items-center bg-white">
+                <div class="stat-icon bg-yellow-50 text-yellow-500">
+                    <i class="fas fa-star"></i>
+                </div>
+                <span class="text-2xl font-bold text-yellow-500">4.5</span>
+                <span class="text-gray-500 text-xs font-medium mt-1">Avg. Rating</span>
+            </div>
+        </div>
+        
+        <!-- Designer Performance Metrics - Improved visual styling -->
+        <div class="mb-10">
+            <div class="flex items-center justify-between mb-6">
+                <div class="flex items-center">
+                    <i class="fas fa-chart-line text-indigo-600 text-xl mr-2"></i>
+                    <h2 class="text-xl font-bold text-gray-900">Performance Metrics</h2>
+                </div>
+                <div class="text-xs text-gray-500 flex items-center">
+                    <i class="fas fa-calendar-alt mr-1"></i> Last updated: Oct 2023
+                </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <!-- Sales Performance - Fashion-forward styling -->
+                <div class="fashion-card p-5 shadow-sm bg-white">
+                    <h3 class="text-base font-medium text-gray-900 mb-5 border-b pb-2 flex items-center">
+                        <span class="w-2 h-2 bg-blue-500 rounded-full mr-2"></span>
+                        Sales Performance
+                    </h3>
+                    <div class="space-y-6">
+                        <div>
+                            <div class="flex justify-between text-sm mb-2">
+                                <span class="flex items-center font-medium"><i class="fas fa-cart-arrow-down text-blue-500 mr-2"></i> Conversion Rate</span>
+                                <span class="font-bold">24.5%</span>
+                            </div>
+                            <div class="progress-bar-container">
+                                <div class="progress-bar bg-gradient-to-r from-blue-400 to-blue-600" style="width: 24.5%"></div>
+                            </div>
+                            <p class="mt-1 text-xs text-gray-500 italic">Industry avg: 18.3%</p>
+                        </div>
+                        
+                        <div>
+                            <div class="flex justify-between text-sm mb-2">
+                                <span class="flex items-center font-medium"><i class="fas fa-tags text-purple-500 mr-2"></i> Sell-Through Rate</span>
+                                <span class="font-bold">78.3%</span>
+                            </div>
+                            <div class="progress-bar-container">
+                                <div class="progress-bar bg-gradient-to-r from-purple-400 to-purple-600" style="width: 78.3%"></div>
+                            </div>
+                            <p class="mt-1 text-xs text-gray-500 italic">Industry avg: 65.1%</p>
+                        </div>
+                        
+                        <div>
+                            <div class="flex justify-between text-sm mb-2">
+                                <span class="flex items-center font-medium"><i class="fas fa-redo text-green-500 mr-2"></i> Repeat Purchase Rate</span>
+                                <span class="font-bold">42.1%</span>
+                            </div>
+                            <div class="progress-bar-container">
+                                <div class="progress-bar bg-gradient-to-r from-green-400 to-green-600" style="width: 42.1%"></div>
+                            </div>
+                            <p class="mt-1 text-xs text-gray-500 italic">Industry avg: 31.8%</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Market Performance - Fashion-forward styling -->
+                <div class="fashion-card p-5 shadow-sm bg-white">
+                    <h3 class="text-base font-medium text-gray-900 mb-5 border-b pb-2 flex items-center">
+                        <span class="w-2 h-2 bg-indigo-500 rounded-full mr-2"></span>
+                        Market Performance
+                    </h3>
+                    <div class="space-y-6">
+                        <div>
+                            <div class="flex justify-between text-sm mb-2">
+                                <span class="flex items-center font-medium"><i class="fas fa-chart-area text-teal-500 mr-2"></i> Market Growth</span>
+                                <span class="text-green-600 font-bold">↑ 18.7%</span>
+                            </div>
+                            <div class="progress-bar-container">
+                                <div class="progress-bar bg-gradient-to-r from-teal-400 to-teal-600" style="width: 18.7%"></div>
+                            </div>
+                            <p class="mt-1 text-xs text-gray-500 italic">vs. last season: +12.3%</p>
+                        </div>
+                        
+                        <div>
+                            <div class="flex justify-between text-sm mb-2">
+                                <span class="flex items-center font-medium"><i class="fas fa-trophy text-amber-500 mr-2"></i> Industry Position</span>
+                                <span class="font-bold">Top 12%</span>
+                            </div>
+                            <div class="progress-bar-container">
+                                <div class="progress-bar bg-gradient-to-r from-amber-400 to-amber-600" style="width: 88%"></div>
+                            </div>
+                            <p class="mt-1 text-xs text-gray-500 italic">Improved from Top 18% last year</p>
+                        </div>
+                        
+                        <div>
+                            <div class="flex justify-between text-sm mb-2">
+                                <span class="flex items-center font-medium"><i class="fas fa-fire text-red-500 mr-2"></i> Trend Alignment</span>
+                                <span class="font-bold">92.4%</span>
+                            </div>
+                            <div class="progress-bar-container">
+                                <div class="progress-bar bg-gradient-to-r from-red-400 to-red-600" style="width: 92.4%"></div>
+                            </div>
+                            <p class="mt-1 text-xs text-gray-500 italic">Strong alignment with 2023 F/W trends</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Collections - Enhanced visual styling -->
+        <div class="mb-10 collections-section">
+            <div class="flex items-center justify-between mb-5">
+                <div class="flex items-center">
+                    <i class="fas fa-th-large text-indigo-600 text-xl mr-2"></i>
+                    <h2 class="text-xl font-bold text-gray-900">Collections</h2>
+                </div>
+                <a href="#" class="text-indigo-600 hover:text-indigo-800 text-xs font-medium flex items-center px-3 py-1 border border-indigo-200 rounded-full hover:bg-indigo-50 transition-colors">
+                    View All
+                    <i class="fas fa-arrow-right ml-1 text-xs"></i>
+                </a>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <!-- Featured Collaboration: Adidas x Elena Rodriguez -->
+                <div class="fashion-card overflow-hidden col-span-1 md:col-span-3 mb-4">
+                    <a href="#adidas-collab-details" id="collab-preview" class="block">
+                        <div class="collection-image-hover h-64 md:h-80 relative overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1200&q=80" 
+                                 alt="Adidas x Elena Rodriguez Collaboration" class="w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                            <div class="absolute top-3 right-3">
+                                <span class="px-3 py-1.5 bg-gradient-to-r from-green-500 to-blue-500 text-white text-sm font-medium rounded-lg shadow-md">
+                                    <i class="fas fa-handshake mr-1.5"></i> Featured Collaboration
+                                </span>
+                            </div>
+                            <div class="absolute bottom-0 left-0 right-0 p-6">
+                                <div class="flex items-center mb-3">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/2/20/Adidas_Logo.svg" 
+                                         alt="Adidas Logo" class="h-10 bg-white p-1 rounded-lg mr-3">
+                                    <div>
+                                        <h3 class="font-bold text-white text-2xl md:text-3xl">Elena Rodriguez × Adidas</h3>
+                                        <p class="text-sm text-white/90 font-medium">Sustainable Streetwear Collection</p>
+                                    </div>
+                                </div>
+                                <p class="text-white/80 text-sm mb-4 max-w-3xl">
+                                    A limited edition collection featuring recycled materials and zero-waste production techniques. 
+                                    Elena's minimalist aesthetic meets Adidas' sporty silhouettes in this groundbreaking collaboration.
+                                </p>
+                                <button class="px-4 py-2 bg-white text-gray-800 rounded-lg hover:bg-gray-100 transition font-medium text-sm">
+                                    <i class="fas fa-plus mr-1.5"></i> View Collection Details
+                                </button>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Collection 1 - Fashion Forward -->
+                <div class="fashion-card overflow-hidden">
+                    <a href="#" class="block">
+                        <div class="collection-image-hover h-56 relative overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1551232864-3f0890e580d9?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" 
+                                 alt="Summer 2023 Collection" class="w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                            <div class="absolute top-3 right-3">
+                                <span class="px-2 py-1 bg-green-100 text-green-800 text-xs font-medium rounded-md"><i class="fas fa-leaf mr-1"></i> New Season</span>
+                            </div>
+                            <div class="absolute bottom-3 left-3">
+                                <h3 class="font-bold text-white text-lg">Summer 2023</h3>
+                                <p class="text-xs text-white/80">Released: May 2023</p>
+                            </div>
+                        </div>
+                        <div class="p-4 bg-white">
+                            <p class="text-xs text-gray-600">Light fabrics and relaxed silhouettes for warm weather.</p>
+                            <div class="flex justify-between items-center mt-2">
+                                <span class="text-xs font-medium flex items-center text-blue-600">
+                                    <i class="fas fa-tshirt mr-1"></i>
+                                    24 Products
+                                </span>
+                                <div class="flex space-x-1">
+                                    <span class="w-2 h-2 rounded-full bg-blue-400"></span>
+                                    <span class="w-2 h-2 rounded-full bg-pink-400"></span>
+                                    <span class="w-2 h-2 rounded-full bg-amber-400"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                
+                <!-- Collection 2 - Fashion Forward -->
+                <div class="fashion-card overflow-hidden">
+                    <a href="#" class="block">
+                        <div class="collection-image-hover h-56 relative overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1539109136881-3be0616acf4b?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" 
+                                 alt="Spring Essentials" class="w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                            <div class="absolute top-3 right-3">
+                                <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs font-medium rounded-md"><i class="fas fa-fire mr-1"></i> Trending</span>
+                            </div>
+                            <div class="absolute bottom-3 left-3">
+                                <h3 class="font-bold text-white text-lg">Spring Essentials</h3>
+                                <p class="text-xs text-white/80">Released: Feb 2023</p>
+                            </div>
+                        </div>
+                        <div class="p-4 bg-white">
+                            <p class="text-xs text-gray-600">Versatile pieces for layering during transition seasons.</p>
+                            <div class="flex justify-between items-center mt-2">
+                                <span class="text-xs font-medium flex items-center text-blue-600">
+                                    <i class="fas fa-tshirt mr-1"></i>
+                                    18 Products
+                                </span>
+                                <div class="flex space-x-1">
+                                    <span class="w-2 h-2 rounded-full bg-indigo-400"></span>
+                                    <span class="w-2 h-2 rounded-full bg-cyan-400"></span>
+                                    <span class="w-2 h-2 rounded-full bg-gray-400"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                
+                <!-- Collection 3 - Fashion Forward -->
+                <div class="fashion-card overflow-hidden">
+                    <a href="#" class="block">
+                        <div class="collection-image-hover h-56 relative overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" 
+                                 alt="Minimalist Essentials" class="w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                            <div class="absolute top-3 right-3">
+                                <span class="px-2 py-1 bg-purple-100 text-purple-800 text-xs font-medium rounded-md"><i class="fas fa-award mr-1"></i> Best Seller</span>
+                            </div>
+                            <div class="absolute bottom-3 left-3">
+                                <h3 class="font-bold text-white text-lg">Minimalist Essentials</h3>
+                                <p class="text-xs text-white/80">Released: Nov 2022</p>
+                            </div>
+                        </div>
+                        <div class="p-4 bg-white">
+                            <p class="text-xs text-gray-600">Timeless staples for the modern, minimalist wardrobe.</p>
+                            <div class="flex justify-between items-center mt-2">
+                                <span class="text-xs font-medium flex items-center text-blue-600">
+                                    <i class="fas fa-tshirt mr-1"></i>
+                                    36 Products
+                                </span>
+                                <div class="flex space-x-1">
+                                    <span class="w-2 h-2 rounded-full bg-neutral-500"></span>
+                                    <span class="w-2 h-2 rounded-full bg-neutral-300"></span>
+                                    <span class="w-2 h-2 rounded-full bg-orange-400"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Adidas Collaboration Details - New Section with Collapsible Content -->
+        <div id="adidas-collab-details" class="mb-12 hidden">
+            <div class="flex items-center justify-between mb-5">
+                <div class="flex items-center">
+                    <i class="fas fa-handshake text-indigo-600 text-xl mr-2"></i>
+                    <h2 class="text-xl font-bold text-gray-900">Elena Rodriguez × Adidas Collaboration</h2>
+                </div>
+                <button id="hide-collab" class="text-indigo-600 hover:text-indigo-800 text-xs font-medium flex items-center px-3 py-1 border border-indigo-200 rounded-full hover:bg-indigo-50 transition-colors">
+                    <i class="fas fa-chevron-up mr-1 text-xs"></i>
+                    Hide Details
+                </button>
+            </div>
+            
+            <div class="bg-white shadow-sm rounded-xl overflow-hidden">
+                <div class="grid grid-cols-1 md:grid-cols-2">
+                    <!-- Left Column: Image Carousel -->
+                    <div class="h-full">
+                        <div id="collab-carousel" class="relative h-112 md:h-[600px] overflow-hidden">
+                            <div class="carousel-item active h-full w-full">
+                                <div class="h-full w-full flex items-center justify-center bg-gray-100">
+                                    <img src="https://images.unsplash.com/photo-1611308725032-74f0a551d018?q=80&w=2522&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
+                                         alt="Recycled Track Jacket" class="w-full h-full object-cover">
+                                </div>
+                            </div>
+                            <div class="carousel-item h-full w-full hidden">
+                                <div class="h-full w-full flex items-center justify-center bg-gray-100">
+                                    <img src="https://images.unsplash.com/photo-1552902865-b72c031ac5ea?q=80&w=2488&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
+                                         alt="Sustainable Joggers" class="w-full h-full object-cover">
+                                </div>
+                            </div>
+                            <div class="carousel-item h-full w-full hidden">
+                                <div class="h-full w-full flex items-center justify-center bg-gray-100">
+                                    <img src="https://images.unsplash.com/photo-1566138702430-e9de69726fe3?q=80&w=2525&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
+                                         alt="Ocean Plastic Sneakers" class="w-full h-full object-cover">
+                                </div>
+                            </div>
+                            <div class="carousel-item h-full w-full hidden">
+                                <div class="h-full w-full flex items-center justify-center bg-gray-100">
+                                    <img src="https://images.unsplash.com/photo-1576566588028-4147f3842f27?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80" 
+                                         alt="Organic Cotton Tee" class="w-full h-full object-cover">
+                                </div>
+                            </div>
+                            
+                            <!-- Carousel Controls -->
+                            <button class="absolute left-4 top-1/2 transform -translate-y-1/2 w-10 h-10 rounded-full bg-white/70 flex items-center justify-center text-gray-800 hover:bg-white focus:outline-none" id="prev-slide" title="Previous slide">
+                                <i class="fas fa-chevron-left"></i>
+                            </button>
+                            <button class="absolute right-4 top-1/2 transform -translate-y-1/2 w-10 h-10 rounded-full bg-white/70 flex items-center justify-center text-gray-800 hover:bg-white focus:outline-none" id="next-slide" title="Next slide">
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+                            
+                            <!-- Carousel Indicators -->
+                            <div class="absolute bottom-4 left-0 right-0 flex justify-center gap-2">
+                                <button class="w-2 h-2 rounded-full bg-white opacity-100" data-slide="0" title="Go to slide 1"></button>
+                                <button class="w-2 h-2 rounded-full bg-white opacity-50" data-slide="1" title="Go to slide 2"></button>
+                                <button class="w-2 h-2 rounded-full bg-white opacity-50" data-slide="2" title="Go to slide 3"></button>
+                                <button class="w-2 h-2 rounded-full bg-white opacity-50" data-slide="3" title="Go to slide 4"></button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Right Column: Collaboration Details -->
+                    <div class="p-6 md:p-8">
+                        <div class="flex items-center mb-4">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/2/20/Adidas_Logo.svg" alt="Adidas Logo" class="h-10 bg-gray-100 p-1 rounded mr-3">
+                            <div>
+                                <h3 class="font-bold text-2xl text-gray-900">Sustainable Streetwear Collection</h3>
+                                <p class="text-gray-600">Released: March 2023</p>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-6">
+                            <div class="flex items-center gap-4 mb-3">
+                                <span class="px-3 py-1 bg-green-100 text-green-800 text-xs font-medium rounded-md">Sustainable</span>
+                                <span class="px-3 py-1 bg-blue-100 text-blue-800 text-xs font-medium rounded-md">Limited Edition</span>
+                                <span class="px-3 py-1 bg-purple-100 text-purple-800 text-xs font-medium rounded-md">Streetwear</span>
+                            </div>
+                            
+                            <p class="text-gray-700 leading-relaxed mb-4">
+                                This groundbreaking collaboration brings together Elena Rodriguez's minimalist aesthetic with Adidas' 
+                                athletic heritage. Each piece in the collection is created using recycled materials and zero-waste 
+                                production techniques, setting a new standard for sustainable fashion.
+                            </p>
+                            <p class="text-gray-700 leading-relaxed mb-4">
+                                The collection features versatile streetwear pieces that blend comfort with sophisticated design, 
+                                perfect for both athletic activities and urban lifestyles. Highlights include recycled polyester 
+                                tracksuits, organic cotton graphic tees, and sneakers made from ocean plastic.
+                            </p>
+                        </div>
+                        
+                        <div class="mb-6">
+                            <h4 class="font-medium text-gray-900 mb-3">Collection Highlights</h4>
+                            <ul class="space-y-2">
+                                <li class="flex items-center">
+                                    <i class="fas fa-check text-green-500 mr-2"></i>
+                                    <span class="text-gray-700">100% sustainable materials</span>
+                                </li>
+                                <li class="flex items-center">
+                                    <i class="fas fa-check text-green-500 mr-2"></i>
+                                    <span class="text-gray-700">Zero-waste production process</span>
+                                </li>
+                                <li class="flex items-center">
+                                    <i class="fas fa-check text-green-500 mr-2"></i>
+                                    <span class="text-gray-700">15 unique pieces across apparel and footwear</span>
+                                </li>
+                                <li class="flex items-center">
+                                    <i class="fas fa-check text-green-500 mr-2"></i>
+                                    <span class="text-gray-700">Featured in Vogue, Elle, and GQ</span>
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <div class="flex gap-3">
+                            <button class="flex-1 px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-900 transition font-medium text-sm">
+                                Shop Collection
+                            </button>
+                            <button class="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition font-medium text-sm">
+                                <i class="far fa-heart mr-1.5"></i> Save
+                            </button>
+                            <button class="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition font-medium text-sm">
+                                <i class="fas fa-share-alt mr-1.5"></i> Share
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Products from the Collection -->
+                <div class="px-6 md:px-8 pb-8">
+                    <h4 class="font-medium text-gray-900 mb-4">Products from this Collection</h4>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <!-- Product 1 -->
+                        <div class="bg-gray-50 rounded-lg overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1611308725032-74f0a551d018?q=80&w=2522&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
+                                 alt="Recycled Track Jacket" class="w-full h-40 object-cover">
+                            <div class="p-3">
+                                <h5 class="font-medium text-sm">Recycled Track Jacket</h5>
+                                <p class="text-gray-500 text-xs">$120.00</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Product 2 -->
+                        <div class="bg-gray-50 rounded-lg overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1552902865-b72c031ac5ea?q=80&w=2488&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
+                                 alt="Sustainable Joggers" class="w-full h-40 object-cover">
+                            <div class="p-3">
+                                <h5 class="font-medium text-sm">Sustainable Joggers</h5>
+                                <p class="text-gray-500 text-xs">$85.00</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Product 3 -->
+                        <div class="bg-gray-50 rounded-lg overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1566138702430-e9de69726fe3?q=80&w=2525&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
+                                 alt="Ocean Plastic Sneakers" class="w-full h-40 object-cover">
+                            <div class="p-3">
+                                <h5 class="font-medium text-sm">Ocean Plastic Sneakers</h5>
+                                <p class="text-gray-500 text-xs">$140.00</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Product 4 -->
+                        <div class="bg-gray-50 rounded-lg overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1576566588028-4147f3842f27?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80" 
+                                 alt="Organic Cotton Tee" class="w-full h-40 object-cover">
+                            <div class="p-3">
+                                <h5 class="font-medium text-sm">Organic Cotton Tee</h5>
+                                <p class="text-gray-500 text-xs">$45.00</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Retail Partners - Enhanced visual styling -->
+        <div class="mb-12">
+            <div class="flex items-center mb-6">
+                <i class="fas fa-store text-indigo-600 text-2xl mr-3"></i>
+                <h2 class="text-2xl font-bold text-gray-900">Retail Partners</h2>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <div class="bg-white rounded-xl p-6 flex flex-col items-center hover-lift shadow-sm">
+                    <img src="https://placehold.co/150x80?text=Nordstrom" alt="Nordstrom" class="h-14 object-contain mb-4">
+                    <span class="text-sm font-medium">Nordstrom</span>
+                    <span class="text-xs text-gray-500 flex items-center mt-1">
+                        <i class="fas fa-clock mr-1 text-green-500"></i> Since 2020
+                    </span>
+                </div>
+                
+                <div class="bg-white rounded-xl p-6 flex flex-col items-center hover-lift shadow-sm">
+                    <img src="https://placehold.co/150x80?text=Bloomingdales" alt="Bloomingdales" class="h-14 object-contain mb-4">
+                    <span class="text-sm font-medium">Bloomingdale's</span>
+                    <span class="text-xs text-gray-500 flex items-center mt-1">
+                        <i class="fas fa-clock mr-1 text-green-500"></i> Since 2021
+                    </span>
+                </div>
+                
+                <div class="bg-white rounded-xl p-6 flex flex-col items-center hover-lift shadow-sm">
+                    <img src="https://placehold.co/150x80?text=Saks" alt="Saks Fifth Avenue" class="h-14 object-contain mb-4">
+                    <span class="text-sm font-medium">Saks Fifth Avenue</span>
+                    <span class="text-xs text-gray-500 flex items-center mt-1">
+                        <i class="fas fa-clock mr-1 text-green-500"></i> Since 2019
+                    </span>
+                </div>
+                
+                <div class="bg-white rounded-xl p-6 flex flex-col items-center hover-lift shadow-sm">
+                    <img src="https://placehold.co/150x80?text=Neiman+Marcus" alt="Neiman Marcus" class="h-14 object-contain mb-4">
+                    <span class="text-sm font-medium">Neiman Marcus</span>
+                    <span class="text-xs text-gray-500 flex items-center mt-1">
+                        <i class="fas fa-clock mr-1 text-green-500"></i> Since 2022
+                    </span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- About Designer - Enhanced visual styling -->
+        <div class="mb-12">
+            <div class="flex items-center mb-6">
+                <i class="fas fa-user text-indigo-600 text-2xl mr-3"></i>
+                <h2 class="text-2xl font-bold text-gray-900">About Elena</h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="md:col-span-2 bg-white rounded-xl p-8 shadow-sm text-readable">
+                    <p class="text-gray-600 mb-4 leading-relaxed">
+                        Elena Rodriguez is a New York-based fashion designer known for her minimal, sustainable approach to modern clothing. 
+                        With a background in architecture, Elena brings structural precision and clean lines to her designs, creating pieces 
+                        that are both timeless and contemporary.
+                    </p>
+                    <p class="text-gray-600 mb-4 leading-relaxed">
+                        After graduating from Parsons School of Design in 2015, Elena worked with several established designers before 
+                        launching her eponymous label in 2018. Her commitment to ethical production and sustainable materials has earned 
+                        her recognition in the industry, including the Emerging Designer Award in 2020.
+                    </p>
+                    <p class="text-gray-600 leading-relaxed">
+                        Elena's designs have been featured in Vogue, Elle, and Harper's Bazaar, and worn by celebrities including Emma Stone 
+                        and Zendaya. Her brand continues to grow with a focus on quality craftsmanship and thoughtful, versatile designs for 
+                        the modern consumer.
+                    </p>
+                </div>
+                
+                <div>
+                    <div class="bg-white rounded-xl p-6 shadow-sm">
+                        <h3 class="font-semibold mb-5 text-lg text-gray-800">Connect with Elena</h3>
+                        <div class="space-y-4">
+                            <div class="profile-social-link flex items-center p-3 hover:bg-gray-50 rounded-lg transition-colors border border-gray-100">
+                                <div class="w-10 h-10 rounded-full bg-pink-100 flex items-center justify-center mr-3">
+                                    <i class="fab fa-instagram text-pink-600"></i>
+                                </div>
+                                <a href="#" class="text-gray-700 hover:text-pink-600 hover:underline flex-grow font-medium">@elenadesigns</a>
+                                <i class="fas fa-chevron-right text-gray-400"></i>
+                            </div>
+                            
+                            <div class="profile-social-link flex items-center p-3 hover:bg-gray-50 rounded-lg transition-colors border border-gray-100">
+                                <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center mr-3">
+                                    <i class="fab fa-twitter text-blue-600"></i>
+                                </div>
+                                <a href="#" class="text-gray-700 hover:text-blue-600 hover:underline flex-grow font-medium">@elenarodriguez</a>
+                                <i class="fas fa-chevron-right text-gray-400"></i>
+                            </div>
+                            
+                            <div class="profile-social-link flex items-center p-3 hover:bg-gray-50 rounded-lg transition-colors border border-gray-100">
+                                <div class="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center mr-3">
+                                    <i class="fas fa-globe text-purple-600"></i>
+                                </div>
+                                <a href="#" class="text-gray-700 hover:text-purple-600 hover:underline flex-grow font-medium">www.elenadesigns.com</a>
+                                <i class="fas fa-chevron-right text-gray-400"></i>
+                            </div>
+                            
+                            <div class="profile-social-link flex items-center p-3 hover:bg-gray-50 rounded-lg transition-colors border border-gray-100">
+                                <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center mr-3">
+                                    <i class="fas fa-envelope text-green-600"></i>
+                                </div>
+                                <a href="#" class="text-gray-700 hover:text-green-600 hover:underline flex-grow font-medium">contact@elenadesigns.com</a>
+                                <i class="fas fa-chevron-right text-gray-400"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Featured Products - Enhanced visual styling -->
+        <div>
+            <div class="flex items-center justify-between mb-6">
+                <div class="flex items-center">
+                    <i class="fas fa-star text-indigo-600 text-2xl mr-3"></i>
+                    <h2 class="text-2xl font-bold text-gray-900">Featured Products</h2>
+                </div>
+                <a href="#" class="text-indigo-600 hover:text-indigo-800 font-medium flex items-center">
+                    View All Products
+                    <i class="fas fa-arrow-right ml-2 text-sm"></i>
+                </a>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+                <!-- Product 1 - Updated -->
+                <div class="bg-white rounded-xl hover-lift shadow-sm">
+                    <a href="product-detail.html?id=minimal-blazer" class="block">
+                        <div class="relative h-64 rounded-t-xl overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1591047139829-d91aecb6caea?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" 
+                                 alt="Minimal Structured Blazer" class="w-full h-full object-cover">
+                            <div class="absolute top-3 right-3">
+                                <span class="bg-gradient-to-r from-blue-500 to-blue-600 text-white text-xs px-3 py-1 rounded-full shadow-md font-medium">$65 Wholesale</span>
+                            </div>
+                        </div>
+                        <div class="p-5">
+                            <h3 class="font-medium">Minimal Structured Blazer</h3>
+                            <div class="flex justify-between items-center mt-2">
+                                <span class="text-sm text-gray-500">MSRP: $129.99</span>
+                                <div class="text-yellow-400 text-xs">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star-half-alt"></i>
+                                </div>
+                            </div>
+                            <div class="mt-3 px-2 py-1 text-xs bg-blue-50 text-blue-600 font-medium inline-block rounded">50% Margin</div>
+                        </div>
+                    </a>
+                </div>
+                
+                <!-- More products would go here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Handle connection flow based on URL parameters
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get URL parameters
+            const urlParams = new URLSearchParams(window.location.search);
+            const designerId = urlParams.get('id');
+            
+            // Get action buttons container
+            const actionButtonsContainer = document.getElementById('action-buttons');
+            const messageButton = actionButtonsContainer.querySelector('a[href^="messages.html"]');
+            const shareButton = actionButtonsContainer.querySelector('button');
+            
+            // If not Elena Rodriguez, update designer information
+            if (designerId && designerId !== 'elena') {
+                // Update page title if needed
+                if (designerId === 'marcus') {
+                    document.querySelector('h1').textContent = 'Marcus Chen';
+                    document.querySelector('p.text-gray-100').textContent = 'Luxury Accessories | New York, USA';
+                } else if (designerId === 'sophia') {
+                    document.querySelector('h1').textContent = 'Sophia Ward';
+                    document.querySelector('p.text-gray-100').textContent = 'Bold Prints | London, UK';
+                }
+            }
+
+            // Collaboration section toggle functionality
+            const collabPreview = document.getElementById('collab-preview');
+            const collabDetails = document.getElementById('adidas-collab-details');
+            const hideCollabBtn = document.getElementById('hide-collab');
+            
+            if (collabPreview && collabDetails && hideCollabBtn) {
+                // Show collaboration details when preview is clicked
+                collabPreview.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    collabDetails.classList.remove('hidden');
+                    // Smooth scroll to details section
+                    collabDetails.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                });
+                
+                // Hide collaboration details when hide button is clicked
+                hideCollabBtn.addEventListener('click', function() {
+                    collabDetails.classList.add('hidden');
+                    // Smooth scroll back to preview section
+                    document.querySelector('.collections-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+                });
+            }
+            
+            // Carousel functionality for collaboration details
+            const carousel = document.getElementById('collab-carousel');
+            if (carousel) {
+                const slides = carousel.querySelectorAll('.carousel-item');
+                const prevBtn = document.getElementById('prev-slide');
+                const nextBtn = document.getElementById('next-slide');
+                const indicators = carousel.querySelectorAll('[data-slide]');
+                let currentSlide = 0;
+                
+                // Function to show a specific slide
+                function showSlide(index) {
+                    // Calculate the target slide index
+                    currentSlide = (index + slides.length) % slides.length;
+                    
+                    // First update indicators
+                    indicators.forEach(ind => ind.classList.replace('opacity-100', 'opacity-50'));
+                    indicators[currentSlide].classList.replace('opacity-50', 'opacity-100');
+                    
+                    // Fade out all slides first
+                    slides.forEach(slide => {
+                        slide.classList.add('hidden');
+                        slide.classList.remove('active');
+                    });
+                    
+                    // Show and fade in the target slide
+                    slides[currentSlide].classList.remove('hidden');
+                    
+                    // Use setTimeout to ensure proper CSS transition
+                    setTimeout(() => {
+                        slides[currentSlide].classList.add('active');
+                    }, 50);
+                }
+                
+                // Previous button click
+                if (prevBtn) {
+                    prevBtn.addEventListener('click', () => {
+                        showSlide(currentSlide - 1);
+                    });
+                }
+                
+                // Next button click
+                if (nextBtn) {
+                    nextBtn.addEventListener('click', () => {
+                        showSlide(currentSlide + 1);
+                    });
+                }
+                
+                // Indicator buttons
+                indicators.forEach((indicator, index) => {
+                    indicator.addEventListener('click', () => {
+                        showSlide(index);
+                    });
+                });
+                
+                // Auto-advance slides every 5 seconds
+                setInterval(() => {
+                    if (!document.hidden) {
+                        showSlide(currentSlide + 1);
+                    }
+                }, 5000);
+            }
+        });
+    </script>
+</body>
+</html> 

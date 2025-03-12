@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LookLab - Designer Profile</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body class="bg-white h-screen overflow-y-auto">
+    <div class="container mx-auto px-6 py-8">
+        <!-- Header section with profile info -->
+        <div class="mb-8">
+            <div class="flex items-start">
+                <a href="discovery.html" class="text-blue-600 flex items-center mb-6">
+                    <i class="fas fa-arrow-left mr-2"></i> Back to Designers
+                </a>
+            </div>
+            <div class="flex flex-col md:flex-row md:items-center">
+                <div class="md:w-1/3 flex flex-col items-center mb-6 md:mb-0">
+                    <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80" 
+                        alt="Elena Rodriguez" class="w-48 h-48 rounded-full object-cover mb-4 shadow-lg">
+                    <div class="flex space-x-2 mb-4">
+                        <button class="btn-primary">
+                            <i class="fas fa-user-plus mr-1"></i> Connect
+                        </button>
+                        <button class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition">
+                            <i class="fas fa-bookmark mr-1"></i> Save
+                        </button>
+                    </div>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-500 hover:text-gray-800" title="Visit Instagram">
+                            <i class="fab fa-instagram text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-500 hover:text-gray-800" title="Visit LinkedIn">
+                            <i class="fab fa-linkedin text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-500 hover:text-gray-800" title="Visit Website">
+                            <i class="fas fa-globe text-xl"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="md:w-2/3 md:pl-8">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h1 class="text-3xl font-bold text-gray-800">Elena Rodriguez</h1>
+                            <p class="text-gray-600 mt-1">Modern Minimalist | New York, NY</p>
+                        </div>
+                        <div class="bg-green-100 text-green-700 text-xs px-2 py-1 rounded-full">
+                            New Collection
+                        </div>
+                    </div>
+                    <div class="flex items-center mt-3">
+                        <div class="flex text-yellow-400">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                        </div>
+                        <span class="text-gray-500 text-sm ml-2">4.5 (48 reviews)</span>
+                    </div>
+                    <div class="mt-4 flex flex-wrap gap-2">
+                        <span class="px-3 py-1 bg-gray-100 text-gray-800 text-sm rounded-full">Sustainable</span>
+                        <span class="px-3 py-1 bg-gray-100 text-gray-800 text-sm rounded-full">Minimalist</span>
+                        <span class="px-3 py-1 bg-gray-100 text-gray-800 text-sm rounded-full">Women's Fashion</span>
+                        <span class="px-3 py-1 bg-gray-100 text-gray-800 text-sm rounded-full">Handcrafted</span>
+                        <span class="px-3 py-1 bg-gray-100 text-gray-800 text-sm rounded-full">Ethical</span>
+                    </div>
+                    <p class="mt-6 text-gray-700 leading-relaxed">
+                        Award-winning designer with over 10 years of experience in sustainable fashion. My focus is on creating 
+                        timeless, minimalist pieces using eco-friendly materials and ethical production methods. Each collection 
+                        tells a story of modern femininity while maintaining a commitment to sustainability and fair labor practices.
+                    </p>
+                    <div class="mt-4 grid grid-cols-3 gap-4">
+                        <div>
+                            <span class="block text-2xl font-bold text-gray-800">48</span>
+                            <span class="text-sm text-gray-500">Collections</span>
+                        </div>
+                        <div>
+                            <span class="block text-2xl font-bold text-gray-800">12</span>
+                            <span class="text-sm text-gray-500">Years Experience</span>
+                        </div>
+                        <div>
+                            <span class="block text-2xl font-bold text-gray-800">350+</span>
+                            <span class="text-sm text-gray-500">Designs</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabs navigation -->
+        <div class="border-b border-gray-200 mb-8">
+            <nav class="-mb-px flex space-x-8">
+                <a href="#" class="border-b-2 border-blue-500 py-4 px-1 text-sm font-medium text-blue-600">
+                    Collections
+                </a>
+                <a href="#" class="border-b-2 border-transparent py-4 px-1 text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300">
+                    About
+                </a>
+                <a href="#" class="border-b-2 border-transparent py-4 px-1 text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300">
+                    Reviews
+                </a>
+                <a href="#" class="border-b-2 border-transparent py-4 px-1 text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300">
+                    Lookbook
+                </a>
+                <a href="#" class="border-b-2 border-transparent py-4 px-1 text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300">
+                    Collaborations
+                </a>
+            </nav>
+        </div>
+
+        <!-- Collections section -->
+        <div class="mb-8">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-gray-800">Latest Collections</h2>
+                <div class="flex items-center">
+                    <label for="collection-sort" class="text-gray-500 mr-4">Sort by:</label>
+                    <select id="collection-sort" class="input-field py-1" aria-label="Sort collections">
+                        <option>Newest First</option>
+                        <option>Oldest First</option>
+                        <option>Most Popular</option>
+                    </select>
+                </div>
+            </div>
+            
+            <!-- Collection Cards Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Collection 1 -->
+                <div class="card overflow-hidden hover:shadow-lg transition-shadow">
+                    <div class="relative">
+                        <img src="https://images.unsplash.com/photo-1509631179647-0177331693ae?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" 
+                            alt="Summer 2023 Collection" class="w-full h-64 object-cover">
+                        <div class="absolute top-4 right-4 bg-green-500 text-white text-xs px-2 py-1 rounded-full">
+                            New Season
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-bold text-xl mb-2">Summer Essentials 2023</h3>
+                        <p class="text-gray-600 text-sm mb-4">A breezy collection of minimalist pieces crafted from organic cotton and linen. Perfect for the warm months ahead.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-500">Released May 2023</span>
+                            <button class="text-blue-600 hover:text-blue-800 font-medium">
+                                View Details
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Collection 2 -->
+                <div class="card overflow-hidden hover:shadow-lg transition-shadow">
+                    <div class="relative">
+                        <img src="https://images.unsplash.com/photo-1445205170230-053b83016050?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" 
+                            alt="Sustainable Denim" class="w-full h-64 object-cover">
+                        <div class="absolute top-4 right-4 bg-blue-500 text-white text-xs px-2 py-1 rounded-full">
+                            Limited Edition
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-bold text-xl mb-2">Sustainable Denim Project</h3>
+                        <p class="text-gray-600 text-sm mb-4">Eco-friendly denim pieces created using recycled materials and water-saving production methods.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-500">Released March 2023</span>
+                            <button class="text-blue-600 hover:text-blue-800 font-medium">
+                                View Details
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Collection 3 -->
+                <div class="card overflow-hidden hover:shadow-lg transition-shadow">
+                    <div class="relative">
+                        <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" 
+                            alt="Urban Minimalist" class="w-full h-64 object-cover">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-bold text-xl mb-2">Urban Minimalist</h3>
+                        <p class="text-gray-600 text-sm mb-4">Clean lines and monochromatic palette define this collection of versatile pieces for the modern city dweller.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-500">Released January 2023</span>
+                            <button class="text-blue-600 hover:text-blue-800 font-medium">
+                                View Details
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Featured Products -->
+        <div class="mb-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6">Featured Products</h2>
+            
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <!-- Product 1 -->
+                <div class="card overflow-hidden hover:shadow-lg transition-shadow">
+                    <img src="https://images.unsplash.com/photo-1596755094514-f87e34085b2c?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80"
+                        alt="Oversized Linen Shirt" class="w-full h-64 object-cover">
+                    <div class="p-4">
+                        <h3 class="font-medium">Oversized Linen Shirt</h3>
+                        <div class="flex justify-between items-center mt-2">
+                            <span class="text-gray-500">Summer Essentials</span>
+                            <span class="font-bold">$89.99</span>
+                        </div>
+                        <div class="mt-3">
+                            <button class="w-full py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 transition">
+                                View Details
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product 2 -->
+                <div class="card overflow-hidden hover:shadow-lg transition-shadow">
+                    <img src="https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80" 
+                        alt="Relaxed Fit Trousers" class="w-full h-64 object-cover">
+                    <div class="p-4">
+                        <h3 class="font-medium">Relaxed Fit Trousers</h3>
+                        <div class="flex justify-between items-center mt-2">
+                            <span class="text-gray-500">Urban Minimalist</span>
+                            <span class="font-bold">$110.00</span>
+                        </div>
+                        <div class="mt-3">
+                            <button class="w-full py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 transition">
+                                View Details
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product 3 -->
+                <div class="card overflow-hidden hover:shadow-lg transition-shadow">
+                    <img src="https://images.unsplash.com/photo-1591047139829-d91aecb6caea?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80" 
+                        alt="Sustainable Denim Jacket" class="w-full h-64 object-cover">
+                    <div class="p-4">
+                        <h3 class="font-medium">Sustainable Denim Jacket</h3>
+                        <div class="flex justify-between items-center mt-2">
+                            <span class="text-gray-500">Denim Project</span>
+                            <span class="font-bold">$149.99</span>
+                        </div>
+                        <div class="mt-3">
+                            <button class="w-full py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 transition">
+                                View Details
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product 4 -->
+                <div class="card overflow-hidden hover:shadow-lg transition-shadow">
+                    <img src="https://images.unsplash.com/photo-1551803091-e20673f15770?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80" 
+                        alt="Minimalist Tote Bag" class="w-full h-64 object-cover">
+                    <div class="p-4">
+                        <h3 class="font-medium">Minimalist Tote Bag</h3>
+                        <div class="flex justify-between items-center mt-2">
+                            <span class="text-gray-500">Accessories</span>
+                            <span class="font-bold">$65.00</span>
+                        </div>
+                        <div class="mt-3">
+                            <button class="w-full py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 transition">
+                                View Details
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Collaborations & Stockists -->
+        <div class="card p-6 mb-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">Collaborations & Stockists</h2>
+            
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+                <!-- Brand 1 -->
+                <div class="flex flex-col items-center">
+                    <img src="https://images.unsplash.com/photo-1572584642822-6f8de0243c93?ixlib=rb-1.2.1&auto=format&fit=crop&w=150&q=80" 
+                        alt="Nordstrom Logo" class="w-20 h-20 object-contain grayscale opacity-70 hover:grayscale-0 hover:opacity-100 transition-all">
+                    <span class="text-sm text-gray-500 mt-2">Nordstrom</span>
+                </div>
+                
+                <!-- Brand 2 -->
+                <div class="flex flex-col items-center">
+                    <img src="https://images.unsplash.com/photo-1529612700005-e35377bf1415?ixlib=rb-1.2.1&auto=format&fit=crop&w=150&q=80" 
+                        alt="Anthropologie Logo" class="w-20 h-20 object-contain grayscale opacity-70 hover:grayscale-0 hover:opacity-100 transition-all">
+                    <span class="text-sm text-gray-500 mt-2">Anthropologie</span>
+                </div>
+                
+                <!-- Brand 3 -->
+                <div class="flex flex-col items-center">
+                    <img src="https://images.unsplash.com/photo-1548094878-84ced0f6896d?ixlib=rb-1.2.1&auto=format&fit=crop&w=150&q=80" 
+                        alt="Net-a-Porter Logo" class="w-20 h-20 object-contain grayscale opacity-70 hover:grayscale-0 hover:opacity-100 transition-all">
+                    <span class="text-sm text-gray-500 mt-2">Net-a-Porter</span>
+                </div>
+                
+                <!-- Brand 4 -->
+                <div class="flex flex-col items-center">
+                    <img src="https://images.unsplash.com/photo-1599669454699-e05d8e246f99?ixlib=rb-1.2.1&auto=format&fit=crop&w=150&q=80" 
+                        alt="Shopbop Logo" class="w-20 h-20 object-contain grayscale opacity-70 hover:grayscale-0 hover:opacity-100 transition-all">
+                    <span class="text-sm text-gray-500 mt-2">Shopbop</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact section -->
+        <div class="bg-gray-50 rounded-lg p-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                    <h2 class="text-2xl font-bold text-gray-800 mb-4">Interested in collaborating?</h2>
+                    <p class="text-gray-600 mb-6">
+                        I'm always open to discussing product design work or partnership opportunities.
+                    </p>
+                    <div class="space-y-4">
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 h-6 w-6 text-blue-600 mt-1">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div class="ml-3 text-gray-700">
+                                <span>elena@rodriguezdesigns.com</span>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 h-6 w-6 text-blue-600 mt-1">
+                                <i class="fas fa-phone-alt"></i>
+                            </div>
+                            <div class="ml-3 text-gray-700">
+                                <span>+1 (212) 555-1234</span>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 h-6 w-6 text-blue-600 mt-1">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div class="ml-3 text-gray-700">
+                                <span>225 W 35th St, New York, NY 10001</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <form>
+                        <div class="mb-4">
+                            <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Name</label>
+                            <input type="text" id="name" class="input-field w-full">
+                        </div>
+                        <div class="mb-4">
+                            <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                            <input type="email" id="email" class="input-field w-full">
+                        </div>
+                        <div class="mb-4">
+                            <label for="message" class="block text-sm font-medium text-gray-700 mb-1">Message</label>
+                            <textarea id="message" rows="4" class="input-field w-full"></textarea>
+                        </div>
+                        <button type="submit" class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition">
+                            Send Message
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 

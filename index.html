@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>LookLab - Fashion Trend Platform</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        html, body {
+            font-family: 'Inter', sans-serif;
+            height: 100vh !important;
+            width: 100vw !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            overflow: hidden !important; /* Keep this hidden for the main window */
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            bottom: 0 !important;
+        }
+        
+        /* Ensure iframe responsively fills the entire available space */
+        .content-container {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            height: 100%;
+            overflow: hidden; /* Keep container hidden, but allow iframe to scroll */
+            position: relative;
+        }
+        
+        #content-frame {
+            flex: 1;
+            height: 100%;
+            width: 100%;
+            border: none;
+            margin: 0;
+            padding: 0;
+            overflow: auto !important; /* Allow iframe to scroll */
+        }
+        
+        /* Custom scrollbar styling for iframe */
+        iframe::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        
+        iframe::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        
+        iframe::-webkit-scrollbar-thumb {
+            background-color: rgba(203, 213, 225, 0.8);
+            border-radius: 20px;
+        }
+        
+        /* Ensure chat containers adapt to iframe size */
+        iframe {
+            overflow: hidden !important;
+        }
+        
+        /* Fix for embedded chat pages */
+        .iframe-chat-fix {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            pointer-events: none;
+        }
+        
+        /* Handle iframe sizing for chat interfaces */
+        #content-frame.chat-frame {
+            height: 100% !important;
+            min-height: 100% !important;
+            overflow-y: hidden !important;
+        }
+        
+        .mac-window-wrapper {
+            width: 100vw !important;
+            height: 100vh !important;
+            display: flex;
+            flex-direction: column;
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            bottom: 0 !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            overflow: hidden !important;
+            z-index: 1000;
+            border: none !important;
+            border-radius: 0 !important;
+            box-shadow: none !important;
+        }
+        
+        .app-container {
+            display: flex;
+            flex: 1;
+            height: calc(100vh - 30px); /* Adjust for status bar */
+            overflow: hidden;
+            width: 100vw;
+        }
+        
+        /* Override any potential Tailwind margins/paddings */
+        .p-0 {
+            padding: 0 !important;
+        }
+        
+        .m-0 {
+            margin: 0 !important;
+        }
+        
+        .no-border {
+            border: none !important;
+        }
+        
+        .full-width {
+            width: 100vw !important;
+        }
+        
+        .full-height {
+            height: 100vh !important;
+        }
+        
+        /* AI Assistant frame specific styles */
+        .ai-assistant-frame {
+            overflow: hidden !important;
+            max-height: 100% !important;
+            height: 100% !important;
+            border: none !important;
+        }
+        
+        /* Parent container for the AI Assistant */
+        .app-window-content:has(.ai-assistant-frame) {
+            overflow: hidden !important;
+            display: flex !important;
+            flex-direction: column !important;
+            height: 100% !important;
+        }
+        
+        /* Ensure proper sizing of window wrapper */
+        .app-window:has(.ai-assistant-frame) .app-window-content {
+            padding: 0 !important;
+        }
+    </style>
+</head>
+<body class="p-0 m-0 no-border full-width full-height">
+    <!-- macOS-like wrapper with rounded corners -->
+    <div class="mac-window-wrapper no-border">
+        <!-- macOS status bar -->
+        <div class="mac-status-bar full-width">
+            <div class="flex justify-between items-center px-4 py-1 bg-gray-800 text-white border-b border-gray-700">
+                <div class="flex space-x-2">
+                    <!-- Window control buttons -->
+                    <div class="h-3 w-3 rounded-full bg-red-500"></div>
+                    <div class="h-3 w-3 rounded-full bg-yellow-500"></div>
+                    <div class="h-3 w-3 rounded-full bg-green-500"></div>
+                </div>
+                <div class="text-sm font-medium">LookLab</div>
+                <div class="flex space-x-4 items-center">
+                    <span><i class="fas fa-wifi"></i></span>
+                    <span><i class="fas fa-battery-three-quarters"></i></span>
+                    <button id="fullscreen-toggle" class="text-white hover:text-gray-300 transition-colors ml-2" aria-label="Toggle fullscreen mode">
+                        <i class="fas fa-expand"></i>
+                    </button>
+                    <span id="current-time">12:00 PM</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- App container -->
+        <div class="app-container full-width">
+            <!-- Sidebar navigation - enhanced design -->
+            <div class="w-24 bg-gray-900 text-white flex flex-col items-center py-8 relative">
+                <!-- Logo -->
+                <div class="mb-10">
+                    <div class="w-12 h-12 rounded-full overflow-hidden">
+                        <img src="images/logo.jpg" alt="LookLab Logo" class="w-full h-full object-cover">
+                    </div>
+                </div>
+                
+                <!-- Navigation items -->
+                <div class="flex flex-col items-center space-y-2 w-full px-2">
+                    <div class="nav-item active relative w-full" data-page="home">
+                        <i class="fas fa-home text-xl mb-1"></i>
+                        <span class="text-xs">Home</span>
+                    </div>
+                    <div class="nav-item relative w-full" data-page="discovery">
+                        <i class="fas fa-compass text-xl mb-1"></i>
+                        <span class="text-xs">Discover</span>
+                    </div>
+                    <div class="nav-item relative w-full" data-page="inventory">
+                        <i class="fas fa-box text-xl mb-1"></i>
+                        <span class="text-xs">Inventory</span>
+                    </div>
+                    <div class="nav-item relative w-full" data-page="trends" aria-label="Fashion AI Assistant">
+                        <i class="fas fa-robot text-xl mb-1"></i>
+                        <span class="text-xs">LookGPT</span>
+                    </div>
+                    <div class="nav-item relative w-full" data-page="messages">
+                        <i class="fas fa-comment-alt text-xl mb-1"></i>
+                        <span class="text-xs">Messages</span>
+                        <span class="absolute -right-1 -top-1 w-4 h-4 bg-red-500 rounded-full text-xs flex items-center justify-center">2</span>
+                    </div>
+                </div>
+                
+                <!-- Profile & Settings -->
+                <div class="mt-auto flex flex-col items-center space-y-6">
+                    <div class="nav-item relative w-full" data-page="settings">
+                        <i class="fas fa-cog text-xl mb-1"></i>
+                        <span class="text-xs">Settings</span>
+                    </div>
+                    <div class="w-10 h-10 rounded-full overflow-hidden cursor-pointer border-2 border-white/20">
+                        <img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80" alt="Sarah Reynolds" class="w-full h-full object-cover">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main content area with iframe -->
+            <div class="flex-1 overflow-hidden content-container">
+                <iframe id="content-frame" class="no-border" src="pages/home.html"></iframe>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script>
+        // Force document to full dimensions
+        document.documentElement.style.width = '100vw';
+        document.documentElement.style.height = '100vh';
+        document.documentElement.style.overflow = 'hidden';
+        document.documentElement.style.margin = '0';
+        document.documentElement.style.padding = '0';
+        
+        // Force body to full dimensions
+        document.body.style.width = '100vw';
+        document.body.style.height = '100vh';
+        document.body.style.overflow = 'hidden';
+        document.body.style.margin = '0';
+        document.body.style.padding = '0';
+        document.body.style.position = 'fixed';
+        document.body.style.top = '0';
+        document.body.style.left = '0';
+        document.body.style.right = '0';
+        document.body.style.bottom = '0';
+        
+        // Ensure iframe height adjusts when window resizes
+        window.addEventListener('resize', adjustFrameHeight);
+        
+        function adjustFrameHeight() {
+            const frame = document.getElementById('content-frame');
+            const container = document.querySelector('.content-container');
+            const appContainer = document.querySelector('.app-container');
+            const statusBar = document.querySelector('.mac-status-bar');
+            const wrapper = document.querySelector('.mac-window-wrapper');
+            
+            if (frame && container && appContainer && statusBar) {
+                // Force wrapper to full size
+                wrapper.style.width = '100vw';
+                wrapper.style.height = '100vh';
+                wrapper.style.margin = '0';
+                wrapper.style.padding = '0';
+                
+                // Adjust app container height based on window size and status bar
+                const statusBarHeight = statusBar.offsetHeight || 30;
+                const windowHeight = window.innerHeight;
+                appContainer.style.height = `${windowHeight - statusBarHeight}px`;
+                appContainer.style.width = '100vw';
+                
+                // Set explicit height for frame based on container size
+                frame.style.height = `${container.clientHeight}px`;
+                frame.style.width = `${container.clientWidth}px`;
+                frame.style.border = 'none';
+                
+                // Add special handling for chat pages
+                if (frame.src.includes('messages.html') || frame.src.includes('ai-assistant.html')) {
+                    frame.classList.add('chat-frame');
+                    
+                    // Notify the iframe that it's embedded
+                    try {
+                        if (frame.contentWindow) {
+                            frame.contentWindow.postMessage({ type: 'PARENT_RESIZE', height: container.clientHeight, width: container.clientWidth }, '*');
+                        }
+                    } catch (e) {
+                        console.error('Error sending resize message to iframe:', e);
+                    }
+                    
+                    // Add specific handling for each chat page type
+                    if (frame.src.includes('messages.html')) {
+                        // Messages page needs additional spacing adjustments
+                        frame.style.overflow = 'hidden';
+                        
+                        // Create a special event for messages page resizing
+                        const messageResizeEvent = new CustomEvent('message-chat-resize', {
+                            detail: { height: container.clientHeight, width: container.clientWidth }
+                        });
+                        document.dispatchEvent(messageResizeEvent);
+                    } 
+                    
+                    if (frame.src.includes('ai-assistant.html')) {
+                        // AI Assistant page has split panes that need special handling
+                        frame.style.overflow = 'hidden';
+                        
+                        // Create a special event for AI assistant page resizing
+                        const aiResizeEvent = new CustomEvent('ai-chat-resize', {
+                            detail: { height: container.clientHeight, width: container.clientWidth }
+                        });
+                        document.dispatchEvent(aiResizeEvent);
+                    }
+                } else {
+                    frame.classList.remove('chat-frame');
+                }
+                
+                console.log('Adjusted sizes:', {
+                    windowInnerHeight: window.innerHeight,
+                    windowInnerWidth: window.innerWidth,
+                    wrapperHeight: wrapper.offsetHeight,
+                    wrapperWidth: wrapper.offsetWidth,
+                    statusBarHeight: statusBarHeight,
+                    appContainerHeight: appContainer.offsetHeight,
+                    frameHeight: frame.offsetHeight
+                });
+            }
+        }
+        
+        // Toggle fullscreen function
+        function toggleFullscreen() {
+            const wrapper = document.querySelector('.mac-window-wrapper');
+            const icon = document.querySelector('#fullscreen-toggle i');
+            
+            if (!document.fullscreenElement) {
+                // Enter fullscreen
+                if (wrapper.requestFullscreen) {
+                    wrapper.requestFullscreen();
+                } else if (wrapper.webkitRequestFullscreen) {
+                    wrapper.webkitRequestFullscreen();
+                } else if (wrapper.msRequestFullscreen) {
+                    wrapper.msRequestFullscreen();
+                }
+                icon.classList.remove('fa-expand');
+                icon.classList.add('fa-compress');
+                wrapper.classList.add('fullscreen-mode');
+            } else {
+                // Exit fullscreen
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.webkitExitFullscreen) {
+                    document.webkitExitFullscreen();
+                } else if (document.msExitFullscreen) {
+                    document.msExitFullscreen();
+                }
+                icon.classList.remove('fa-compress');
+                icon.classList.add('fa-expand');
+                wrapper.classList.remove('fullscreen-mode');
+            }
+            
+            // Force a browser reflow to ensure proper sizing
+            setTimeout(() => {
+                window.dispatchEvent(new Event('resize'));
+                adjustFrameHeight();
+            }, 300);
+        }
+        
+        // Run on initial load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Apply CSS directly to all ancestor elements to ensure full size
+            forceFullSizeOnAllElements();
+            
+            // Set initial height after content loads
+            adjustFrameHeight();
+            
+            // Add a small delay to ensure everything is rendered
+            setTimeout(adjustFrameHeight, 100);
+            
+            // Setup fullscreen toggle
+            const fullscreenBtn = document.getElementById('fullscreen-toggle');
+            if (fullscreenBtn) {
+                fullscreenBtn.addEventListener('click', toggleFullscreen);
+            }
+            
+            // Listen for fullscreen change
+            document.addEventListener('fullscreenchange', function() {
+                const icon = document.querySelector('#fullscreen-toggle i');
+                const wrapper = document.querySelector('.mac-window-wrapper');
+                
+                if (document.fullscreenElement) {
+                    icon.classList.remove('fa-expand');
+                    icon.classList.add('fa-compress');
+                    wrapper.classList.add('fullscreen-mode');
+                } else {
+                    icon.classList.remove('fa-compress');
+                    icon.classList.add('fa-expand');
+                    wrapper.classList.remove('fullscreen-mode');
+                }
+                
+                // Force resize event
+                setTimeout(() => {
+                    window.dispatchEvent(new Event('resize')); 
+                    adjustFrameHeight();
+                }, 100);
+            });
+            
+            // Force fullscreen-like view on all devices
+            function forceFullSizeOnAllElements() {
+                const wrapper = document.querySelector('.mac-window-wrapper');
+                wrapper.classList.add('fullscreen-mode');
+                
+                // Force to full window size
+                wrapper.style.width = '100vw';
+                wrapper.style.height = '100vh';
+                wrapper.style.maxWidth = '100vw';
+                wrapper.style.margin = '0';
+                wrapper.style.padding = '0';
+                wrapper.style.position = 'fixed';
+                wrapper.style.top = '0';
+                wrapper.style.left = '0';
+                wrapper.style.right = '0';
+                wrapper.style.bottom = '0';
+                wrapper.style.border = 'none';
+                wrapper.style.borderRadius = '0';
+                
+                // Force full screen on every resize
+                window.addEventListener('resize', function() {
+                    wrapper.style.width = '100vw';
+                    wrapper.style.height = '100vh';
+                });
+                
+                console.log('Forced full size on wrapper');
+            }
+            
+            // Force on load
+            forceFullSizeOnAllElements();
+            
+            // Handle iframe content scrolling
+            const frame = document.getElementById('content-frame');
+            frame.addEventListener('load', function() {
+                try {
+                    // Access the iframe document
+                    const frameDoc = frame.contentDocument || frame.contentWindow.document;
+                    
+                    // Create a style element for scrolling styles
+                    const style = frameDoc.createElement('style');
+                    style.textContent = `
+                        /* Enable scrolling on the iframe content */
+                        html {
+                            height: 100%;
+                            width: 100%;
+                            margin: 0 !important;
+                            padding: 0 !important;
+                            overflow-y: auto !important; /* Enable vertical scrolling */
+                        }
+                        
+                        body {
+                            height: auto !important; /* Allow body to expand with content */
+                            min-height: 100%;
+                            width: 100%;
+                            margin: 0 !important;
+                            padding: 0 !important;
+                            overflow-y: auto !important; /* Enable vertical scrolling */
+                            overflow-x: hidden;
+                            -webkit-overflow-scrolling: touch;
+                        }
+                        
+                        /* Make content responsive */
+                        .container, .main-content, main, section, .content-section {
+                            width: 100%;
+                            max-width: 100%;
+                            min-height: fit-content;
+                            overflow-y: visible !important; /* Ensure content can be scrolled */
+                        }
+                        
+                        /* Fix any fixed position elements */
+                        .fixed {
+                            position: absolute;
+                        }
+                        
+                        /* Add smooth scrolling to page content */
+                        * {
+                            scroll-behavior: smooth;
+                        }
+                        
+                        /* Ensure content containers are scrollable */
+                        .content-container, .page-content, main, .main-container {
+                            overflow-y: auto !important;
+                            height: auto !important;
+                            min-height: fit-content;
+                        }
+                        
+                        /* Style scrollbars for better appearance */
+                        ::-webkit-scrollbar {
+                            width: 8px;
+                            height: 8px;
+                        }
+                        
+                        ::-webkit-scrollbar-track {
+                            background: transparent;
+                        }
+                        
+                        ::-webkit-scrollbar-thumb {
+                            background-color: rgba(155, 155, 155, 0.5);
+                            border-radius: 20px;
+                        }
+                        
+                        ::-webkit-scrollbar-thumb:hover {
+                            background-color: rgba(155, 155, 155, 0.7);
+                        }
+                        
+                        /* Add padding to the bottom of scrollable content for better UX */
+                        main, .main-content, .content-container {
+                            padding-bottom: 40px;
+                        }
+                    `;
+                    
+                    // Add the style to the iframe document head
+                    frameDoc.head.appendChild(style);
+                    
+                    // Apply scroll behavior to specific elements if they exist
+                    ['main', '.main-content', '.page-content', '.content-container', 'body', 'html'].forEach(selector => {
+                        const element = frameDoc.querySelector(selector);
+                        if (element) {
+                            element.style.overflowY = 'auto';
+                            element.style.height = 'auto';
+                            element.style.minHeight = '100%';
+                            // Remove any !important overflow hidden that might be present
+                            if (element.style.overflow === 'hidden') {
+                                element.style.overflow = 'auto';
+                            }
+                        }
+                    });
+                    
+                    // Ensure the body is scrollable
+                    frameDoc.body.style.overflowY = 'auto';
+                    frameDoc.body.style.height = 'auto';
+                    frameDoc.body.style.minHeight = '100%';
+                    
+                    // Remove any overflow:hidden properties from style attribute
+                    const elementsWithHiddenOverflow = frameDoc.querySelectorAll('[style*="overflow: hidden"], [style*="overflow:hidden"]');
+                    elementsWithHiddenOverflow.forEach(element => {
+                        // Check if the element should be scrollable (containers, not small UI elements)
+                        if (element.clientHeight > 100 || element.classList.contains('container') || 
+                            element.classList.contains('content') || element.classList.contains('page')) {
+                            element.style.overflow = 'visible';
+                            element.style.overflowY = 'auto';
+                        }
+                    });
+                    
+                    // Check for any height restrictions that might prevent scrolling
+                    const potentialHeightRestrictors = frameDoc.querySelectorAll('[style*="height: 100vh"], [style*="height:100vh"], [class*="h-screen"]');
+                    potentialHeightRestrictors.forEach(element => {
+                        // If this is a main container, adjust its height
+                        if (element.classList.contains('container') || element.tagName === 'BODY' || element.tagName === 'MAIN') {
+                            element.style.height = 'auto';
+                            element.style.minHeight = '100vh';
+                        }
+                    });
+                    
+                    // Reapply frame height after content loads
+                    setTimeout(adjustFrameHeight, 200);
+                    
+                    // Log success
+                    console.log('Successfully applied scrolling styles to iframe content');
+                } catch (e) {
+                    console.error('Could not inject styles into iframe:', e);
+                }
+            });
+            
+            // Initialize enhanced frame handling
+            enhancedFrameHandling();
+            
+            // Improved iframe handling for AI Assistant
+            const iframes = document.querySelectorAll('iframe');
+            
+            // Process each iframe
+            iframes.forEach(function(iframe) {
+                const src = iframe.getAttribute('src');
+                
+                // Special handling for AI Assistant
+                if (src && src.includes('ai-assistant.html')) {
+                    // Add special class for styling
+                    iframe.classList.add('ai-assistant-frame');
+                    
+                    // Set proper overflow handling
+                    iframe.style.overflow = 'hidden';
+                    iframe.style.maxHeight = '100%';
+                    
+                    // Create container constraints if needed
+                    const frameContainer = iframe.closest('.app-window-content');
+                    if (frameContainer) {
+                        frameContainer.style.overflow = 'hidden';
+                        frameContainer.style.display = 'flex';
+                        frameContainer.style.flexDirection = 'column';
+                    }
+                    
+                    // Add resize listener specifically for AI Assistant
+                    window.addEventListener('resize', function() {
+                        // Use requestAnimationFrame to throttle resize events
+                        requestAnimationFrame(function() {
+                            // Get current iframe dimensions
+                            const width = iframe.clientWidth;
+                            const height = iframe.clientHeight;
+                            
+                            // Send resize message with fixScroll flag
+                            try {
+                                iframe.contentWindow.postMessage({
+                                    type: 'PARENT_RESIZE',
+                                    width: width,
+                                    height: height,
+                                    isAiAssistant: true,
+                                    fixScroll: true
+                                }, '*');
+                            } catch (e) {
+                                console.error('Error resizing AI Assistant iframe:', e);
+                            }
+                        });
+                    });
+                    
+                    // Set initial size after load
+                    iframe.addEventListener('load', function() {
+                        // Use setTimeout to ensure content is fully loaded
+                        setTimeout(function() {
+                            const width = iframe.clientWidth;
+                            const height = iframe.clientHeight;
+                            
+                            try {
+                                iframe.contentWindow.postMessage({
+                                    type: 'PARENT_RESIZE',
+                                    width: width,
+                                    height: height,
+                                    isAiAssistant: true,
+                                    fixScroll: true
+                                }, '*');
+                            } catch (e) {
+                                console.error('Error setting initial size for AI Assistant iframe:', e);
+                            }
+                        }, 500);
+                    });
+                }
+            });
+        });
+
+        // Add additional event handling for iframe communication
+        window.addEventListener('message', function(event) {
+            // Handle messages from embedded frames
+            if (event.data && event.data.type) {
+                const frame = document.getElementById('content-frame');
+                const container = document.querySelector('.content-container');
+                
+                // Handle specific message types
+                switch (event.data.type) {
+                    case 'CHAT_FRAME_READY':
+                        console.log('Chat frame signaled ready, sending resize...');
+                        // Resend size information
+                        if (frame && frame.contentWindow && container) {
+                            setTimeout(() => {
+                                frame.contentWindow.postMessage({ 
+                                    type: 'PARENT_RESIZE', 
+                                    height: container.clientHeight, 
+                                    width: container.clientWidth 
+                                }, '*');
+                            }, 100);
+                        }
+                        break;
+                        
+                    case 'REQUEST_RESIZE':
+                        // Force a resize when requested by the iframe
+                        if (frame && frame.contentWindow && container) {
+                            frame.contentWindow.postMessage({ 
+                                type: 'PARENT_RESIZE', 
+                                height: container.clientHeight, 
+                                width: container.clientWidth 
+                            }, '*');
+                        }
+                        break;
+                }
+            }
+        });
+
+        // Enhanced resize event handler for frames
+        function enhancedFrameResize() {
+            const frame = document.getElementById('content-frame');
+            const container = document.querySelector('.content-container');
+            
+            // Special handling for AI Assistant
+            if (frame.classList.contains('ai-assistant-frame')) {
+                // Send special AI Assistant resize event
+                if (frame.contentWindow) {
+                    frame.contentWindow.postMessage({ 
+                        type: 'PARENT_RESIZE', 
+                        height: container.clientHeight, 
+                        width: container.clientWidth,
+                        isAiAssistant: true
+                    }, '*');
+                }
+            } else {
+                // Standard resize notification
+                if (frame.contentWindow) {
+                    frame.contentWindow.postMessage({ 
+                        type: 'PARENT_RESIZE', 
+                        height: container.clientHeight, 
+                        width: container.clientWidth 
+                    }, '*');
+                }
+            }
+        }
+
+        // Enhanced handling for iframe navigation and communication
+        function enhancedFrameHandling() {
+            const frame = document.getElementById('content-frame');
+            const navItems = document.querySelectorAll('.nav-item');
+            
+            // Handle clicks on navigation items
+            navItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    const page = this.getAttribute('data-page');
+                    
+                    // Remove active class from all nav items
+                    navItems.forEach(nav => nav.classList.remove('active'));
+                    
+                    // Add active class to clicked item
+                    this.classList.add('active');
+                    
+                    // Special handling for AI Assistant
+                    if (page === 'trends') {
+                        frame.src = 'pages/ai-assistant.html';
+                        frame.classList.add('ai-assistant-frame');
+                        
+                        // Set a brief timeout to allow the iframe to load
+                        setTimeout(() => {
+                            enhancedFrameResize();
+                        }, 500);
+                    } else if (page === 'messages') {
+                        frame.src = 'pages/messages.html';
+                        frame.classList.add('chat-frame');
+                        
+                        // Set a brief timeout to allow the iframe to load
+                        setTimeout(() => {
+                            enhancedFrameResize();
+                        }, 500);
+                    } else {
+                        frame.classList.remove('ai-assistant-frame', 'chat-frame');
+                        frame.src = `pages/${page}.html`;
+                    }
+                });
+            });
+        }
+
+        // Add enhanced resize handler
+        window.addEventListener('resize', enhancedFrameResize);
+
+        // Add message handler for navigation requests from iframes
+        window.addEventListener('message', function(event) {
+            // Handle navigation requests from AI Assistant
+            if (event.data && event.data.type === 'NAVIGATE') {
+                console.log('Received navigation request:', event.data);
+                const { destination, params } = event.data;
+                
+                // Handle navigation to different pages
+                if (destination === 'discovery') {
+                    // Update the active nav item
+                    const navItems = document.querySelectorAll('.nav-item');
+                    navItems.forEach(nav => nav.classList.remove('active'));
+                    
+                    // Find and activate the discovery nav item
+                    const discoveryNav = document.querySelector('.nav-item[data-page="discovery"]');
+                    if (discoveryNav) {
+                        discoveryNav.classList.add('active');
+                    }
+                    
+                    // Navigate to the discovery page with the specified params
+                    const frame = document.getElementById('content-frame');
+                    if (frame) {
+                        frame.classList.remove('ai-assistant-frame', 'chat-frame');
+                        frame.src = `pages/discovery.html?${params}`;
+                    }
+                } else if (destination === 'designer') {
+                    // Navigate to designer profile
+                    const frame = document.getElementById('content-frame');
+                    if (frame) {
+                        frame.classList.remove('ai-assistant-frame', 'chat-frame');
+                        frame.src = `pages/designer-profile.html?${params}`;
+                    }
+                } else if (destination === 'inventory') {
+                    // Update the active nav item
+                    const navItems = document.querySelectorAll('.nav-item');
+                    navItems.forEach(nav => nav.classList.remove('active'));
+                    
+                    // Find and activate the inventory nav item
+                    const inventoryNav = document.querySelector('.nav-item[data-page="inventory"]');
+                    if (inventoryNav) {
+                        inventoryNav.classList.add('active');
+                    }
+                    
+                    // Navigate to the inventory page
+                    const frame = document.getElementById('content-frame');
+                    if (frame) {
+                        frame.classList.remove('ai-assistant-frame', 'chat-frame');
+                        frame.src = `pages/inventory.html?${params}`;
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html> 

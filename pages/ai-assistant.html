@@ -1,0 +1,1356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LookLab - Fashion AI Assistant</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/styles.css">
+    <style>
+        /* Full-page layout styles */
+        html, body {
+            height: 100% !important;
+            width: 100% !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            background-color: #f9fafb;
+            overflow-x: hidden !important;
+        }
+        
+        .page-container {
+            height: 100%;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+        
+        .content-wrapper {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1.5rem;
+        }
+        
+        /* AI Assistant specific styles */
+        .assistant-container {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            overflow: hidden; /* Prevent container itself from scrolling */
+        }
+        
+        .messages-area {
+            flex: 1;
+            overflow-y: auto;
+            min-height: 400px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 0.75rem;
+        }
+        
+        /* Message bubble animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .message-bubble {
+            animation: fadeIn 0.3s ease-out forwards;
+            margin-bottom: 1rem;
+        }
+        
+        .user-message {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 1.5rem;
+        }
+        
+        .assistant-message {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 1.5rem;
+        }
+        
+        .message-content {
+            border-radius: 1rem;
+            padding: 1rem 1.25rem;
+            max-width: 75%;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+        
+        .user-message .message-content {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white;
+            border-bottom-right-radius: 0.25rem;
+        }
+        
+        .assistant-message .message-content {
+            background-color: white;
+            color: #374151;
+            border-bottom-left-radius: 0.25rem;
+        }
+        
+        /* Custom scrollbar */
+        .messages-area::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .messages-area::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        
+        .messages-area::-webkit-scrollbar-thumb {
+            background-color: rgba(203, 213, 225, 0.8);
+            border-radius: 20px;
+        }
+        
+        /* Input field styling */
+        .input-container {
+            background-color: white;
+            border-radius: 1rem;
+            padding: 0.75rem;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .input-field {
+            flex-grow: 1;
+            border: none;
+            outline: none;
+            padding: 0.5rem 0.75rem;
+            border-radius: 0.5rem;
+            font-size: 0.95rem;
+            background-color: #f9fafb;
+        }
+        
+        .input-field:focus {
+            background-color: #f3f4f6;
+        }
+        
+        .input-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: none;
+            outline: none;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white;
+            margin-left: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .input-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
+        }
+        
+        /* Enhanced card styles */
+        .card {
+            background-color: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            margin-bottom: 1.5rem;
+        }
+        
+        .card:hover {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            transform: translateY(-2px);
+        }
+        
+        /* Color swatch styles */
+        .color-swatch {
+            width: 2rem;
+            height: 2rem;
+            border-radius: 50%;
+            margin-right: 0.5rem;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Trending product card */
+        .product-card {
+            transition: all 0.3s ease;
+            border-radius: 0.75rem;
+            overflow: hidden;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Metric styles */
+        .metric-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+        
+        .metric-bar {
+            height: 8px;
+            border-radius: 4px;
+            background-color: #e5e7eb;
+        }
+        
+        .metric-progress {
+            height: 100%;
+            border-radius: 4px;
+        }
+        
+        .positive {
+            color: #10b981;
+        }
+        
+        .negative {
+            color: #ef4444;
+        }
+        
+        /* Navigation buttons */
+        .nav-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            font-size: 0.875rem;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            border: 1px solid transparent;
+        }
+        
+        .nav-button:hover {
+            background-color: #f3f4f6;
+            border-color: #e5e7eb;
+        }
+        
+        .nav-button.active {
+            background-color: #f3f4f6;
+            color: #6366f1;
+            border-color: #a5b4fc;
+        }
+        
+        .nav-button i {
+            margin-right: 0.5rem;
+            font-size: 1rem;
+        }
+        
+        /* Add specific styles to make only the chat area scrollable */
+        .assistant-container {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            overflow: hidden; /* Prevent container itself from scrolling */
+        }
+        
+        /* Fix the right column so it doesn't scroll independently */
+        .content-wrapper {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1.5rem;
+        }
+        
+        .right-column {
+            height: 100%;
+            overflow-y: auto;
+            padding-right: 0.5rem;
+        }
+        
+        /* Make the grid container properly handle overflow */
+        .grid-container {
+            height: 100%;
+            overflow: hidden;
+        }
+        
+        /* Addition: New styles for in-chat recommendation cards */
+        .recommendation-card {
+            border-radius: 0.75rem;
+            background-color: white;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            margin: 1rem 0;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        .recommendation-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .recommendation-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+            margin-top: 0.75rem;
+        }
+        
+        .recommendation-item {
+            display: flex;
+            flex-direction: column;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            background-color: white;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            border: 1px solid #e5e7eb;
+        }
+        
+        .recommendation-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border-color: #a5b4fc;
+        }
+        
+        .recommendation-image {
+            height: 100px;
+            overflow: hidden;
+        }
+        
+        .recommendation-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        
+        .recommendation-item:hover .recommendation-image img {
+            transform: scale(1.05);
+        }
+        
+        .recommendation-info {
+            padding: 0.5rem;
+        }
+        
+        .recommendation-title {
+            font-weight: 600;
+            font-size: 0.875rem;
+            color: #1f2937;
+            margin-bottom: 0.25rem;
+        }
+        
+        .recommendation-meta {
+            font-size: 0.75rem;
+            color: #6b7280;
+        }
+        
+        .discovery-link {
+            display: inline-block;
+            margin-top: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        
+        .discovery-link:hover {
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            transform: translateY(-1px);
+        }
+        
+        .trend-section {
+            padding: 1rem;
+            background-color: #f3f4f6;
+            border-radius: 0.75rem;
+            margin: 0.5rem 0;
+        }
+        
+        .trend-metrics {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+        
+        .trend-metric-item {
+            flex: 1;
+            min-width: 120px;
+            background-color: white;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+        
+        .trend-value {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+        
+        .trend-label {
+            font-size: 0.75rem;
+            color: #6b7280;
+        }
+        
+        /* Update grid layout and styles to make better use of the space */
+        .page-container.in-iframe {
+            height: 100% !important;
+            max-height: 100% !important;
+            overflow: hidden !important;
+        }
+        
+        .content-wrapper.in-iframe {
+            padding: 1rem !important;
+            overflow: hidden !important;
+        }
+        
+        /* Adjust grid layout to prioritize chat area */
+        @media (min-width: 1024px) {
+            .grid-container.optimized-layout {
+                grid-template-columns: 3fr 1fr !important;
+            }
+        }
+        
+        /* Make cards more compact */
+        .card.compact {
+            margin-bottom: 0.75rem;
+            padding: 0.75rem;
+        }
+        
+        .card.compact h2 {
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .card.compact .metric-item {
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Optimize space for scrolling */
+        html.optimized, body.optimized {
+            overflow: hidden !important;
+            height: 100% !important;
+        }
+        
+        /* Optimized layout styles for iframe display */
+        html.optimized, body.optimized {
+            height: 100vh !important;
+            max-height: 100vh !important;
+            overflow: hidden !important;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+        
+        .page-container.in-iframe {
+            height: 100vh !important;
+            max-height: 100vh !important;
+            overflow: hidden !important;
+            border-radius: 0 !important;
+        }
+        
+        .content-wrapper.in-iframe {
+            height: calc(100vh - 30px) !important;
+            max-height: calc(100vh - 30px) !important;
+            overflow: hidden !important;
+        }
+        
+        /* Ensure the content areas handle scrolling properly */
+        .assistant-container {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        
+        .messages-area {
+            flex: 1;
+            overflow-y: auto;
+            max-height: calc(100% - 80px);
+        }
+        
+        /* Prevent input container from growing */
+        .input-container {
+            flex-shrink: 0;
+        }
+        
+        /* Right column should scroll independently */
+        .right-column {
+            overflow-y: auto;
+            height: 100%;
+            padding-bottom: 20px;
+        }
+        
+        /* Ensure grid container maintains proper height */
+        .grid-container {
+            height: 100%;
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="page-container">
+        <div class="content-wrapper">
+            <!-- Header section with responsive improvements -->
+            <div class="flex justify-between items-center mb-6 flex-wrap">
+                <div class="flex items-center">
+                    <div class="w-12 h-12 bg-indigo-600 rounded-full flex items-center justify-center text-white">
+                        <i class="fas fa-robot text-xl"></i>
+                    </div>
+                    <div class="ml-4">
+                        <h1 class="text-2xl font-bold text-gray-800">Fashion AI Assistant</h1>
+                        <p class="text-gray-600">Your personal trend analyst & stylist</p>
+                    </div>
+                </div>
+                
+                <div class="flex space-x-2 items-center">
+                    <button class="nav-button lg:hidden" onclick="toggleRightSidebar()" title="Toggle sidebar">
+                        <i class="fas fa-sliders-h"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Mobile sidebar toggle button - update for new layout -->
+            <div class="lg:hidden mb-4">
+                <button class="bg-white hover:bg-gray-50 text-gray-700 px-3 py-2 rounded-lg shadow-sm text-sm font-medium flex items-center w-full justify-center" onclick="toggleRightSidebar()">
+                    <i class="fas fa-chart-line text-indigo-500 mr-2"></i> Toggle Trend Insights
+                </button>
+            </div>
+            
+            <!-- Main content area split into two columns on medium and larger screens -->
+            <div class="grid grid-cols-1 lg:grid-cols-4 gap-4 grid-container optimized-layout">
+                <!-- Left column: Chat interface (expanded) -->
+                <div class="lg:col-span-3">
+                    <div class="assistant-container bg-gray-50 rounded-xl h-full p-4">
+                        <!-- AI Assistant messages -->
+                        <div class="messages-area">
+                            <!-- Assistant message -->
+                            <div class="assistant-message message-bubble">
+                                <div class="w-8 h-8 bg-indigo-600 rounded-full flex items-center justify-center text-white mr-2 flex-shrink-0">
+                                    <i class="fas fa-robot text-sm"></i>
+                                </div>
+                                <div class="message-content">
+                                    <p>Welcome to LookLab's Fashion AI Assistant! I'm here to help you discover trends, analyze fashion data, and provide personalized recommendations for your brand.</p>
+                                    <p class="mt-2">What would you like to know about today?</p>
+                                    
+                                    <!-- Embedded trend metrics directly in the welcome message -->
+                                    <div class="trend-section mt-4">
+                                        <h4 class="text-sm font-semibold">Latest Trend Insights</h4>
+                                        <div class="trend-metrics">
+                                            <div class="trend-metric-item">
+                                                <div class="trend-value positive">+32%</div>
+                                                <div class="trend-label">Sustainability Growth</div>
+                                            </div>
+                                            <div class="trend-metric-item">
+                                                <div class="trend-value positive">+28%</div>
+                                                <div class="trend-label">Y2K Revival</div>
+                                            </div>
+                                            <div class="trend-metric-item">
+                                                <div class="trend-value negative">-15%</div>
+                                                <div class="trend-label">Fast Fashion</div>
+                                            </div>
+                                        </div>
+                                        <div class="mt-2 text-xs text-gray-500 text-right">Updated June 15, 2023</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Navigation buttons -->
+                            <div class="flex flex-wrap gap-2 my-4">
+                                <button class="bg-white hover:bg-gray-50 text-gray-700 px-3 py-2 rounded-lg shadow-sm text-sm font-medium flex items-center">
+                                    <i class="fas fa-chart-line text-indigo-500 mr-2"></i> Current Trends
+                                </button>
+                                <button class="bg-white hover:bg-gray-50 text-gray-700 px-3 py-2 rounded-lg shadow-sm text-sm font-medium flex items-center">
+                                    <i class="fas fa-lightbulb text-indigo-500 mr-2"></i> Product Ideas
+                                </button>
+                                <button class="bg-white hover:bg-gray-50 text-gray-700 px-3 py-2 rounded-lg shadow-sm text-sm font-medium flex items-center">
+                                    <i class="fas fa-palette text-indigo-500 mr-2"></i> Color Analysis
+                                </button>
+                                <button class="bg-white hover:bg-gray-50 text-gray-700 px-3 py-2 rounded-lg shadow-sm text-sm font-medium flex items-center">
+                                    <i class="fas fa-users text-indigo-500 mr-2"></i> Customer Insights
+                                </button>
+                                <button class="bg-white hover:bg-gray-50 text-gray-700 px-3 py-2 rounded-lg shadow-sm text-sm font-medium flex items-center">
+                                    <i class="fas fa-store text-indigo-500 mr-2"></i> Store Recommendations
+                                </button>
+                            </div>
+                            
+                            <!-- User message -->
+                            <div class="user-message message-bubble">
+                                <div class="message-content">
+                                    <p>What colors are trending for summer 2023?</p>
+                                </div>
+                                <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center ml-2 text-blue-600 flex-shrink-0">
+                                    <span class="font-semibold text-xs">YOU</span>
+                                </div>
+                            </div>
+                            
+                            <!-- Assistant message with color analysis -->
+                            <div class="assistant-message message-bubble">
+                                <div class="w-8 h-8 bg-indigo-600 rounded-full flex items-center justify-center text-white mr-2 flex-shrink-0">
+                                    <i class="fas fa-robot text-sm"></i>
+                                </div>
+                                <div class="message-content">
+                                    <p class="mb-3">Based on my analysis of global fashion data, these are the top trending colors for Summer 2023:</p>
+                                    
+                                    <div class="grid grid-cols-2 gap-4 my-4">
+                                        <div class="flex items-center">
+                                            <div class="color-swatch" style="background-color: #B39DDB;"></div>
+                                            <span class="text-gray-800">Digital Lavender</span>
+                                        </div>
+                                        <div class="flex items-center">
+                                            <div class="color-swatch" style="background-color: #4DB6AC;"></div>
+                                            <span class="text-gray-800">Tranquil Blue</span>
+                                        </div>
+                                        <div class="flex items-center">
+                                            <div class="color-swatch" style="background-color: #FFD54F;"></div>
+                                            <span class="text-gray-800">Sundial Yellow</span>
+                                        </div>
+                                        <div class="flex items-center">
+                                            <div class="color-swatch" style="background-color: #E57373;"></div>
+                                            <span class="text-gray-800">Terracotta</span>
+                                        </div>
+                                        <div class="flex items-center">
+                                            <div class="color-swatch" style="background-color: #A5D6A7;"></div>
+                                            <span class="text-gray-800">Sage Green</span>
+                                        </div>
+                                        <div class="flex items-center">
+                                            <div class="color-swatch" style="background-color: #F8BBD0;"></div>
+                                            <span class="text-gray-800">Pale Blush</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <p class="mt-3">These colors reflect a balance between digital futurism (Digital Lavender) and natural elements (Sage Green, Terracotta). The palette works well for sustainable fashion lines, which continue to gain momentum with consumers.</p>
+                                    
+                                    <!-- Add trending products recommendation -->
+                                    <div class="recommendation-card mt-4">
+                                        <div class="p-4 bg-indigo-50 border-b border-indigo-100">
+                                            <h4 class="font-semibold text-gray-800">Popular Products Using These Colors</h4>
+                                        </div>
+                                        <div class="p-4">
+                                            <div class="recommendation-grid">
+                                                <div class="recommendation-item" onclick="window.location.href='discovery.html?product=linen-shirt'">
+                                                    <div class="recommendation-image">
+                                                        <img src="https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80" alt="Oversized Linen Shirt">
+                                                    </div>
+                                                    <div class="recommendation-info">
+                                                        <div class="recommendation-title">Oversized Linen Shirt</div>
+                                                        <div class="recommendation-meta">Trending in 12 regions</div>
+                                                    </div>
+                                                </div>
+                                                <div class="recommendation-item" onclick="window.location.href='discovery.html?product=sustainable-denim'">
+                                                    <div class="recommendation-image">
+                                                        <img src="https://images.unsplash.com/photo-1542272604-787c3835535d?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80" alt="Sustainable Denim">
+                                                    </div>
+                                                    <div class="recommendation-info">
+                                                        <div class="recommendation-title">Sustainable Denim</div>
+                                                        <div class="recommendation-meta">Trending in 8 regions</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="mt-3 text-center">
+                                                <a href="discovery.html?category=trending-colors" class="discovery-link">
+                                                    <i class="fas fa-compass mr-1"></i> Explore More in Discovery
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Input field -->
+                        <div class="input-container">
+                            <input type="text" class="input-field" placeholder="Ask about fashion trends, market insights, or design ideas...">
+                            <button class="input-button" title="Send message">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Right column: Metrics and data (compact version) -->
+                <div class="lg:col-span-1 right-column">
+                    <!-- Latest trends insights - compact version -->
+                    <div class="card p-4 compact">
+                        <div class="flex justify-between items-center mb-2">
+                            <h2 class="text-base font-bold text-gray-800">Latest Trend Insights</h2>
+                            <span class="text-xs text-gray-500">Updated June 15, 2023</span>
+                        </div>
+                        
+                        <div>
+                            <h3 class="text-sm font-semibold mb-2">Key Fashion Metrics</h3>
+                            
+                            <!-- Metrics -->
+                            <div class="space-y-2">
+                                <div class="metric-item">
+                                    <div class="flex-1">
+                                        <div class="flex justify-between mb-1">
+                                            <span class="text-sm font-medium">Sustainability Growth</span>
+                                            <span class="text-sm font-medium positive">+32%</span>
+                                        </div>
+                                        <div class="metric-bar">
+                                            <div class="metric-progress bg-green-500" style="width: 32%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="metric-item">
+                                    <div class="flex-1">
+                                        <div class="flex justify-between mb-1">
+                                            <span class="text-sm font-medium">Y2K Revival</span>
+                                            <span class="text-sm font-medium positive">+28%</span>
+                                        </div>
+                                        <div class="metric-bar">
+                                            <div class="metric-progress bg-blue-500" style="width: 28%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="metric-item">
+                                    <div class="flex-1">
+                                        <div class="flex justify-between mb-1">
+                                            <span class="text-sm font-medium">Fast Fashion</span>
+                                            <span class="text-sm font-medium negative">-15%</span>
+                                        </div>
+                                        <div class="metric-bar">
+                                            <div class="metric-progress bg-red-500" style="width: 15%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Top trending products - compact version -->
+                    <div class="card p-4 compact">
+                        <h2 class="text-base font-bold text-gray-800 mb-2">Top Trending Products</h2>
+                        
+                        <div class="space-y-3">
+                            <!-- Product 1 -->
+                            <div class="flex items-center">
+                                <div class="w-16 h-16 rounded-lg overflow-hidden flex-shrink-0">
+                                    <img src="https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80" alt="Oversized Linen Shirt" class="w-full h-full object-cover">
+                                </div>
+                                <div class="ml-3">
+                                    <h3 class="text-sm font-semibold">Oversized Linen Shirt</h3>
+                                    <p class="text-xs text-gray-500">Trending in 12 regions</p>
+                                </div>
+                            </div>
+                            
+                            <!-- Product 2 -->
+                            <div class="flex items-center">
+                                <div class="w-16 h-16 rounded-lg overflow-hidden flex-shrink-0">
+                                    <img src="https://images.unsplash.com/photo-1542272604-787c3835535d?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80" alt="Sustainable Denim" class="w-full h-full object-cover">
+                                </div>
+                                <div class="ml-3">
+                                    <h3 class="text-sm font-semibold">Sustainable Denim</h3>
+                                    <p class="text-xs text-gray-500">Trending in 8 regions</p>
+                                </div>
+                            </div>
+                            
+                            <!-- Product 3 -->
+                            <div class="flex items-center">
+                                <div class="w-16 h-16 rounded-lg overflow-hidden flex-shrink-0">
+                                    <img src="https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80" alt="Minimalist Accessories" class="w-full h-full object-cover">
+                                </div>
+                                <div class="ml-3">
+                                    <h3 class="text-sm font-semibold">Minimalist Accessories</h3>
+                                    <p class="text-xs text-gray-500">Trending in 15 regions</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Store recommendations - compact version -->
+                    <div class="card p-4 compact">
+                        <h2 class="text-base font-bold text-gray-800 mb-2">For Your Store</h2>
+                        
+                        <div class="bg-blue-50 rounded-lg p-4 mb-4">
+                            <div class="flex items-start">
+                                <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 mr-3 mt-1">
+                                    <i class="fas fa-lightbulb"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-sm font-semibold">Stock Recommendation</h3>
+                                    <p class="text-xs text-gray-600 mt-1">Consider adding more sustainable denim products to your collection.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-green-50 rounded-lg p-4">
+                            <div class="flex items-start">
+                                <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center text-green-600 mr-3 mt-1">
+                                    <i class="fas fa-chart-line"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-sm font-semibold">Opportunity Alert</h3>
+                                    <p class="text-xs text-gray-600 mt-1">Y2K revival styles are trending strongly among your key demographic.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // When DOM is fully loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            const messageInput = document.querySelector('.input-field');
+            const sendButton = document.querySelector('.input-button');
+            const messagesArea = document.querySelector('.messages-area');
+            
+            // Function to add a new user message
+            function addUserMessage(text) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = 'user-message message-bubble';
+                messageDiv.innerHTML = `
+                    <div class="message-content">
+                        <p>${text}</p>
+                    </div>
+                    <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center ml-2 text-blue-600 flex-shrink-0">
+                        <span class="font-semibold text-xs">YOU</span>
+                    </div>
+                `;
+                messagesArea.appendChild(messageDiv);
+                scrollToBottom();
+            }
+            
+            // Function to add a new AI assistant message
+            function addAssistantMessage(text, recommendations = null) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = 'assistant-message message-bubble';
+                
+                // Create unique IDs for this message's elements
+                const gridId = `recommendation-grid-${Date.now()}`;
+                const linkId = `explore-link-${Date.now()}`;
+                
+                let messageContent = `
+                    <div class="w-8 h-8 bg-indigo-600 rounded-full flex items-center justify-center text-white mr-2 flex-shrink-0">
+                        <i class="fas fa-robot text-sm"></i>
+                    </div>
+                    <div class="message-content">
+                        <p>${text}</p>
+                `;
+                
+                // Add recommendations if provided
+                if (recommendations) {
+                    messageContent += `
+                        <div class="recommendation-card mt-4">
+                            <div class="p-4 bg-indigo-50 border-b border-indigo-100">
+                                <h4 class="font-semibold text-gray-800">${recommendations.title}</h4>
+                            </div>
+                            <div class="p-4">
+                                <div class="recommendation-grid" id="${gridId}"></div>
+                                <div class="mt-3 text-center">
+                                    <button class="discovery-link" id="${linkId}">
+                                        <i class="fas fa-compass mr-1"></i> ${recommendations.exploreLinkText}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+                
+                messageContent += `</div>`;
+                messageDiv.innerHTML = messageContent;
+                messagesArea.appendChild(messageDiv);
+                
+                // If we have recommendations, add the items programmatically
+                if (recommendations) {
+                    const grid = messageDiv.querySelector(`#${gridId}`);
+                    const exploreLink = messageDiv.querySelector(`#${linkId}`);
+                    
+                    // Add recommendation items
+                    if (grid && recommendations.items) {
+                        recommendations.items.forEach(item => {
+                            const itemElement = createRecommendationItem(item);
+                            grid.appendChild(itemElement);
+                        });
+                    }
+                    
+                    // Add event listener to explore link
+                    if (exploreLink && recommendations.exploreLink) {
+                        exploreLink.addEventListener('click', function() {
+                            navigateToDiscovery(recommendations.exploreLink);
+                        });
+                    }
+                }
+                
+                scrollToBottom();
+            }
+            
+            // Function to scroll to the bottom of the messages area
+            function scrollToBottom() {
+                messagesArea.scrollTop = messagesArea.scrollHeight;
+            }
+            
+            // Handle send button click
+            sendButton.addEventListener('click', function() {
+                const messageText = messageInput.value.trim();
+                if (messageText) {
+                    addUserMessage(messageText);
+                    messageInput.value = '';
+                    
+                    // Simulate AI response after a short delay
+                    setTimeout(function() {
+                        let response = "I'm analyzing the data related to your query. ";
+                        let recommendations = null;
+                        
+                        if (messageText.toLowerCase().includes('trend') || messageText.toLowerCase().includes('trends')) {
+                            response += "Based on recent market data, the biggest trending categories this season are sustainable fashion items, gender-neutral designs, and nostalgic Y2K pieces. Would you like more specific information about any of these trends?";
+                            
+                            // Add trending items recommendations
+                            recommendations = {
+                                title: "Trending Now",
+                                items: [
+                                    {
+                                        title: "Y2K Revival Bucket Hat",
+                                        meta: "Trending in 14 regions",
+                                        image: "https://images.unsplash.com/photo-1576871337622-98d48d1cf531?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80",
+                                        linkParam: "category=y2k-revival"
+                                    },
+                                    {
+                                        title: "Sustainable Knitwear",
+                                        meta: "94% positive feedback",
+                                        image: "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80",
+                                        linkParam: "category=sustainable"
+                                    }
+                                ],
+                                exploreLink: "section=trending",
+                                exploreLinkText: "See All Trending Items"
+                            };
+                            
+                        } else if (messageText.toLowerCase().includes('color') || messageText.toLowerCase().includes('colors')) {
+                            response += "In addition to the colors I mentioned earlier, industry forecasts are also showing increased interest in vivid metallics and earth tones for Fall/Winter 2023.";
+                            
+                            // Add color recommendations
+                            recommendations = {
+                                title: "Popular Items in These Colors",
+                                items: [
+                                    {
+                                        title: "Metallic Evening Wear",
+                                        meta: "High-end segment",
+                                        image: "https://images.unsplash.com/photo-1564584217132-2271feaeb3c5?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80",
+                                        linkParam: "color=metallic"
+                                    },
+                                    {
+                                        title: "Earth Tone Collection",
+                                        meta: "Rising in popularity",
+                                        image: "https://images.unsplash.com/photo-1551232864-3f0890e580d9?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80",
+                                        linkParam: "color=earth-tones"
+                                    }
+                                ],
+                                exploreLink: "section=color-palettes",
+                                exploreLinkText: "Explore Color Palettes"
+                            };
+                            
+                        } else if (messageText.toLowerCase().includes('designer') || messageText.toLowerCase().includes('designers')) {
+                            response += "Many top designers are embracing sustainable practices and innovative materials this season. Here are some trending designer collaborations:";
+                            
+                            // Add designer recommendations
+                            recommendations = {
+                                title: "Designer Spotlight",
+                                items: [
+                                    {
+                                        title: "Remy Jackson",
+                                        meta: "Sustainable Couture",
+                                        image: "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80",
+                                        linkParam: "designer=remy-jackson"
+                                    },
+                                    {
+                                        title: "Linn Studios",
+                                        meta: "Recycled Materials",
+                                        image: "https://images.unsplash.com/photo-1566554273541-37a9ca77b91f?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80",
+                                        linkParam: "designer=linn-studios"
+                                    }
+                                ],
+                                exploreLink: "section=designers",
+                                exploreLinkText: "View All Featured Designers"
+                            };
+                            
+                        } else if (messageText.toLowerCase().includes('recommend') || messageText.toLowerCase().includes('suggestion')) {
+                            response += "For your specific market segment, I recommend exploring the sustainable denim category. It aligns with both current trends and consumer values.";
+                            
+                            // Add product recommendations
+                            recommendations = {
+                                title: "Recommended Products",
+                                items: [
+                                    {
+                                        title: "Eco Denim Collection",
+                                        meta: "Bestseller in 8 regions",
+                                        image: "https://images.unsplash.com/photo-1542272604-787c3835535d?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80",
+                                        linkParam: "product=eco-denim"
+                                    },
+                                    {
+                                        title: "Recycled Cotton Basics",
+                                        meta: "Low environmental impact",
+                                        image: "https://images.unsplash.com/photo-1523381210434-271e8be1f52b?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80",
+                                        linkParam: "product=recycled-cotton"
+                                    }
+                                ],
+                                exploreLink: "section=recommended",
+                                exploreLinkText: "See All Recommendations"
+                            };
+                            
+                        } else {
+                            response += "I'm here to help with fashion trend analysis, market insights, and personalized recommendations for your brand. Could you tell me more about what specific information you're looking for?";
+                        }
+                        
+                        addAssistantMessage(response, recommendations);
+                    }, 1000);
+                }
+            });
+            
+            // Handle Enter key press in input field
+            messageInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    sendButton.click();
+                }
+            });
+            
+            // Handle preset buttons
+            const presetButtons = document.querySelectorAll('.bg-white.hover\\:bg-gray-50');
+            presetButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    let query = "";
+                    const buttonText = this.textContent.trim();
+                    
+                    if (buttonText.includes('Current Trends')) {
+                        query = "What are the current fashion trends this season?";
+                    } else if (buttonText.includes('Product Ideas')) {
+                        query = "Can you suggest some product ideas for my summer collection?";
+                    } else if (buttonText.includes('Color Analysis')) {
+                        query = "What color palettes are trending for Fall 2023?";
+                    } else if (buttonText.includes('Customer Insights')) {
+                        query = "What are the key customer preferences in sustainable fashion?";
+                    } else if (buttonText.includes('Store Recommendations')) {
+                        query = "What products should I stock more of in my store?";
+                    }
+                    
+                    if (query) {
+                        messageInput.value = query;
+                        // Auto-trigger the send button when clicking a preset
+                        sendButton.click();
+                    }
+                });
+            });
+            
+            // Ensure chat is scrolled to bottom initially
+            scrollToBottom();
+            
+            // Function to adjust layout based on screen size
+            function adjustLayout() {
+                // Set container height to make it fill the viewport
+                const container = document.querySelector('.assistant-container');
+                if (container) {
+                    const calculatedHeight = window.innerHeight - 200; // Adjust for header and padding
+                    if (calculatedHeight > 400) {
+                        container.style.height = `${calculatedHeight}px`;
+                    } else {
+                        container.style.height = '400px';
+                    }
+                }
+                
+                // Adjust sidebar visibility based on screen size
+                const rightColumn = document.querySelector('.right-column');
+                const toggleButton = document.querySelector('#toggleInsightsButton');
+                
+                if (window.innerWidth < 768) {
+                    // On mobile, hide right column by default but show toggle button
+                    if (rightColumn) rightColumn.style.display = 'none';
+                    if (toggleButton) toggleButton.style.display = 'flex';
+                } else {
+                    // On desktop, show right column and hide toggle button
+                    if (rightColumn) rightColumn.style.display = 'block';
+                    if (toggleButton) toggleButton.style.display = 'none';
+                }
+            }
+            
+            // Run adjustLayout on load and resize
+            adjustLayout();
+            window.addEventListener('resize', adjustLayout);
+            
+            // When document is ready, notify parent that we're loaded
+            const isInIframe = window.self !== window.top;
+            if (isInIframe) {
+                // Mark document as optimized
+                document.documentElement.classList.add('optimized');
+                document.body.classList.add('optimized');
+                document.querySelector('.page-container')?.classList.add('in-iframe');
+                document.querySelector('.content-wrapper')?.classList.add('in-iframe');
+                
+                try {
+                    // Send ready message to parent
+                    window.parent.postMessage({ type: 'AI_ASSISTANT_READY' }, '*');
+                    console.log('Sent ready signal to parent');
+                    
+                    // Request size information
+                    window.parent.postMessage({ type: 'REQUEST_RESIZE', isAiAssistant: true }, '*');
+                } catch (e) {
+                    console.error('Error communicating with parent frame:', e);
+                }
+            }
+            
+            // Handle resizing gracefully
+            window.addEventListener('resize', function() {
+                // If we're in an iframe, request new size information
+                if (window.self !== window.top) {
+                    try {
+                        window.parent.postMessage({ type: 'REQUEST_RESIZE', isAiAssistant: true }, '*');
+                    } catch (e) {
+                        console.error('Error requesting resize:', e);
+                    }
+                } else {
+                    // Direct resize handling when not in iframe
+                    adjustLayout();
+                }
+            });
+            
+            // Add function to toggle right sidebar on small screens
+            function toggleRightSidebar() {
+                const rightColumn = document.querySelector('.right-column');
+                if (rightColumn) {
+                    if (rightColumn.style.display === 'none') {
+                        rightColumn.style.display = 'block';
+                    } else {
+                        rightColumn.style.display = 'none';
+                    }
+                }
+            }
+            
+            // Add function to navigate to discovery with context
+            function navigateToDiscovery(params) {
+                // If we're in an iframe, send a message to the parent to navigate
+                if (window.self !== window.top) {
+                    try {
+                        window.parent.postMessage({ 
+                            type: 'NAVIGATE', 
+                            destination: 'discovery',
+                            params: params
+                        }, '*');
+                    } catch (e) {
+                        console.error('Error sending navigation message:', e);
+                        // Fallback if messaging fails
+                        window.location.href = `discovery.html?${params}`;
+                    }
+                } else {
+                    // Direct navigation if not in iframe
+                    window.location.href = `discovery.html?${params}`;
+                }
+            }
+            
+            // Create a function to create recommendation item elements
+            function createRecommendationItem(item) {
+                const div = document.createElement('div');
+                div.className = 'recommendation-item';
+                div.innerHTML = `
+                    <div class="recommendation-image">
+                        <img src="${item.image}" alt="${item.title}">
+                    </div>
+                    <div class="recommendation-info">
+                        <div class="recommendation-title">${item.title}</div>
+                        <div class="recommendation-meta">${item.meta}</div>
+                    </div>
+                `;
+                div.addEventListener('click', function() {
+                    navigateToDiscovery(item.linkParam);
+                });
+                return div;
+            }
+            
+            // Update existing recommendation items with navigation functionality
+            function updateExistingRecommendationItems() {
+                // Get all recommendation items in the page
+                const recommendationItems = document.querySelectorAll('.recommendation-item');
+                recommendationItems.forEach(item => {
+                    // Get the original onclick handler
+                    const originalOnclick = item.getAttribute('onclick');
+                    if (originalOnclick && originalOnclick.includes('window.location.href')) {
+                        // Extract the params
+                        const match = originalOnclick.match(/discovery\.html\?(.*?)'/);
+                        if (match && match[1]) {
+                            const params = match[1];
+                            // Replace with our navigation function
+                            item.removeAttribute('onclick');
+                            item.addEventListener('click', function() {
+                                navigateToDiscovery(params);
+                            });
+                        }
+                    }
+                });
+                
+                // Update Discovery links
+                const discoveryLinks = document.querySelectorAll('a[href^="discovery.html"]');
+                discoveryLinks.forEach(link => {
+                    const href = link.getAttribute('href');
+                    const match = href.match(/discovery\.html\?(.*?)$/);
+                    if (match && match[1]) {
+                        const params = match[1];
+                        link.removeAttribute('href');
+                        link.addEventListener('click', function(e) {
+                            e.preventDefault();
+                            navigateToDiscovery(params);
+                        });
+                    }
+                });
+                
+                // Update Discovery button in header
+                const discoveryButton = document.querySelector('.nav-button:not(.active)');
+                if (discoveryButton && discoveryButton.textContent.includes('Discovery')) {
+                    discoveryButton.addEventListener('click', function() {
+                        navigateToDiscovery('section=home');
+                    });
+                }
+            }
+            
+            // Run the update function when DOM is ready
+            updateExistingRecommendationItems();
+            
+            // Reattach onclick handlers after the page has fully loaded
+            window.addEventListener('load', function() {
+                setTimeout(updateExistingRecommendationItems, 500);
+            });
+            
+            // Enhance message event listener to ensure optimized classes are applied
+            window.addEventListener('message', function(event) {
+                // Handle resize message with special AI Assistant handling
+                if (event.data && event.data.type === 'PARENT_RESIZE') {
+                    // Mark document as optimized if not already
+                    document.documentElement.classList.add('optimized');
+                    document.body.classList.add('optimized');
+                    document.querySelector('.page-container')?.classList.add('in-iframe');
+                    document.querySelector('.content-wrapper')?.classList.add('in-iframe');
+                    
+                    const { height, width, isAiAssistant, fixScroll } = event.data;
+                    console.log('Received resize from parent:', { height, width, isAiAssistant, fixScroll });
+                    
+                    const pageContainer = document.querySelector('.page-container');
+                    const contentWrapper = document.querySelector('.content-wrapper');
+                    const assistantContainer = document.querySelector('.assistant-container');
+                    const rightColumn = document.querySelector('.right-column');
+                    const messagesContainer = document.querySelector('.messages-area');
+                    const inputContainer = document.querySelector('.input-container');
+                    
+                    if (pageContainer) {
+                        // Adjust to fit the parent iframe dimensions
+                        pageContainer.style.height = `${height}px`;
+                        pageContainer.style.width = `${width}px`;
+                        pageContainer.style.maxHeight = `${height}px`;
+                        pageContainer.style.overflow = 'hidden';
+                        
+                        if (contentWrapper) {
+                            contentWrapper.style.maxHeight = `${height}px`;
+                            contentWrapper.style.overflow = 'hidden';
+                        }
+                        
+                        // Special handling for AI Assistant specific resize
+                        if (isAiAssistant) {
+                            // When fixScroll is true, apply tighter constraints to prevent empty space
+                            if (fixScroll) {
+                                // Add custom styles to constrain content properly
+                                const style = document.createElement('style');
+                                style.textContent = `
+                                    body, html {
+                                        height: 100% !important;
+                                        max-height: 100% !important;
+                                        overflow: hidden !important;
+                                    }
+                                    
+                                    .page-container {
+                                        height: 100% !important;
+                                        max-height: 100% !important;
+                                        overflow: hidden !important;
+                                        display: flex;
+                                        flex-direction: column;
+                                    }
+                                    
+                                    .content-wrapper {
+                                        flex: 1;
+                                        max-height: calc(100vh - 30px) !important;
+                                        overflow: hidden !important;
+                                    }
+                                    
+                                    .assistant-container {
+                                        display: flex;
+                                        flex-direction: column;
+                                        height: 100% !important;
+                                        max-height: 100% !important;
+                                        overflow: hidden !important;
+                                    }
+                                    
+                                    .messages-area {
+                                        flex: 1;
+                                        overflow-y: auto !important;
+                                        max-height: calc(100% - 80px) !important;
+                                    }
+                                    
+                                    .grid-container {
+                                        height: 100% !important;
+                                        max-height: 100% !important;
+                                    }
+                                `;
+                                document.head.appendChild(style);
+                            }
+                            
+                            // Ensure content is properly sized
+                            const headerHeight = document.querySelector('.flex.justify-between.items-center.mb-6')?.offsetHeight || 0;
+                            const contentPadding = 24; // Reduced padding for tighter layout
+                            
+                            // Apply specific styles for AI Assistant mode
+                            if (assistantContainer) {
+                                assistantContainer.style.height = `${height - headerHeight - contentPadding}px`;
+                                assistantContainer.style.maxHeight = `${height - headerHeight - contentPadding}px`;
+                                
+                                // Ensure messages area fills available space but leaves room for input
+                                if (messagesContainer && inputContainer) {
+                                    const inputHeight = inputContainer.offsetHeight || 80;
+                                    messagesContainer.style.height = `${assistantContainer.offsetHeight - inputHeight - 24}px`;
+                                    messagesContainer.style.maxHeight = `${assistantContainer.offsetHeight - inputHeight - 24}px`;
+                                }
+                            }
+                            
+                            // Handle right column sizing correctly
+                            if (rightColumn) {
+                                rightColumn.style.height = `${height - headerHeight - contentPadding}px`;
+                                rightColumn.style.maxHeight = `${height - headerHeight - contentPadding}px`;
+                                rightColumn.style.overflowY = 'auto';
+                            }
+                            
+                            // Check if we need to adjust layout for small screens
+                            if (width < 768) {
+                                // On smaller screens, prioritize the chat interface
+                                const gridContainer = document.querySelector('.grid-container');
+                                if (gridContainer) {
+                                    gridContainer.classList.remove('lg:grid-cols-4');
+                                    gridContainer.classList.add('lg:grid-cols-1');
+                                }
+                                
+                                if (rightColumn) {
+                                    rightColumn.style.display = 'none';
+                                }
+                            } else {
+                                // Restore grid layout on larger screens
+                                const gridContainer = document.querySelector('.grid-container');
+                                if (gridContainer) {
+                                    gridContainer.classList.remove('lg:grid-cols-1');
+                                    gridContainer.classList.add('lg:grid-cols-4');
+                                }
+                                
+                                if (rightColumn) {
+                                    rightColumn.style.display = 'block';
+                                }
+                            }
+                            
+                            // Force a scroll to bottom to show latest messages
+                            scrollToBottom();
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html> 
