@@ -1,5 +1,5 @@
 # LookLab: Fashion Trend & Discovery Platform
-
+The Prototype Available via: https://kevintan701.github.io/thelooklab/
 ![LookLab Platform](https://images.unsplash.com/photo-1572251328450-19c5082bc582?q=80&w=1000&auto=format&fit=crop)
 
 LookLab is a cutting-edge web platform that bridges the gap between small and medium-sized fashion retailers and innovative designers. Our platform leverages modern design principles and AI-powered analytics to facilitate seamless collaboration, trend forecasting, and inventory management in the fashion industry.
