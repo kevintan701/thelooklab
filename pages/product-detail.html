@@ -109,24 +109,24 @@
         
         /* Premium button styles */
         .btn-premium {
-            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            background: black;
             color: white;
             border-radius: 0.5rem; 
             transition: all 0.3s ease;
             font-weight: 500;
-            box-shadow: 0 4px 10px rgba(99, 102, 241, 0.2);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             border: none;
         }
         
         .btn-premium:hover {
-            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            background: #333;
             transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(99, 102, 241, 0.3);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
         }
         
         .btn-premium:active {
             transform: translateY(1px);
-            box-shadow: 0 2px 5px rgba(99, 102, 241, 0.2);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
         }
         
         /* Added fixed aspect ratio styles for product gallery */
@@ -269,6 +269,11 @@
                 
                 <h1 class="text-3xl font-bold text-gray-900 mb-2">Minimal Structured Blazer</h1>
                 
+                <!-- Add prominent MSRP display -->
+                <div class="bg-gray-100 inline-block px-3 py-1 rounded-md mb-4">
+                    <span class="font-semibold text-lg">MSRP: $129.99</span>
+                </div>
+                
                 <!-- Wholesale Pricing -->
                 <div class="bg-gray-50 p-4 rounded-xl mb-6">
                     <div class="flex justify-between items-center mb-2">
@@ -389,12 +394,12 @@
                 
                 <!-- Action Buttons -->
                 <div class="flex space-x-3 mb-6">
-                    <button class="btn-premium flex-grow py-2 px-4 text-sm flex items-center justify-center rounded-lg">
+                    <a href="messages.html?type=wholesale&product=minimal-blazer" class="flex-grow py-2 px-4 text-sm flex items-center justify-center rounded-lg bg-black text-white hover:bg-gray-800 transition-colors">
                         <i class="fas fa-file-contract mr-2"></i> Request Wholesale Quote
-                    </button>
-                    <button class="bg-green-600 hover:bg-green-700 text-white px-3 py-2 text-sm rounded-lg flex items-center justify-center">
+                    </a>
+                    <a href="messages.html?type=contact&designer=elena" class="bg-white border border-black text-black hover:bg-gray-100 px-3 py-2 text-sm rounded-lg flex items-center justify-center transition-colors">
                         <i class="fas fa-comments mr-2"></i> Contact Designer
-                    </button>
+                    </a>
                     <button class="w-10 h-10 flex items-center justify-center rounded-full border border-gray-300" aria-label="Save to favorites">
                         <i class="far fa-heart text-gray-600"></i>
                     </button>
